@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PD사관학교 신입1기 마스터 가이드</title>
+    <title>PD사관학교 신입1기 제작 프로세스</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;800&display=swap');
@@ -26,9 +26,9 @@
         }
 
         .step-card:hover {
-            border-color: #cbd5e1;
+            border-color: #3b82f6;
             transform: translateY(-5px);
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
         }
 
         /* 데이터 파이프라인 (연속 선) */
@@ -38,23 +38,24 @@
             z-index: 1;
         }
 
-        /* PC 버전 Z자 흐름 선 정의 */
         @media (min-width: 1024px) {
-            /* 가로 연결 (1-2, 2-3, 3-4 / 5-6, 6-7, 7-8) */
+            /* 가로 연결선 (1-2, 2-3, 5-6, 6-7, 7-8) */
             .line-h {
-                top: 180px; 
-                width: 3.5rem; /* grid gap-x-14와 일치 */
+                top: 150px; 
+                width: 3.5rem; 
                 height: 3px;
+                background: linear-gradient(90deg, #e2e8f0, #cbd5e1);
             }
             .line-h-right { left: 100%; }
             
-            /* 줄바꿈 연결 (4에서 5로 내려가는 선) */
+            /* 줄바꿈 연결선 (4에서 5로 넘어가는 수직선) */
             .line-v-down {
                 top: 100%;
                 left: 50%;
                 width: 3px;
-                height: 6rem; /* grid gap-y-24와 일치 */
+                height: 6rem;
                 transform: translateX(-50%);
+                background: linear-gradient(180deg, #e2e8f0, #cbd5e1);
             }
         }
 
@@ -66,6 +67,7 @@
                 width: 3px;
                 height: 6rem;
                 transform: translateX(-50%);
+                background: linear-gradient(180deg, #e2e8f0, #cbd5e1);
             }
         }
 
@@ -77,14 +79,13 @@
             margin-right: 6px;
         }
 
-        /* 모달 스크롤바 */
         #modal-content::-webkit-scrollbar { width: 5px; }
         #modal-content::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
 <body class="pb-40 selection:bg-blue-100">
 
-    <!-- 헤더 -->
+    <!-- 프리미엄 헤더 -->
     <header class="pt-24 pb-16 px-6 text-center max-w-5xl mx-auto">
         <div class="inline-flex items-center gap-2 px-3 py-1 mb-6 bg-slate-900 text-white text-[10px] font-black rounded-md uppercase tracking-widest shadow-md">
             PD ACADEMY MASTER WORKFLOW
@@ -93,24 +94,23 @@
             PD사관학교 <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">신입1기</span>
         </h1>
         
-        <!-- 단계 성격 범례 -->
         <div class="flex flex-wrap justify-center gap-x-6 gap-y-3 mb-10 text-xs font-bold text-slate-500">
-            <div class="flex items-center"><span class="legend-dot bg-blue-500"></span>기초 분석/기획</div>
-            <div class="flex items-center"><span class="legend-dot bg-purple-500"></span>대본 집필/현지화</div>
-            <div class="flex items-center"><span class="legend-dot bg-emerald-500"></span>영상 제작/편집</div>
-            <div class="flex items-center"><span class="legend-dot bg-amber-500"></span>채널 배포/데이터</div>
+            <div class="flex items-center"><span class="legend-dot bg-blue-500"></span>분석/기획</div>
+            <div class="flex items-center"><span class="legend-dot bg-purple-500"></span>집필/현지화</div>
+            <div class="flex items-center"><span class="legend-dot bg-emerald-500"></span>제작/편집</div>
+            <div class="flex items-center"><span class="legend-dot bg-amber-500"></span>배포/분석</div>
         </div>
 
         <div class="inline-flex items-center gap-3 bg-white px-8 py-4 rounded-full border border-slate-200 shadow-sm">
-            <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-            <p class="text-sm font-bold text-slate-600">모든 단계는 선으로 연결된 순서대로 진행됩니다.</p>
+            <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+            <p class="text-sm font-bold text-slate-600">각 단계는 유기적으로 연결되어 있으며 하단 버튼으로 상세 지침 확인이 가능합니다.</p>
         </div>
     </header>
 
     <!-- 메인 워크플로우 대시보드 -->
     <main class="max-w-[1500px] mx-auto px-8">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-14 gap-y-24 relative" id="workflow-grid">
-            <!-- JS 렌더링 -->
+            <!-- JS 데이터 주입 -->
         </div>
     </main>
 
@@ -118,70 +118,62 @@
     <div id="modal-overlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xl z-50 hidden flex items-center justify-center p-4">
         <div id="modal-content" class="bg-white w-full max-w-2xl max-h-[85vh] rounded-[3rem] shadow-2xl overflow-y-auto border border-white/20 relative">
             
-            <!-- 모달 헤더 -->
             <div class="sticky top-0 bg-white/95 backdrop-blur-sm px-10 py-8 flex justify-between items-center z-20 border-b border-slate-50">
                 <div class="flex items-center gap-4">
                     <div id="modal-icon-bg" class="w-12 h-12 rounded-2xl flex items-center justify-center shadow-inner text-white">
                         <span id="modal-step-id" class="text-lg font-black text-white">01</span>
                     </div>
-                    <h2 id="modal-title" class="text-2xl md:text-3xl font-black text-slate-900">단계 제목</h2>
+                    <h2 id="modal-title" class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">단계 제목</h2>
                 </div>
                 <button onclick="closeModal()" class="p-3 bg-slate-50 hover:bg-slate-100 rounded-full transition-all text-slate-400">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
             
-            <div class="px-10 py-10 space-y-10">
-                <!-- 핵심 목표 -->
+            <div class="px-10 py-10 space-y-12">
                 <section>
                     <div class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-                        <span class="w-1 h-3 bg-blue-500 rounded-full"></span> 🎯 핵심 목표
+                        <span class="w-1 h-3 bg-blue-500 rounded-full"></span> 🎯 핵심 목표 (Core Goal)
                     </div>
-                    <div class="bg-slate-50 border border-slate-100 p-8 rounded-[2rem]">
-                        <p id="modal-goal" class="text-xl font-black text-slate-800 leading-tight">내용</p>
+                    <div class="bg-blue-50 border border-blue-100/50 p-8 rounded-[2rem]">
+                        <p id="modal-goal" class="text-xl md:text-2xl font-black text-slate-800 leading-tight">내용</p>
                     </div>
                 </section>
 
-                <!-- 데이터 흐름 -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div class="p-7 bg-slate-50/50 rounded-3xl border border-slate-100">
-                        <div class="text-[10px] font-black text-slate-400 uppercase mb-3">📥 이전 단계 투입물 (인풋)</div>
+                    <div class="p-7 bg-slate-50 rounded-3xl border border-slate-100">
+                        <div class="text-[10px] font-black text-slate-400 uppercase mb-3 flex items-center gap-2">📥 단계 투입물</div>
                         <p id="modal-input" class="text-base font-bold text-slate-600">내용</p>
                     </div>
                     <div class="p-7 bg-emerald-50/30 rounded-3xl border border-emerald-50">
-                        <div class="text-[10px] font-black text-emerald-400 uppercase mb-3">📤 이번 단계 산출물 (아웃풋)</div>
+                        <div class="text-[10px] font-black text-emerald-500 uppercase mb-3 flex items-center gap-2">📤 단계 산출물</div>
                         <p id="modal-output" class="text-base font-bold text-emerald-700 font-black">내용</p>
                     </div>
                 </div>
 
-                <!-- 준비물 -->
                 <section>
-                    <div class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-4">🛠️ 필수 도구 및 준비물</div>
+                    <div class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-4">🛠️ 필수 준비물</div>
                     <p id="modal-prep" class="px-6 py-4 bg-indigo-50/50 text-indigo-700 rounded-2xl font-black text-sm border border-indigo-100 inline-block">내용</p>
                 </section>
 
-                <!-- 강의 리소스 -->
                 <section>
-                    <div class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-4">🔗 관련 마스터 가이드 강의</div>
+                    <div class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-4">🔗 관련 리소스 강의</div>
                     <div id="modal-sources" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
                 </section>
 
-                <!-- 체크리스트 -->
                 <section class="bg-amber-50/50 p-8 rounded-[2.5rem] border border-amber-100">
                     <h3 class="text-sm font-black text-amber-600 mb-6 flex items-center gap-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        단계별 필수 체크리스트
+                        필수 체크리스트
                     </h3>
                     <div id="modal-checklist" class="space-y-4"></div>
                 </section>
 
-                <!-- 실행 지침 -->
                 <section class="pb-16">
-                    <div class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-6">⚙️ 상세 실행 지침</div>
+                    <div class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-6">⚙️ 상세 업무 지침</div>
                     <ul id="modal-details" class="space-y-4 list-none"></ul>
                 </section>
 
-                <!-- 닫기 버튼 (우측 슬림 배치) -->
                 <div class="flex justify-end pt-6 border-t border-slate-100">
                     <button onclick="closeModal()" class="px-10 py-4 bg-slate-900 text-white rounded-2xl font-black text-sm hover:bg-blue-600 transition-all shadow-xl">
                         가이드 확인 완료
@@ -198,6 +190,7 @@
                 input: "참조 채널 및 벤치마킹 테마", 
                 prep: "Vidiq, YT Summary", 
                 output: "기초 분석 데이터 (메모장 1)", 
+                pass: "메모장 1",
                 extraDesc: "Vidiq 새로고침 후 대본 복사 버튼을 활용하세요. 썸네일 분석이 기획의 핵심입니다.",
                 details: ["VPH 조회수 우상향 영상 선정", "유튜브 서머리로 대본 전체 스크래핑", "자극적 키워드 및 패턴 분류"],
                 sources: [
@@ -213,6 +206,7 @@
                 input: "기초 분석 데이터 (메모장 1)", 
                 prep: "방PD Gemini Gems", 
                 output: "스토리 기획안 (메모장 2)", 
+                pass: "메모장 2",
                 extraDesc: "제미나이와 깊게 대화하며 '일본 시니어 감성'이 담긴 제목 디테일을 깎으세요.",
                 details: ["시니어 6대 욕구 기반 스토리 각색", "제미나이 대화형 제목 튜닝", "메인 키워드 및 썸네일 문구 확정"],
                 sources: [
@@ -227,6 +221,7 @@
                 input: "스토리 기획안 (메모장 2)", 
                 prep: "Claude Project (작가 1)", 
                 output: "인트로 + 챕터 1 대본 (메모장 3)", 
+                pass: "메모장 3",
                 extraDesc: "첫 3초 안에 충격적인 상황을 배치해 시청 이탈을 완벽히 차단하세요.",
                 details: ["45초 충격 후킹 인트로 전문 집필", "첫 3초 내 핵심 키워드 배치", "인트로 검토 프롬프트로 퀄리티 보강"],
                 sources: [
@@ -244,6 +239,7 @@
                 input: "인트로 + 챕터 1 대본 (메모장 3)", 
                 prep: "Claude Project (작가 2)", 
                 output: "전체 한글 대본 (메모장 4)", 
+                pass: "메모장 4",
                 extraDesc: "장면별 이미지 태그(<번호>) 누락을 매 챕터마다 확인해야 합니다.",
                 details: ["챕터별 1,200자 상세 집필", "장면별 이미지 프롬프트 태그 삽입", "확실한 보상이 담긴 권선징악 강화"],
                 sources: [
@@ -259,8 +255,9 @@
                 input: "전체 한글 대본 (메모장 4)", 
                 prep: "Claude Project (작가 3)", 
                 output: "최종 일어 대본 + 프롬프트 (메모장 5)", 
-                extraDesc: "일본 시니어용 정중한 경어와 さん 호칭이 어색하지 않은지 검수하세요.",
-                details: ["일본 시니어 맞춤형 경어 교정", "AITTS 낭독 최적화용 부호 작업", "영문 프롬프트 최종 패키징"],
+                pass: "메모장 5",
+                extraDesc: "일본 시니어용 정중한 경어와 さん 호칭이 자연스러운지 검수하세요.",
+                details: ["일본 시니어 맞춤형 경어 교정", "AITTS 낭독 최적화용 문장 부호 작업", "이미지 생성용 영문 프롬프트 최종 패키징"],
                 sources: [
                     { name: "Claude AI", url: "https://claude.ai/" }, 
                     { name: "현지화 지침(카페)", url: "https://cafe.naver.com/banginapd/41" },
@@ -274,21 +271,23 @@
                 input: "최종 일어 대본 패키지 (메모장 5)", 
                 prep: "Whisk, Vrew, Grok", 
                 output: "편집 완료 영상 (MP4)", 
-                extraDesc: "Vrew 자막 설정(폰트 180 / 위치 110) 규정은 타협할 수 없는 원칙입니다.",
-                details: ["시네마틱 이미지/영상 소스 생성", "Vrew AI 음성 합성 및 자막 배치", "자막 규격 폰트 180 / 위치 110 고정"],
+                pass: "최종 영상",
+                extraDesc: "Vrew 자막 설정(폰트 180 / 위치 110) 규정 사수는 필수 중의 필수입니다.",
+                details: ["Whisk/Grok 이용 시네마틱 소스 생성", "Vrew AI 음성 합성 및 자막 배치 작업", "자막 규격 폰트 180 / 위치 110 수동 고정"],
                 sources: [
                     { name: "Whisk", url: "https://labs.google/fx/ko" }, 
                     { name: "Vrew 다운로드", url: "https://vrew.ai/ko/" },
                     { name: "영상 보조 프롬프트(카페)", url: "https://m.cafe.naver.com/ca-fe/web/cafes/31630047/articles/49?fromList=true&tc=cafe_home_all_articles" }
                 ],
-                checklist: ["자막 크기와 위치가 규격에 맞는가?", "영상 소스 퀄리티가 몰입감을 주는가?"],
+                checklist: ["자막 크기와 위치가 규격에 맞는가?", "영상 소스의 퀄리티가 영화 같은가?"],
                 color: "#10b981"
             },
             {
                 id: 7, title: "썸네일·제목 생성", goal: "클릭률(CTR) 극대화 디자인 확정", 
-                input: "편집 완료 영상 및 기획안", 
+                input: "편집 완료 영상 (MP4)", 
                 prep: "ImageFX, Canva", 
                 output: "최종 썸네일 & 제목 세트", 
+                pass: "업로드 패키지",
                 extraDesc: "썸네일 문구 2줄 법칙(노랑+흰색 조합)으로 시각적 후킹을 완성하세요.",
                 details: ["보조 프롬프트 활용 강렬한 표정 생성", "대괄호 「」 포함 제목 확정", "고클릭 후킹 문구 디테일 작업"],
                 sources: [
@@ -296,7 +295,7 @@
                     { name: "썸네일 전략 강의(카페)", url: "https://cafe.naver.com/banginapd/56" },
                     { name: "테마별 썸네일 문구(카페)", url: "https://m.cafe.naver.com/ca-fe/web/cafes/31630047/articles/69?fromList=true&tc=cafe_home_all_articles" }
                 ],
-                checklist: ["문구가 한눈에 들어오는가?", "인물 표정이 궁금증을 유발하는가?"],
+                checklist: ["문구가 한눈에 들어오는가?", "인물의 표정이 궁금증을 유발하는가?"],
                 color: "#059669"
             },
             {
@@ -304,8 +303,9 @@
                 input: "최종 업로드 패키지", 
                 prep: "Nox, SocialBlade", 
                 output: "채널 업로드 및 성과 분석", 
-                extraDesc: "24시간 VPH 지표를 분석해 다음 기획 테마를 선정하는 근거로 삼으세요.",
-                details: ["태그 최적화 및 타겟 설정 업로드", "채널 수익성 및 유지율 모니터링", "성과 지표 분석 기반 환류 적용"],
+                pass: "성과 리포트",
+                extraDesc: "업로드 후 24시간 VPH 지표를 분석해 다음 기획 테마를 선정하는 근거로 삼으세요.",
+                details: ["태그 최적화 및 타겟 설정 업로드", "Nox 이용 채널 수익성 및 유지율 모니터링", "성과 지표 분석 기반 환류 적용"],
                 sources: [{ name: "수익 확인기", url: "https://isthischannelmonetized.com/" }],
                 checklist: ["일본 국가 타겟 설정이 제대로 되었는가?", "초기 24시간 데이터를 기록했는가?"],
                 color: "#f59e0b"
@@ -317,23 +317,22 @@
         function render() {
             grid.innerHTML = steps.map((step, index) => {
                 const isLast = index === steps.length - 1;
-                const isRowBreak = step.id === 4; // 4번 뒤에 줄바꿈 발생 시
+                const isRowEnd = (index + 1) % 4 === 0;
 
                 return `
                 <div class="relative flex flex-col items-center">
-                    <!-- 데이터 파이프라인 (연속 선) -->
+                    <!-- 데이터 파이프라인 (PC 버전 Z자 흐름) -->
                     ${!isLast ? `
                         <div class="pipeline line-mobile lg:hidden"></div>
-                        <div class="pipeline line-h line-h-right hidden lg:block"></div>
-                        ${isRowBreak ? `<div class="pipeline line-v-down hidden lg:block"></div>` : ''}
+                        ${!isRowEnd ? `<div class="pipeline line-h line-h-right hidden lg:block"></div>` : `<div class="pipeline line-v-down hidden lg:block"></div>`}
                     ` : ''}
 
                     <!-- 단계 카드 -->
-                    <div class="step-card w-full rounded-[2.5rem] p-8 md:p-10 relative overflow-hidden flex flex-col h-full min-h-[520px] shadow-sm">
+                    <div class="step-card w-full rounded-[2.5rem] p-9 relative overflow-hidden flex flex-col h-full min-h-[520px] shadow-sm">
                         <div class="absolute left-0 top-0 bottom-0 w-3.5" style="background: ${step.color}"></div>
                         
                         <!-- 단계 헤더 -->
-                        <div class="flex justify-between items-start mb-8">
+                        <div class="flex justify-between items-start mb-10">
                             <div class="w-16 h-16 rounded-2xl flex items-center justify-center font-black text-2xl shadow-inner" style="background: ${step.color}15; color: ${step.color}">
                                 ${String(step.id).padStart(2, '0')}
                             </div>
@@ -345,11 +344,11 @@
                         
                         <div class="space-y-8 flex-grow">
                             <div>
-                                <span class="text-[11px] font-black text-blue-500 uppercase tracking-widest block mb-3">🎯 단계별 핵심 목표</span>
+                                <span class="text-[11px] font-black text-blue-500 uppercase tracking-widest block mb-3">🎯 이 단계의 목표</span>
                                 <p class="text-[17px] font-extrabold text-slate-800 leading-tight">${step.goal}</p>
                             </div>
                             
-                            <!-- 데이터 연동 흐름 -->
+                            <!-- 데이터 연동 흐름 (Undefined 해결) -->
                             <div class="pt-6 border-t border-slate-50 space-y-4">
                                 <div class="flex justify-between items-start">
                                     <span class="text-[10px] font-black text-slate-400 uppercase tracking-tighter">📥 투입(인풋)</span>
@@ -361,12 +360,12 @@
                                 </div>
                             </div>
 
-                            <!-- 실무 전문가 팁 (상시 노출) -->
+                            <!-- 전문가 팁 (상시 노출) -->
                             <div class="pt-4">
                                 <div class="p-5 rounded-3xl bg-slate-50 border border-slate-100 italic">
                                     <div class="flex items-center gap-1.5 mb-2 text-indigo-600">
                                         <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"></path></svg>
-                                        <span class="text-[10px] font-black uppercase tracking-tighter">실무 전문가 지침</span>
+                                        <span class="text-[10px] font-black uppercase tracking-tighter">실전 업무 가이드</span>
                                     </div>
                                     <p class="text-[12px] font-bold text-slate-500 leading-relaxed">"${step.extraDesc}"</p>
                                 </div>
@@ -376,9 +375,9 @@
                         <!-- 상세 버튼 -->
                         <button 
                             onclick="openModal(${index})"
-                            class="mt-8 w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-xs hover:bg-blue-600 hover:shadow-lg transition-all active:scale-95"
+                            class="mt-8 w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-xs hover:bg-blue-600 transition-all active:scale-95 shadow-lg shadow-slate-100"
                         >
-                            상세 정보 및 체크리스트 보기
+                            상세 정보 및 체크리스트
                         </button>
                     </div>
                 </div>`;
@@ -401,16 +400,16 @@
             const iconBg = document.getElementById('modal-icon-bg');
             iconBg.style.backgroundColor = step.color;
 
-            // 링크 렌더링
+            // 강의 링크
             const sourceContainer = document.getElementById('modal-sources');
             sourceContainer.innerHTML = step.sources.map(src => `
-                <a href="${src.url}" target="_blank" class="flex items-center justify-between px-6 py-5 bg-slate-50 border border-slate-200 rounded-2xl hover:border-blue-400 hover:bg-white transition-all group">
+                <a href="${src.url}" target="_blank" class="flex items-center justify-between px-6 py-5 bg-slate-50 border border-slate-100 rounded-2xl hover:border-blue-400 hover:bg-white hover:shadow-xl transition-all group">
                     <span class="text-[12px] font-black text-slate-700 group-hover:text-blue-600">${src.name}</span>
                     <svg class="w-4 h-4 text-slate-300 group-hover:text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                 </a>
             `).join('');
 
-            // 체크리스트 렌더링
+            // 체크리스트
             const checklistContainer = document.getElementById('modal-checklist');
             checklistContainer.innerHTML = step.checklist.map(item => `
                 <div class="flex items-start gap-4 p-5 bg-white rounded-2xl border border-slate-100 shadow-sm">
@@ -421,18 +420,18 @@
                 </div>
             `).join('');
 
-            // 지침 렌더링
+            // 상세 지침
             const detailsContainer = document.getElementById('modal-details');
             detailsContainer.innerHTML = step.details.map(detail => `
                 <li class="flex items-start gap-4 py-1">
-                    <div class="mt-2.5 w-2 h-2 rounded-full bg-slate-300 flex-shrink-0"></div>
+                    <div class="mt-2 w-1.5 h-1.5 rounded-full bg-slate-300 flex-shrink-0"></div>
                     <span class="text-[15px] font-bold text-slate-500">${detail}</span>
                 </li>
             `).join('');
 
-            // 팝업 시점 최상단 고정
+            // 모달 열기 및 스크롤 강제 최상단 리셋
             modalOverlay.classList.remove('hidden');
-            modalContent.scrollTo({ top: 0, behavior: 'instant' });
+            modalContent.scrollTo(0, 0);
             document.body.style.overflow = 'hidden';
         }
 

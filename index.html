@@ -3,223 +3,222 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PD사관학교 신입1기 제작 가이드</title>
+    <title>PD사관학교 신입1기 마스터 가이드</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;800&display=swap');
+        
         body {
             font-family: 'Pretendard', sans-serif;
-            background-color: #f1f5f9;
-            color: #0f172a;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-        #canvas-container {
-            width: 95%;
-            max-width: 1200px;
-            margin-bottom: 20px;
-            margin-top: 20px;
-        }
-        canvas {
-            background-color: transparent;
-            cursor: pointer;
-            display: block;
-        }
-        /* 상세 모달 스타일 */
-        #detail-modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 92%;
-            max-width: 650px;
-            max-height: 88vh;
-            overflow-y: auto;
-            background: #ffffff;
-            border-radius: 1.5rem;
-            padding: 0;
-            z-index: 100;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.3);
-            border: 1px solid #e2e8f0;
-        }
-        .modal-header {
-            position: sticky;
-            top: 0;
-            background: #ffffff;
-            padding: 1.5rem 2rem 1rem 2rem;
-            z-index: 50;
-            border-bottom: 1px solid #f1f5f9;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .modal-body {
-            padding: 1.5rem 2rem 2rem 2rem;
-        }
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.6);
-            z-index: 90;
-            backdrop-filter: blur(4px);
-        }
-        .source-link {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.6rem 1rem;
             background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.5rem;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #475569;
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
-            transition: all 0.2s ease;
+            color: #0f172a;
+            word-break: keep-all;
+            -webkit-tap-highlight-color: transparent;
         }
-        .source-link:hover {
-            border-color: #3b82f6;
-            color: #2563eb;
-            background: #eff6ff;
+
+        /* 프리미엄 카드 디자인 */
+        .step-card {
+            background: #ffffff;
+            border: 1px solid #eef2f6;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 10;
         }
-        .checklist-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            padding: 10px 0;
-            border-bottom: 1px solid #f1f5f9;
-            font-size: 0.95rem;
-            color: #334155;
+
+        .step-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.08);
         }
-        .section-header {
-            font-size: 0.7rem;
-            font-weight: 800;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            color: #94a3b8;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+
+        /* 데이터 파이프라인 (연속 선 디자인) */
+        .pipeline-connector {
+            position: absolute;
+            background: #e2e8f0;
+            z-index: 1;
         }
+
+        /* 데스크탑 가로 연결선: 카드 사이를 꽉 채움 */
+        @media (min-width: 1024px) {
+            .pipeline-horizontal {
+                top: 150px; /* 제목 아래 지점으로 정렬 */
+                left: 100%;
+                width: 3.5rem; /* grid gap-x-14와 일치 */
+                height: 3px;
+                background: linear-gradient(90deg, #e2e8f0, #cbd5e1);
+            }
+        }
+
+        /* 모바일 세로 연결선: 카드 중앙에서 다음 카드로 연결 */
+        @media (max-width: 1023px) {
+            .pipeline-vertical {
+                top: 100%;
+                left: 50%;
+                width: 3px;
+                height: 6rem; /* gap-y-24와 연동 */
+                transform: translateX(-50%);
+                background: linear-gradient(180deg, #e2e8f0, #cbd5e1);
+            }
+        }
+
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        /* 모달 스크롤바 커스텀 */
+        #modal-content::-webkit-scrollbar { width: 5px; }
+        #modal-content::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
-<body>
+<body class="pb-40 selection:bg-blue-100">
 
-    <div class="pt-12 pb-6 text-center px-4">
-        <h1 class="text-5xl md:text-7xl font-black tracking-tighter text-slate-900 mb-4">
-            PD사관학교 신입1기
-        </h1>
-        <p class="text-blue-700 font-bold text-sm md:text-base bg-blue-100/50 border border-blue-200 px-6 py-2.5 rounded-full inline-block shadow-sm">
-            💡 마우스를 가져다 대면 간략 정보를, 클릭하면 상세 정보를 볼 수 있습니다.
-        </p>
-    </div>
-
-    <div id="canvas-container">
-        <canvas id="flowCanvas"></canvas>
-    </div>
-
-    <div id="overlay" class="overlay"></div>
-    <div id="detail-modal">
-        <div class="modal-header">
-            <div>
-                <span id="modal-tag" class="text-[10px] px-2 py-0.5 bg-slate-900 text-white rounded font-bold uppercase inline-block mb-1">PD SCHOOL</span>
-                <h2 id="modal-title" class="text-2xl md:text-3xl font-black text-slate-900">단계 제목</h2>
-            </div>
-            <button onclick="closeModal()" class="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-400">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
+    <!-- 헤더 영역 -->
+    <header class="pt-24 pb-16 px-6 text-center max-w-5xl mx-auto">
+        <div class="inline-flex items-center gap-2 px-3 py-1 mb-6 bg-slate-900 text-white text-[10px] font-black rounded-md uppercase tracking-widest shadow-md">
+            PD ACADEMY MASTER WORKFLOW
         </div>
+        <h1 class="text-5xl md:text-7xl font-black tracking-tightest mb-8 text-slate-900">
+            PD사관학교 <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">신입1기</span>
+        </h1>
         
-        <div class="modal-body space-y-8">
-            <div class="bg-blue-50 p-6 rounded-xl border border-blue-100">
-                <h3 class="section-header" style="color: #1d4ed8;">🎯 핵심 목표 (Goal)</h3>
-                <p id="modal-goal" class="text-blue-900 font-black text-xl">내용</p>
-            </div>
+        <!-- 범례 레이아웃 -->
+        <div class="flex flex-wrap justify-center gap-x-6 gap-y-3 mb-10 text-xs font-bold text-slate-500">
+            <div class="flex items-center"><span class="legend-dot bg-blue-500"></span>분석/기획</div>
+            <div class="flex items-center"><span class="legend-dot bg-purple-500"></span>집필/번역</div>
+            <div class="flex items-center"><span class="legend-dot bg-emerald-500"></span>제작/편집</div>
+            <div class="flex items-center"><span class="legend-dot bg-amber-500"></span>배포/분석</div>
+        </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
-                    <h3 class="section-header">📥 입력 (Input)</h3>
-                    <p id="modal-input" class="text-slate-900 font-bold text-base">내용</p>
+        <div class="inline-flex items-center gap-3 bg-white px-6 py-3 rounded-full border border-slate-200 shadow-sm">
+            <span class="text-xs font-black text-slate-400">GUIDE</span>
+            <p class="text-sm font-bold text-slate-600 text-center">선으로 이어진 흐름을 따라 제작하며, 버튼 클릭 시 상세 체크리스트가 열립니다.</p>
+        </div>
+    </header>
+
+    <!-- 메인 워크플로우 그리드 -->
+    <main class="max-w-[1500px] mx-auto px-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-14 gap-y-24" id="workflow-grid">
+            <!-- JS 데이터 주입 -->
+        </div>
+    </main>
+
+    <!-- 프리미엄 상세 가이드 팝업 -->
+    <div id="modal-overlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xl z-50 hidden flex items-center justify-center p-4">
+        <div id="modal-content" class="bg-white w-full max-w-2xl max-h-[85vh] rounded-[3rem] shadow-2xl overflow-y-auto border border-white/20 relative">
+            <!-- 팝업 헤더 -->
+            <div class="sticky top-0 bg-white/95 backdrop-blur-sm px-10 py-8 flex justify-between items-center z-20 border-b border-slate-50">
+                <div class="flex items-center gap-4">
+                    <div id="modal-icon-bg" class="w-12 h-12 rounded-2xl flex items-center justify-center shadow-inner text-white">
+                        <span id="modal-step-id" class="text-lg font-black">01</span>
+                    </div>
+                    <h2 id="modal-title" class="text-2xl md:text-3xl font-black text-slate-900">단계 제목</h2>
                 </div>
-                <div class="bg-indigo-50 p-5 rounded-xl border border-indigo-100">
-                    <h3 class="section-header" style="color: #6366f1;">🛠️ 준비물 (Tools)</h3>
-                    <p id="modal-prep" class="text-indigo-900 font-bold text-base">내용</p>
-                </div>
+                <button onclick="closeModal()" class="p-3 bg-slate-50 hover:bg-slate-100 rounded-full transition-all text-slate-400">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
             </div>
-
-            <div class="bg-emerald-50 p-6 rounded-xl border border-emerald-100">
-                <h3 class="section-header" style="color: #10b981;">📤 결과물 (Outcome)</h3>
-                <p id="modal-output" class="text-emerald-900 font-black text-xl">내용</p>
-            </div>
-
-            <div id="source-section">
-                <h3 class="section-header">🔗 바로가기 리소스</h3>
-                <div id="modal-sources" class="flex flex-wrap"></div>
-            </div>
-
-            <div class="bg-amber-50 p-6 rounded-xl border border-amber-100">
-                <h3 class="section-header" style="color: #d97706;">✅ 필수 체크리스트</h3>
-                <div id="modal-checklist" class="space-y-0.5"></div>
-            </div>
-
-            <section class="pb-4">
-                <h3 class="section-header">⚙️ 상세 가이드</h3>
-                <ul id="modal-details" class="space-y-2 text-slate-600 text-sm list-disc list-inside"></ul>
-            </section>
             
-            <button onclick="closeModal()" class="w-full py-4 bg-slate-900 text-white rounded-xl font-bold text-lg hover:bg-black transition-all">
-                창 닫기
-            </button>
+            <div class="px-10 py-10 space-y-10">
+                <!-- 핵심 목표 -->
+                <section>
+                    <div class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <span class="w-1 h-3 bg-blue-500 rounded-full"></span> 🎯 핵심 목표
+                    </div>
+                    <div class="bg-slate-50 border border-slate-100 p-8 rounded-[2rem]">
+                        <p id="modal-goal" class="text-xl font-black text-slate-800 leading-tight">내용</p>
+                    </div>
+                </section>
+
+                <!-- 입력 및 출력 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="p-7 bg-slate-50/50 rounded-3xl border border-slate-100">
+                        <div class="text-[10px] font-black text-slate-400 uppercase mb-3">📥 투입 정보 (Input)</div>
+                        <p id="modal-input" class="text-base font-bold text-slate-600">내용</p>
+                    </div>
+                    <div class="p-7 bg-emerald-50/30 rounded-3xl border border-emerald-50">
+                        <div class="text-[10px] font-black text-emerald-400 uppercase mb-3">📤 산출 결과 (Output)</div>
+                        <p id="modal-output" class="text-base font-bold text-emerald-700 font-black">내용</p>
+                    </div>
+                </div>
+
+                <!-- 준비물 -->
+                <section>
+                    <div class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-4">🛠️ 도구 및 준비물</div>
+                    <p id="modal-prep" class="px-6 py-4 bg-indigo-50/50 text-indigo-700 rounded-2xl font-black text-sm border border-indigo-100 inline-block">내용</p>
+                </section>
+
+                <!-- 리소스 링크 -->
+                <section>
+                    <div class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-4">🔗 연관 강의 및 마스터 가이드</div>
+                    <div id="modal-sources" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+                </section>
+
+                <!-- 체크리스트 -->
+                <section class="bg-amber-50/50 p-8 rounded-[2.5rem] border border-amber-100">
+                    <h3 class="text-sm font-black text-amber-600 mb-6 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        필수 퀄리티 체크리스트
+                    </h3>
+                    <div id="modal-checklist" class="space-y-4"></div>
+                </section>
+
+                <!-- 상세 실행 지침 -->
+                <section class="pb-16">
+                    <div class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-6">⚙️ 상세 업무 지침</div>
+                    <ul id="modal-details" class="space-y-4 list-none"></ul>
+                </section>
+
+                <!-- 하단 닫기 버튼 -->
+                <div class="flex justify-end pt-4 border-t border-slate-50">
+                    <button onclick="closeModal()" class="px-10 py-4 bg-slate-900 text-white rounded-2xl font-black text-sm hover:bg-black transition-all shadow-xl">
+                        가이드 확인 완료
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        const canvas = document.getElementById('flowCanvas');
-        const ctx = canvas.getContext('2d');
-        const modal = document.getElementById('detail-modal');
-        const overlay = document.getElementById('overlay');
-
-        let isMobile = window.innerWidth < 768;
-        let dpr = window.devicePixelRatio || 1;
-        let logicalWidth, logicalHeight;
-
         const steps = [
             {
-                id: 1, title: "레퍼런스 분석", goal: "바이럴 테마 및 성공 패턴 확보", input: "참조 영상 썸네일, 제목, 대본", prep: "Vidiq, YT Summary", output: "기초 분석 데이터 (메모장 1)", pass: "메모장 1",
-                extraDesc: "Vidiq 새로고침 후 대본 복사 버튼을 확인하세요. 썸네일은 원본 크기로 확보하는 것이 분석에 유리합니다.",
-                passDesc: "수집된 기초 데이터를 메모장 1에 담아 2단계 기획 파트로 전달하세요.",
-                details: ["조회수 우상향(VPH) 영상 위주 선정", "YouTube Summary로 전체 대본 스크래핑", "성공적인 자극적 키워드 및 패턴 분류"],
+                id: 1, title: "레퍼런스 분석", goal: "바이럴 테마 및 성공 패턴 확보", 
+                input: "참조 채널 및 인기 테마", 
+                prep: "Vidiq, YT Summary", 
+                output: "기초 분석 데이터 (메모장 1)", 
+                extraDesc: "Vidiq 새로고침 후 대본 복사 버튼을 꼭 확인하세요. 썸네일 분석이 기획의 50%입니다.",
+                details: ["최신 조회수 우상향(VPH) 영상 선정", "YouTube Summary로 전체 대본 스크래핑", "자극적 키워드 리스트 분류 및 정리"],
                 sources: [
                     { name: "Vidiq", url: "https://chromewebstore.google.com/detail/vidiq-vision-for-youtube/pachckjkecffpdphbpmfolblodfkgbhl" }, 
                     { name: "YT Summary", url: "https://chromewebstore.google.com/detail/youtube-summary-with-chat/nmmicjeknamkfloonkhhcjmomieiodli" },
                     { name: "레퍼런스 사이트 모음(카페)", url: "https://m.cafe.naver.com/ca-fe/web/cafes/31630047/articles/4?fromList=true&tc=cafe_home_all_articles" }
                 ],
-                checklist: ["VPH 수치가 현재 살아있는 영상인가?", "경쟁 영상의 클릭 유도 포인트를 찾았는가?"],
+                checklist: ["VPH 수치가 실시간으로 살아있는가?", "경쟁 영상의 클릭 유도 포인트를 찾았는가?"],
                 color: "#3b82f6"
             },
             {
-                id: 2, title: "제미나이 기획", goal: "차별화된 컨셉 및 고후킹 제목 확정", input: "메모장 1 분석 데이터", prep: "방PD 전용 Gemini Gems", output: "스토리 기획안 (메모장 2)", pass: "메모장 2",
-                extraDesc: "제미나이와 대화하며 제목의 임팩트를 극대화하세요. 일본 시니어의 감성을 건드리는 '제목 디테일'이 조회수를 결정합니다.",
-                passDesc: "확정된 제목과 캐릭터 설정이 담긴 메모장 2를 작가 1에게 전달하세요.",
-                details: ["시니어 6대 욕구 기반 스토리 각색", "제미나이 대화형 제목 튜닝 프로세스", "메인 키워드 및 썸네일 문구 1차 확정"],
+                id: 2, title: "제미나이 기획", goal: "차별화된 컨셉 및 고후킹 제목 확정", 
+                input: "기초 분석 데이터 (메모장 1)", 
+                prep: "방PD Gemini Gems", 
+                output: "스토리 기획안 (메모장 2)", 
+                extraDesc: "제미나이와 깊게 대화하며 일본 시니어 정서에 맞는 제목 디테일을 깎으세요.",
+                details: ["일본 시니어 6대 욕구 기반 스토리 각색", "제미나이 대화형 제목 튜닝 프로세스", "메인 키워드 및 썸네일 문구 확정"],
                 sources: [
                     { name: "방PD 제미나이", url: "https://gemini.google.com/gem/1_B9d7iMSJhaKfDCQHTcqfroUUx39V0Di" },
                     { name: "제목 디테일 전략(카페)", url: "https://cafe.naver.com/banginapd/55" }
                 ],
-                checklist: ["제목이 시청자의 호기심을 강하게 자극하는가?", "인물의 나이와 상황 설정이 명확한가?"],
+                checklist: ["제목이 시청자의 호기심을 강하게 자극하는가?", "인물 설정이 타겟 국가 감성에 부합하는가?"],
                 color: "#2563eb"
             },
             {
-                id: 3, title: "작가 1 (인트로)", goal: "초반 45초 이탈 방지 및 감정 후킹", input: "메모장 2 기획안", prep: "Claude Project (작가 1)", output: "인트로 대본 (메모장 3)", pass: "메모장 3",
-                extraDesc: "보조작가 사용법(카페 강의)을 참고하여 클로드 프로젝트를 세팅하세요. 인트로 검토 프롬프트를 활용해 후킹 요소를 최종 점검하세요.",
-                passDesc: "초반 이탈을 막는 강력한 인트로 대본(메모장 3)을 작가 2에게 전달하세요.",
-                details: ["45초 충격 후킹 인트로 전문 집필", "첫 3초 내 핵심 키워드 배치", "인트로 검토 프롬프트를 통한 퀄리티 상향"],
+                id: 3, title: "작가 1 (인트로)", goal: "45초 이탈 방지 및 감정 후킹", 
+                input: "스토리 기획안 (메모장 2)", 
+                prep: "Claude Project (작가 1)", 
+                output: "인트로 + 챕터 1 대본 (메모장 3)", 
+                extraDesc: "첫 3초 안에 충격적인 갈등 상황을 보여주어 시청자를 붙잡아야 합니다.",
+                details: ["45초 충격 후킹 인트로 전문 집필", "첫 3초 내 핵심 키워드 및 갈등 배치", "인트로 검토 프롬프트로 퀄리티 상향"],
                 sources: [
                     { name: "Claude AI", url: "https://claude.ai/" }, 
                     { name: "작가 1 지침(카페)", url: "https://cafe.naver.com/banginapd/41" },
@@ -227,336 +226,215 @@
                     { name: "인트로 촬영기법(카페)", url: "https://cafe.naver.com/banginapd/43" },
                     { name: "인트로 검토 프롬프트(카페)", url: "https://m.cafe.naver.com/ca-fe/web/cafes/31630047/articles/49?fromList=true&tc=cafe_home_all_articles" }
                 ],
-                checklist: ["첫 문장에서 바로 갈등이 시작되는가?", "검토 프롬프트를 통해 인트로를 다듬었는가?"],
+                checklist: ["첫 문장에서 바로 도파민이 터지는가?", "검토 프롬프트를 통해 문장을 다듬었는가?"],
                 color: "#8b5cf6"
             },
             {
-                id: 4, title: "작가 2 (본문)", goal: "권선징악 기반 고분량 서사 완성", input: "메모장 3 (챕터 1)", prep: "Claude Project (작가 2)", output: "전체 한글 대본 (메모장 4)", pass: "메모장 4",
-                extraDesc: "작가 2는 스토리의 볼륨을 책임집니다. 챕터별 이미지 생성용 번호 태그가 누락되지 않도록 매번 체크하세요.",
-                passDesc: "전체 구성과 이미지 태그가 완료된 한글 대본을 작가 3에게 전달하세요.",
-                details: ["챕터별 1,200자 내외 상세 집필", "장면별 이미지 묘사 프롬프트 태그 삽입", "권선징악형 스토리 구조 강화"],
+                id: 4, title: "작가 2 (본문)", goal: "권선징악 기반 고분량 서사 완성", 
+                input: "인트로 + 챕터 1 대본 (메모장 3)", 
+                prep: "Claude Project (작가 2)", 
+                output: "전체 한글 대본 (메모장 4)", 
+                extraDesc: "장면별 이미지 생성 번호 태그(<번호>)가 누락되지 않도록 매번 체크하세요.",
+                details: ["챕터별 1,200자 내외 상세 집필", "장면별 이미지 묘사 프롬프트 태그 삽입", "확실한 보상과 응징이 담긴 서사 강화"],
                 sources: [
                     { name: "Claude AI", url: "https://claude.ai/" }, 
                     { name: "작가 2 지침(카페)", url: "https://cafe.naver.com/banginapd/41" },
                     { name: "보조작가 가이드(카페)", url: "https://cafe.naver.com/banginapd/48" }
                 ],
-                checklist: ["각 챕터의 분량이 충분히 확보되었는가?", "장면마다 이미지 번호 태그가 붙어있는가?"],
+                checklist: ["챕터별 분량이 충분히 확보되었는가?", "모든 장면에 이미지 번호 태그가 있는가?"],
                 color: "#6366f1"
             },
             {
-                id: 5, title: "작가 3 (현지화)", goal: "일본 현지인 감성 구현 및 제작 패키징", input: "메모장 4 한글 대본", prep: "Claude Project (작가 3)", output: "최종 일어 대본 + 이미지 프롬프트 (메모장 5)", pass: "메모장 5",
-                extraDesc: "작가 3은 최종 대본과 영문 프롬프트를 패키징합니다. 일본 시니어용 경어와 호칭이 어색하지 않은지 검수하세요.",
-                passDesc: "제작 단계에서 바로 쓸 수 있는 일본어 대본 세트를 편집팀에 전달하세요.",
-                details: ["일본 시니어 맞춤형 경어/호칭 교정", "AITTS 낭독 최적화용 문장 부호 작업", "이미지 생성용 영문 프롬프트 최종 점검"],
+                id: 5, title: "작가 3 (현지화)", goal: "일본 현지 감성 구현 및 제작 패키징", 
+                input: "전체 한글 대본 (메모장 4)", 
+                prep: "Claude Project (작가 3)", 
+                output: "최종 일어 대본 + 프롬프트 (메모장 5)", 
+                extraDesc: "일본 시니어용 정중한 경어와 さん 호칭이 자연스러운지 최종 확인하세요.",
+                details: ["일본 시니어 맞춤형 말맛 교정", "AITTS 낭독 최적화용 문장 부호 작업", "이미지 생성용 영문 프롬프트 최종 패키징"],
                 sources: [
                     { name: "Claude AI", url: "https://claude.ai/" }, 
                     { name: "현지화 지침(카페)", url: "https://cafe.naver.com/banginapd/41" },
                     { name: "보조작가 가이드(카페)", url: "https://cafe.naver.com/banginapd/48" }
                 ],
-                checklist: ["일본어 말투가 정중하고 자연스러운가?", "이미지용 영문 프롬프트가 모두 포함되었는가?"],
+                checklist: ["일본어 말투가 자연스러운가?", "이미지 프롬프트가 대본 사이에 포함되었는가?"],
                 color: "#d946ef"
             },
             {
-                id: 6, title: "이미지 및 영상 편집", goal: "시네마틱 감성 및 고퀄리티 영상 제작", input: "메모장 5 패키지", prep: "Whisk, Vrew, Grok", output: "편집 완료 영상 (MP4)", pass: "최종 영상",
-                extraDesc: "Vrew 설정값 엄수! 보조 프롬프트를 활용해 Grok이나 VEO3 등에서 고퀄리티 영상 소스를 추출하세요.",
-                passDesc: "최종 검수 완료된 MP4 파일을 업로드 담당에게 전달하세요.",
-                details: ["보조 프롬프트를 활용한 시네마틱 이미지/영상 생성", "Vrew AI 음성 합성 및 자막 배치", "자막 규격 폰트 180 / 위치 110 고정"],
+                id: 6, title: "영상 제작 및 편집", goal: "시네마틱 영상 및 음성 합성", 
+                input: "최종 일어 대본 패키지 (메모장 5)", 
+                prep: "Whisk, Vrew, Grok", 
+                output: "편집 완료 영상 (MP4)", 
+                extraDesc: "Vrew 자막 설정(폰트 180 / 위치 110) 규정 사수는 필수 중의 필수입니다.",
+                details: ["Whisk/Grok 이용 시네마틱 소스 생성", "Vrew AI 음성 합성 및 자막 배치 작업", "자막 규격 폰트 180 / 위치 110 수동 고정"],
                 sources: [
                     { name: "Whisk", url: "https://labs.google/fx/ko" }, 
                     { name: "Vrew 다운로드", url: "https://vrew.ai/ko/" },
-                    { name: "이미지/영상 보조 프롬프트(카페)", url: "https://m.cafe.naver.com/ca-fe/web/cafes/31630047/articles/49?fromList=true&tc=cafe_home_all_articles" }
+                    { name: "영상 보조 프롬프트(카페)", url: "https://m.cafe.naver.com/ca-fe/web/cafes/31630047/articles/49?fromList=true&tc=cafe_home_all_articles" }
                 ],
-                checklist: ["자막 크기와 위치가 규격에 맞게 설정되었는가?", "영상 소스의 퀄리티가 충분히 확보되었는가?"],
+                checklist: ["자막 크기와 위치가 규격에 맞는가?", "영상 소스의 퀄리티가 몰입감을 주는가?"],
                 color: "#10b981"
             },
             {
-                id: 7, title: "썸네일·제목 생성", goal: "CTR 극대화 썸네일 및 SEO 제목 확정", input: "영상 기획 데이터", prep: "ImageFX, Canva", output: "최종 썸네일 & SEO 제목", pass: "업로드 패키지",
-                extraDesc: "카페 강의의 '썸네일 문구 2줄 법칙'을 적용하세요. 보조 프롬프트를 사용하여 인물의 표정을 극단적으로 강조한 이미지를 생성합니다.",
-                passDesc: "최종 영상과 썸네일, 제목을 가지고 유튜브 업로드를 진행하세요.",
-                details: ["보조 프롬프트를 활용한 표정 강조 썸네일 생성", "대괄호 「」 포함 일본식 SEO 제목 확정", "강의 기반 후킹 문구 디테일링"],
+                id: 7, title: "썸네일·제목 생성", goal: "클릭률(CTR) 극대화 디자인 확정", 
+                input: "편집 완료 영상 및 기획안", 
+                prep: "ImageFX, Canva", 
+                output: "최종 썸네일 & 제목 세트", 
+                extraDesc: "썸네일 문구 2줄 법칙(노랑+흰색 조합)으로 시각적 후킹을 극대화하세요.",
+                details: ["보조 프롬프트를 활용한 표정 강조 이미지", "대괄호 「」 포함 검색최적화 제목 확정", "강의 기반 고클릭 문구 디테일 작업"],
                 sources: [
                     { name: "ImageFX", url: "https://labs.google/fx/ko" }, 
-                    { name: "썸네일 디테일 강의(카페)", url: "https://cafe.naver.com/banginapd/56" },
-                    { name: "썸네일 이미지 보조 프롬프트(카페)", url: "https://m.cafe.naver.com/ca-fe/web/cafes/31630047/articles/49?fromList=true&tc=cafe_home_all_articles" },
+                    { name: "썸네일 전략 강의(카페)", url: "https://cafe.naver.com/banginapd/56" },
                     { name: "테마별 썸네일 문구(카페)", url: "https://m.cafe.naver.com/ca-fe/web/cafes/31630047/articles/69?fromList=true&tc=cafe_home_all_articles" }
                 ],
-                checklist: ["썸네일 문구가 시각적으로 강조되었는가?", "인물의 감정(오열, 분노 등)이 잘 드러나는가?"],
+                checklist: ["썸네일 문구가 한눈에 들어오는가?", "인물의 표정이 궁금증을 유발하는가?"],
                 color: "#059669"
             },
             {
-                id: 8, title: "업로드 및 데이터분석", goal: "타겟 노출 극대화 및 피드백 데이터 확보", input: "최종 영상 패키지", prep: "Nox, SocialBlade", output: "채널 업로드 완료", pass: "성과 리포트",
-                extraDesc: "초기 24시간 시청 지표가 다음 기획의 정답입니다. 경쟁 채널의 태그를 참고하여 노출량을 늘리세요.",
-                passDesc: "분석된 데이터를 기록하여 다음 영상 기획에 반영하세요.",
-                details: ["국가 타겟팅 설정 및 태그 최적화 업로드", "Nox 등을 통한 채널 수익성 모니터링", "시청 유지율 기반 다음 기획 테마 선정"],
+                id: 8, title: "업로드 및 분석", goal: "노출 극대화 및 데이터 피드백", 
+                input: "최종 업로드 패키지", 
+                prep: "Nox, SocialBlade", 
+                output: "채널 업로드 및 성과 분석", 
+                extraDesc: "업로드 후 24시간 VPH 지표를 분석하여 다음 기획에 즉시 반영하세요.",
+                details: ["태그 최적화 및 타겟 설정 예약 업로드", "Nox 이용 채널 수익성 및 유지율 모니터링", "성과 지표 분석 기반 다음 테마 선정"],
                 sources: [{ name: "수익 확인기", url: "https://isthischannelmonetized.com/" }],
-                checklist: ["일본 타겟 국가 설정이 확인되었는가?", "초기 24시간 VPH 수치를 기록했는가?"],
+                checklist: ["일본 국가 타겟 설정이 제대로 되었는가?", "초기 24시간 데이터를 기록했는가?"],
                 color: "#f59e0b"
             }
         ];
 
-        let hoveredStep = null;
-        let hoveredArtifact = null;
-        const artifactBoxes = [];
+        const grid = document.getElementById('workflow-grid');
 
-        function initCanvas() {
-            isMobile = window.innerWidth < 768;
-            dpr = window.devicePixelRatio || 1;
-            logicalWidth = isMobile ? window.innerWidth : 1100;
-            logicalHeight = isMobile ? 2400 : 900; 
-            canvas.width = logicalWidth * dpr;
-            canvas.height = logicalHeight * dpr;
-            canvas.style.width = logicalWidth + 'px';
-            canvas.style.height = logicalHeight + 'px';
-            ctx.scale(dpr, dpr);
-            draw();
+        function render() {
+            grid.innerHTML = steps.map((step, index) => {
+                const isLast = index === steps.length - 1;
+                return `
+                <div class="relative flex flex-col items-center">
+                    <!-- 파이프라인 커넥터 (연속 선) -->
+                    ${!isLast ? `
+                        <div class="pipeline-connector pipeline-horizontal"></div>
+                        <div class="pipeline-connector pipeline-vertical"></div>
+                    ` : ''}
+
+                    <!-- 단계 카드 -->
+                    <div class="step-card w-full rounded-[2.5rem] p-9 relative overflow-hidden flex flex-col h-full min-h-[520px] shadow-sm">
+                        <div class="absolute left-0 top-0 bottom-0 w-3.5" style="background: ${step.color}"></div>
+                        
+                        <!-- 단계 헤더 -->
+                        <div class="flex justify-between items-start mb-10">
+                            <div class="w-14 h-14 rounded-2xl flex items-center justify-center font-black text-2xl" style="background: ${step.color}15; color: ${step.color}">
+                                ${String(step.id).padStart(2, '0')}
+                            </div>
+                            <span class="text-[10px] font-bold text-slate-300 uppercase tracking-widest pt-2">Phase ${step.id}</span>
+                        </div>
+
+                        <!-- 제목 및 목표 -->
+                        <h3 class="text-3xl font-black mb-8 leading-tight text-slate-900">${step.title}</h3>
+                        
+                        <div class="space-y-8 flex-grow">
+                            <div>
+                                <span class="text-[11px] font-black text-blue-500 uppercase tracking-widest block mb-3">🎯 이 단계의 핵심 목표</span>
+                                <p class="text-[17px] font-extrabold text-slate-800 leading-tight">${step.goal}</p>
+                            </div>
+                            
+                            <!-- 입출력 정보 흐름 시각화 -->
+                            <div class="pt-6 border-t border-slate-50 space-y-4">
+                                <div class="flex justify-between items-start">
+                                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-tighter">📥 투입 (Input)</span>
+                                    <p class="text-[11px] font-bold text-slate-500 text-right max-w-[140px] line-clamp-2">${step.input}</p>
+                                </div>
+                                <div class="flex justify-between items-start">
+                                    <span class="text-[10px] font-black text-emerald-500 uppercase tracking-tighter">📤 산출 (Output)</span>
+                                    <p class="text-[11px] font-bold text-emerald-600 text-right max-w-[140px] line-clamp-2 font-black">${step.output}</p>
+                                </div>
+                            </div>
+
+                            <!-- 전문가 팁 (상시 노출) -->
+                            <div class="pt-4">
+                                <div class="p-4 rounded-[1.5rem] bg-slate-50 border border-slate-100 italic">
+                                    <div class="flex items-center gap-1.5 mb-1.5 text-indigo-600">
+                                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"></path></svg>
+                                        <span class="text-[9px] font-black uppercase tracking-tighter">실전 업무 팁</span>
+                                    </div>
+                                    <p class="text-[12px] font-bold text-slate-500 leading-relaxed">"${step.extraDesc}"</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 상세보기 버튼 -->
+                        <button 
+                            onclick="openModal(${index})"
+                            class="mt-8 w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-xs hover:bg-blue-600 transition-all shadow-lg active:scale-95"
+                        >
+                            상세 정보 및 체크리스트
+                        </button>
+                    </div>
+                </div>`;
+            }).join('');
         }
 
-        function drawCard(step, isH) {
-            let x, y, w = 230, h = 230; 
-            if (isMobile) {
-                x = logicalWidth / 2 - 250; y = (step.id - 1) * 260 + 40;
-                w = 500; h = 230;
-            } else {
-                x = step.id <= 4 ? (step.id - 1) * 270 + 20 : (8 - step.id) * 270 + 20;
-                y = step.id <= 4 ? 60 : 440;
-            }
-            step.currentPos = { x, y, w, h };
-
-            const radius = 16;
+        function openModal(index) {
+            const step = steps[index];
+            const modalOverlay = document.getElementById('modal-overlay');
+            const modalContent = document.getElementById('modal-content');
             
-            ctx.save();
-            ctx.shadowBlur = isH ? 25 : 12; 
-            ctx.shadowColor = isH ? step.color + "33" : "rgba(0,0,0,0.06)"; 
-            ctx.shadowOffsetY = isH ? 8 : 4;
-            ctx.fillStyle = "#ffffff"; 
-            drawRoundedRect(x, y, w, h, radius, true, true);
-            ctx.restore();
-
-            ctx.save();
-            ctx.beginPath();
-            const barWidth = 8;
-            ctx.moveTo(x + radius, y);
-            ctx.lineTo(x + barWidth, y);
-            ctx.lineTo(x + barWidth, y + h);
-            ctx.lineTo(x + radius, y + h);
-            ctx.quadraticCurveTo(x, y + h, x, y + h - radius);
-            ctx.lineTo(x, y + radius);
-            ctx.quadraticCurveTo(x, y, x + radius, y);
-            ctx.fillStyle = step.color;
-            ctx.fill();
-            ctx.restore();
-
-            const badgeX = x + 24, badgeY = y + 30;
-            ctx.fillStyle = "#f1f5f9";
-            drawRoundedRect(badgeX - 6, badgeY - 14, isMobile ? 48 : 34, isMobile ? 32 : 24, 6, true, false);
-            ctx.fillStyle = step.color;
-            ctx.font = `900 ${isMobile ? 18 : 12}px Pretendard`;
-            ctx.textAlign = "center";
-            ctx.fillText(step.id.toString().padStart(2, '0'), badgeX + (isMobile ? 18 : 11), badgeY + (isMobile ? 8 : 4));
-
-            ctx.textAlign = "left";
-            ctx.fillStyle = "#1e293b";
-            ctx.font = `800 ${isMobile ? 28 : 17}px Pretendard`;
-            
-            const titleX = badgeX + (isMobile ? 65 : 45);
-            const titleMaxWidth = w - (isMobile ? 110 : 70);
-            const titleLineHeight = isMobile ? 32 : 20;
-            
-            const titleLines = getWrappedLines(step.title, titleMaxWidth);
-            titleLines.forEach((line, idx) => {
-                ctx.fillText(line, titleX, badgeY + (isMobile ? 9 : 5) + (idx * titleLineHeight));
-            });
-
-            const labelX = x + 24;
-            const titleHeightOffset = (titleLines.length - 1) * titleLineHeight;
-            const contentY = y + (isMobile ? 80 : 70) + titleHeightOffset;
-            const lineSpace = isMobile ? 42 : 32;
-
-            function drawEntry(label, content, icon, color, posY) {
-                ctx.font = `bold ${isMobile ? 16 : 10}px Pretendard`;
-                ctx.fillStyle = "#94a3b8";
-                ctx.fillText(icon + " " + label, labelX, posY);
-                ctx.font = `700 ${isMobile ? 19 : 12}px Pretendard`;
-                ctx.fillStyle = color;
-                wrapText(content, labelX, posY + (isMobile ? 24 : 16), w - 44, isMobile ? 26 : 14);
-            }
-
-            drawEntry("목표", step.goal, "🎯", "#3b82f6", contentY);
-            drawEntry("입력", step.input, "📥", "#64748b", contentY + lineSpace * 1.5);
-            drawEntry("결과", step.output, "📤", "#10b981", contentY + lineSpace * 3);
-        }
-
-        function getWrappedLines(text, maxWidth) {
-            const words = text.split(' ');
-            let lines = [];
-            let currentLine = '';
-
-            for (let n = 0; n < words.length; n++) {
-                let testLine = currentLine + words[n] + ' ';
-                if (ctx.measureText(testLine).width > maxWidth && n > 0) {
-                    lines.push(currentLine.trim());
-                    currentLine = words[n] + ' ';
-                } else {
-                    currentLine = testLine;
-                }
-            }
-            lines.push(currentLine.trim());
-            return lines;
-        }
-
-        function drawDataFlow(sIdx) {
-            const s = steps[sIdx]; const e = steps[sIdx + 1];
-            if (!s.currentPos || !e.currentPos) return;
-            let fromX, fromY, toX, toY;
-            if (isMobile) {
-                fromX = s.currentPos.x + s.currentPos.w / 2; fromY = s.currentPos.y + s.currentPos.h;
-                toX = fromX; toY = e.currentPos.y;
-            } else {
-                if (s.id === 4) {
-                    fromX = s.currentPos.x + s.currentPos.w / 2; fromY = s.currentPos.y + s.currentPos.h;
-                    toX = e.currentPos.x + e.currentPos.w / 2; toY = e.currentPos.y;
-                } else if (s.id >= 5) {
-                    fromX = s.currentPos.x; fromY = s.currentPos.y + s.currentPos.h / 2;
-                    toX = e.currentPos.x + e.currentPos.w; toY = e.currentPos.y + e.currentPos.h / 2;
-                } else {
-                    fromX = s.currentPos.x + s.currentPos.w; fromY = s.currentPos.y + s.currentPos.h / 2;
-                    toX = e.currentPos.x; toY = e.currentPos.y + e.currentPos.h / 2;
-                }
-            }
-
-            ctx.beginPath();
-            ctx.moveTo(fromX, fromY);
-            if (!isMobile && s.id === 4) {
-                ctx.bezierCurveTo(fromX, fromY + 40, toX, toY - 40, toX, toY);
-            } else if (!isMobile && s.id >= 5) {
-                ctx.bezierCurveTo(fromX - 40, fromY, toX + 40, toY, toX, toY);
-            } else if (!isMobile) {
-                ctx.bezierCurveTo(fromX + 40, fromY, toX - 40, toY, toX, toY);
-            } else {
-                ctx.lineTo(toX, toY);
-            }
-            ctx.strokeStyle = "#cbd5e1"; 
-            ctx.setLineDash([6, 4]); 
-            ctx.lineWidth = 1.5; 
-            ctx.stroke(); 
-            ctx.setLineDash([]);
-
-            const midX = (fromX + toX) / 2;
-            let midY = (fromY + toY) / 2;
-            if (!isMobile && s.id === 4) midY -= 10;
-
-            const textContent = s.pass; 
-            ctx.font = `bold ${isMobile ? 20 : 12}px Pretendard`;
-            const textWidth = ctx.measureText(textContent).width; 
-            
-            const boxW = textWidth + (isMobile ? 54 : 36); 
-            const boxH = isMobile ? 44 : 28;
-            const isH = hoveredArtifact && hoveredArtifact.id === s.id;
-            
-            ctx.save(); 
-            if(isH) {
-                ctx.shadowBlur = 15; 
-                ctx.shadowColor = "rgba(16, 185, 129, 0.4)";
-            }
-            
-            ctx.fillStyle = isH ? "#10b981" : "rgba(255, 255, 255, 0.9)"; 
-            ctx.strokeStyle = isH ? "#059669" : "#cbd5e1"; 
-            ctx.lineWidth = isH ? 2 : 1;
-            
-            drawRoundedRect(midX - boxW / 2, midY - boxH / 2, boxW, boxH, boxH/2, true, true);
-            
-            ctx.textAlign = "center"; 
-            ctx.fillStyle = isH ? "#ffffff" : "#475569";
-            ctx.fillText("📄 " + textContent, midX, midY + (isMobile ? 7 : 4));
-            ctx.restore();
-
-            artifactBoxes.push({ id: s.id, x: midX - boxW / 2, y: midY - boxH / 2, w: boxW, h: boxH });
-        }
-
-        function draw() {
-            ctx.clearRect(0, 0, logicalWidth, logicalHeight); artifactBoxes.length = 0;
-            steps.forEach(s => drawCard(s, (hoveredStep && hoveredStep.id === s.id)));
-            for (let i = 0; i < steps.length - 1; i++) drawDataFlow(i);
-            
-            if (hoveredStep || hoveredArtifact) {
-                const h = hoveredStep || steps.find(s => s.id === hoveredArtifact.id);
-                const title = hoveredArtifact ? "🔄 산출물 가이드" : "📝 실무 액션 가이드";
-                const desc = hoveredArtifact ? h.passDesc : h.extraDesc;
-                const panelH = isMobile ? 350 : 180;
-                
-                ctx.save(); 
-                ctx.fillStyle = "rgba(255, 255, 255, 1)"; 
-                ctx.shadowBlur = 50; ctx.shadowColor = "rgba(0,0,0,0.15)";
-                ctx.fillRect(0, logicalHeight - panelH, logicalWidth, panelH);
-                
-                ctx.fillStyle = hoveredArtifact ? "#10b981" : h.color;
-                ctx.fillRect(0, logicalHeight - panelH, 8, panelH);
-                
-                ctx.textAlign = "left";
-                ctx.font = `900 ${isMobile ? 32 : 22}px Pretendard`;
-                ctx.fillText(title + ": " + h.title, 40, logicalHeight - panelH + (isMobile ? 65 : 55));
-                
-                ctx.fillStyle = "#334155"; 
-                ctx.font = `600 ${isMobile ? 24 : 17}px Pretendard`;
-                wrapText(desc, 40, logicalHeight - panelH + (isMobile ? 115 : 95), logicalWidth - 80, isMobile ? 42 : 30);
-                ctx.restore();
-            }
-        }
-
-        function drawRoundedRect(x, y, w, h, r, fill, stroke) {
-            ctx.beginPath(); ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y); ctx.quadraticCurveTo(x + w, y, x + w, y + r); ctx.lineTo(x + w, y + h - r); ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h); ctx.lineTo(x + r, y + h); ctx.quadraticCurveTo(x, y + h, x, y + h - r); ctx.lineTo(x, y + r); ctx.quadraticCurveTo(x, y, x + r, y); ctx.closePath();
-            if (fill) ctx.fill(); if (stroke) ctx.stroke();
-        }
-        function wrapText(text, x, y, maxWidth, lineHeight) {
-            const lines = getWrappedLines(text, maxWidth);
-            lines.forEach((line, idx) => {
-                ctx.fillText(line, x, y + (idx * lineHeight));
-            });
-        }
-
-        function handlePointer(e) {
-            const rect = canvas.getBoundingClientRect();
-            const clientX = (e.touches && e.touches.length > 0) ? e.touches[0].clientX : e.clientX;
-            const clientY = (e.touches && e.touches.length > 0) ? e.touches[0].clientY : e.clientY;
-            const mx = (clientX - rect.left) * (logicalWidth / rect.width);
-            const my = (clientY - rect.top) * (logicalHeight / rect.height);
-            hoveredStep = steps.find(s => s.currentPos && mx >= s.currentPos.x && mx <= s.currentPos.x + s.currentPos.w && my >= s.currentPos.y && my <= s.currentPos.y + s.currentPos.h);
-            hoveredArtifact = artifactBoxes.find(b => mx >= b.x && mx <= b.x + b.w && my >= b.y && my <= b.y + b.h);
-            canvas.style.cursor = (hoveredStep || hoveredArtifact) ? 'pointer' : 'default';
-            draw();
-        }
-
-        canvas.addEventListener('mousemove', handlePointer);
-        canvas.addEventListener('touchstart', (e) => { handlePointer(e); }, {passive: false});
-        canvas.addEventListener('click', () => { if (hoveredStep) openModal(hoveredStep); });
-
-        function openModal(step) {
+            // 데이터 주입
             document.getElementById('modal-title').innerText = step.title;
             document.getElementById('modal-goal').innerText = step.goal;
             document.getElementById('modal-input').innerText = step.input;
             document.getElementById('modal-prep').innerText = step.prep;
             document.getElementById('modal-output').innerText = step.output;
-            const sc = document.getElementById('modal-sources'); sc.innerHTML = '';
-            step.sources.forEach(src => {
-                const a = document.createElement('a'); a.href = src.url; a.target = "_blank"; a.className = "source-link";
-                a.innerHTML = `<span>${src.name}</span><svg class="w-4 h-4 ml-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>`;
-                sc.appendChild(a);
-            });
-            const cc = document.getElementById('modal-checklist'); cc.innerHTML = '';
-            step.checklist.forEach(item => {
-                const div = document.createElement('div'); div.className = "checklist-item";
-                div.innerHTML = `<span class="text-amber-600 font-black">✔</span><span class="flex-1">${item}</span>`;
-                cc.appendChild(div);
-            });
-            const dl = document.getElementById('modal-details'); dl.innerHTML = '';
-            step.details.forEach(d => { const li = document.createElement('li'); li.innerText = d; dl.appendChild(li); });
-            modal.style.display = 'block'; overlay.style.display = 'block';
-            document.body.style.overflow = 'hidden'; modal.scrollTop = 0;
+            document.getElementById('modal-step-id').innerText = String(step.id).padStart(2, '0');
+            
+            const iconBg = document.getElementById('modal-icon-bg');
+            iconBg.style.backgroundColor = step.color;
+
+            // 강의 링크 렌더링
+            const sourceContainer = document.getElementById('modal-sources');
+            sourceContainer.innerHTML = step.sources.map(src => `
+                <a href="${src.url}" target="_blank" class="flex items-center justify-between px-6 py-5 bg-slate-50 border border-slate-100 rounded-2xl hover:border-blue-400 hover:bg-white hover:shadow-xl transition-all group">
+                    <span class="text-[12px] font-black text-slate-700 group-hover:text-blue-600">${src.name}</span>
+                    <svg class="w-4 h-4 text-slate-300 group-hover:text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+            `).join('');
+
+            // 체크리스트 렌더링
+            const checklistContainer = document.getElementById('modal-checklist');
+            checklistContainer.innerHTML = step.checklist.map(item => `
+                <div class="flex items-start gap-4 p-5 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                    <div class="mt-0.5 w-6 h-6 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 text-amber-600" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg>
+                    </div>
+                    <p class="text-[15px] font-bold text-slate-800 leading-snug">${item}</p>
+                </div>
+            `).join('');
+
+            // 상세 지침 렌더링
+            const detailsContainer = document.getElementById('modal-details');
+            detailsContainer.innerHTML = step.details.map(detail => `
+                <li class="flex items-start gap-4 py-1">
+                    <div class="mt-2.5 w-2 h-2 rounded-full bg-slate-300 flex-shrink-0"></div>
+                    <span class="text-[15px] font-bold text-slate-500">${detail}</span>
+                </li>
+            `).join('');
+
+            // 스크롤 최상단 리셋 및 모달 노출
+            modalOverlay.classList.remove('hidden');
+            modalContent.scrollTop = 0;
+            document.body.style.overflow = 'hidden';
         }
-        function closeModal() { modal.style.display = 'none'; overlay.style.display = 'none'; document.body.style.overflow = 'auto'; }
-        window.addEventListener('resize', initCanvas);
-        overlay.addEventListener('click', closeModal);
-        initCanvas();
+
+        function closeModal() {
+            document.getElementById('modal-overlay').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('modal-overlay').addEventListener('click', (e) => {
+            if (e.target.id === 'modal-overlay') closeModal();
+        });
+
+        // 초기 렌더링
+        render();
     </script>
 </body>
 </html>
+

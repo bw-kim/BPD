@@ -65,11 +65,11 @@
 
         <div class="inline-flex items-center gap-5 bg-white px-10 py-6 rounded-[3rem] border border-slate-200 shadow-xl">
             <div class="w-14 h-14 bg-blue-50 rounded-[1.5rem] flex items-center justify-center text-blue-600 shadow-inner">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             </div>
             <div class="text-left text-[14px]">
-                <p class="font-black text-slate-800">실전 전문가 노하우 가이드</p>
-                <p class="text-slate-400 font-bold leading-relaxed">단계별 <span class="text-indigo-600 underline underline-offset-4">보강 노하우</span>를 상시 확인하고, 상세 버튼으로 체크리스트를 점검하세요.</p>
+                <p class="font-black text-slate-800 uppercase tracking-tighter">인간의 보강이 퀄리티를 만듭니다</p>
+                <p class="text-slate-400 font-bold leading-relaxed">단계별 <span class="text-indigo-600 underline underline-offset-4">핵심 체크 포인트</span>를 상시 확인하여 결과물을 보강하세요.</p>
             </div>
         </div>
     </header>
@@ -83,7 +83,7 @@
 
     <!-- 상세보기 모달 -->
     <div id="modal-overlay" class="fixed inset-0 bg-slate-900/70 backdrop-blur-2xl z-50 hidden flex items-center justify-center p-4 transition-opacity duration-300">
-        <div id="modal-content" class="bg-white w-full max-w-2xl max-h-[85vh] rounded-[3.5rem] shadow-2xl overflow-y-auto border border-white/20">
+        <div id="modal-content" class="bg-white w-full max-w-2xl max-h-[85vh] rounded-[3.5rem] shadow-2xl overflow-y-auto border border-white/20 relative">
             
             <!-- 모달 상단 헤더 -->
             <div class="sticky top-0 bg-white/95 backdrop-blur-md px-10 py-8 flex justify-between items-center z-20 border-b border-slate-50">
@@ -116,8 +116,8 @@
                         <p id="modal-input" class="text-lg font-black text-slate-700 leading-snug">내용</p>
                     </div>
                     <div class="p-8 bg-emerald-50/50 rounded-[2.5rem] border border-emerald-100 shadow-sm">
-                        <div class="text-[11px] font-black text-emerald-600 uppercase mb-4 flex items-center gap-1.5">📤 최종 산출물</div>
-                        <p id="modal-output" class="text-lg font-black text-emerald-900 leading-snug font-black">내용</p>
+                        <div class="text-[11px] font-black text-emerald-600 uppercase mb-4 flex items-center gap-1.5">📤 최종 산출 결과</div>
+                        <p id="modal-output" class="text-lg font-black text-emerald-900 leading-snug font-black font-black">내용</p>
                     </div>
                 </div>
 
@@ -140,7 +140,7 @@
                         <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-md">
                             <svg class="w-7 h-7 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg>
                         </div>
-                        핵심 품질 체크리스트
+                        최종 품질 체크리스트
                     </h3>
                     <div id="modal-checklist" class="space-y-6"></div>
                 </section>
@@ -154,7 +154,7 @@
                 </section>
 
                 <div class="flex justify-end pt-10 border-t border-slate-100">
-                    <button onclick="closeModal()" class="px-14 py-5 bg-slate-900 text-white rounded-[2rem] font-black text-base hover:bg-blue-600 transition-all shadow-2xl active:scale-95">
+                    <button onclick="closeModal()" class="px-14 py-5 bg-slate-900 text-white rounded-[2.5rem] font-black text-base hover:bg-blue-600 transition-all shadow-2xl active:scale-95">
                         내용 확인 완료
                     </button>
                 </div>
@@ -165,11 +165,11 @@
     <script>
         const steps = [
             {
-                id: 1, title: "레퍼런스 분석", goal: "조회수 보장되는 바이럴 테마 및 성공 패턴 확보", 
-                input: "VPH 조회수 우상향 경쟁 영상", 
+                id: 1, title: "레퍼런스 분석", goal: "바이럴 테마 및 성공 패턴 확보", 
+                input: "레퍼런스 영상의 썸네일 + 제목 + 본문", 
                 prep: "Vidiq, YT Summary", 
                 output: "벤치마킹 분석 데이터 <br><span class='text-[11px] font-bold text-slate-400'>(메모장 1에 저장)</span>", 
-                extraDesc: "기획의 질을 높이기 위해 VPH(시간당 조회수)가 현재 실시간으로 살아있는 영상인지 확인이 필수입니다. 벤치마킹 영상의 썸네일 색상 대비와 제목의 첫 5글자 배치 방식을 분석하여 메모장 1에 꼼꼼히 투입하세요.",
+                extraDesc: "투입 전 체크: ①VPH가 현재 우상향 중인가? ②썸네일의 색 대비가 강렬한가? ③제목 첫 5글자의 호기심 후킹력이 있는가? 이 3가지를 메모장 1에 반드시 수집하세요.",
                 details: ["조회수 우상향(VPH) 영상 리스트업", "YouTube Summary로 대본 전체 스크래핑", "성공적인 자극적 키워드 및 패턴 분류"],
                 sources: [
                     { name: "Vidiq", url: "https://chromewebstore.google.com/detail/vidiq-vision-for-youtube/pachckjkecffpdphbpmfolblodfkgbhl" }, 
@@ -184,13 +184,13 @@
                 input: "벤치마킹 분석 데이터 <br><span class='text-[11px] font-bold text-slate-400'>(메모장 1 활용)</span>", 
                 prep: "방PD Gemini Gems", 
                 output: "스토리 시놉시스 및 기획안 <br><span class='text-[11px] font-bold text-slate-400'>(메모장 2에 저장)</span>", 
-                extraDesc: "AI가 뽑은 결과물에 일본 시니어 6대 욕구(공포, 억울함, 복수 등)가 더 뾰족하게 녹아있는지 확인하고 보강하세요. 특히 제목의 [ ] 대괄호 키워드가 시각적으로 충분히 튀도록 사람이 직접 다듬는 과정이 필수입니다.",
+                extraDesc: "사람 체크: AI가 뽑은 제목의 [ ] 대괄호 키워드가 시각적으로 튀는지 확인하세요. 일본 시니어의 6대 욕구(억울함, 복수 등)가 테마에 선명하게 녹아있는지 보강해야 합니다.",
                 details: ["일본 시니어 6대 욕구 기반 스토리 각색", "제미나이 대화형 제목 튜닝 프로세스 진행", "메인 키워드 및 썸네일 문구 1차 확정"],
                 sources: [
                     { name: "방PD 제미나이", url: "https://gemini.google.com/gem/1_B9d7iMSJhaKfDCQHTcqfroUUx39V0Di" },
                     { name: "제목 디테일 전략(카페)", url: "https://cafe.naver.com/banginapd/55" }
                 ],
-                checklist: ["제목이 시청자의 호기심을 강하게 유발하는가?", "주인공의 상황 설정이 타겟 국가 정서에 부합하는가?"],
+                checklist: ["제목이 시청자의 호기심을 강하게 유발하는가?", "인물 설정이 타겟 국가 정서에 부합하는가?"],
                 color: "#2563eb"
             },
             {
@@ -198,7 +198,7 @@
                 input: "스토리 시놉시스 및 기획안 <br><span class='text-[11px] font-bold text-slate-400'>(메모장 2 활용)</span>", 
                 prep: "Claude Project (작가 1)", 
                 output: "인트로 및 챕터 1 대본 <br><span class='text-[11px] font-bold text-slate-400'>(메모장 3에 저장)</span>", 
-                extraDesc: "AI가 작성한 인트로가 너무 평이하지 않은지 체크하세요. 사람이 직접 첫 3초 내에 가장 충격적인 사건의 결말을 보여주어 '도파민'을 터뜨려야 합니다. 인트로 검토 프롬프트를 3회 이상 실행하며 문장을 깎아내세요.",
+                extraDesc: "사람 체크: 첫 3초 내에 사건의 결말이나 충격 장면을 보여주는 '도파민 후크'를 직접 만드세요. AI 특유의 설명조 문장은 과감히 삭제하고 짧고 강한 호흡으로 깎아내야 합니다.",
                 details: ["45초 충격 후킹 인트로 전문 집필", "첫 3초 내 핵심 사건 배치 및 의문 제시", "인트로 검토 프롬프트로 퀄리티 보강"],
                 sources: [
                     { name: "Claude AI", url: "https://claude.ai/" }, 
@@ -207,7 +207,7 @@
                     { name: "인트로 촬영기법(카페)", url: "https://cafe.naver.com/banginapd/43" },
                     { name: "인트로 검토 프롬프트(카페)", url: "https://m.cafe.naver.com/ca-fe/web/cafes/31630047/articles/49?fromList=true&tc=cafe_home_all_articles" }
                 ],
-                checklist: ["첫 문장에서 바로 갈등이 시작되는가?", "검토 프롬프트를 사용하여 인위적 말투를 제거했는가?"],
+                checklist: ["첫 문장에서 바로 갈등이 시작되는가?", "검토 프롬프트를 3회 이상 사용하여 다듬었는가?"],
                 color: "#8b5cf6"
             },
             {
@@ -215,7 +215,7 @@
                 input: "인트로 및 챕터 1 대본 <br><span class='text-[11px] font-bold text-slate-400'>(메모장 3 활용)</span>", 
                 prep: "Claude Project (작가 2)", 
                 output: "전체 한글 시나리오 <br><span class='text-[11px] font-bold text-slate-400'>(메모장 4에 저장)</span>", 
-                extraDesc: "이미지 생성 AI가 이해할 수 있도록 사람이 장면 묘사를 훨씬 구체적으로 보강해야 합니다. 특히 장면별 이미지 번호 태그(<번호>)가 누락되지 않았는지 사람이 수동으로 최종 전수 검수하여 편집 오류를 방지하세요.",
+                extraDesc: "사람 체크: 장면별 이미지 번호 태그(<번호>) 누락을 전수 검사하세요. 서사 중간에 시원한 복수(사이다) 요소를 넣어 시청자가 지루할 틈이 없도록 서사 밀도를 보강해야 합니다.",
                 details: ["챕터별 1,200자 상세 서사 집필", "장면별 이미지 프롬프트 태그 정밀 삽입", "확실한 보상과 응징이 담긴 서사 강화"],
                 sources: [
                     { name: "Claude AI", url: "https://claude.ai/" }, 
@@ -230,7 +230,7 @@
                 input: "전체 한글 시나리오 <br><span class='text-[11px] font-bold text-slate-400'>(메모장 4 활용)</span>", 
                 prep: "Claude Project (작가 3)", 
                 output: "최종 일어 대본 및 영문 프롬프트 <br><span class='text-[11px] font-bold text-slate-400'>(메모장 5에 저장)</span>", 
-                extraDesc: "일본 시니어용 정중한 경어(~데스/마스)가 문맥상 어색하지 않은지 소리 내어 읽어보며 보강하세요. さん(산) 호칭이 빠진 곳은 없는지, 영문 프롬프트가 대본 사이에 정확히 위치하는지 최종 체크가 필요합니다.",
+                extraDesc: "사람 체크: 정중한 경어체(~데스/마스)와 さん(산) 호칭이 일관된지 체크하세요. TTS 낭독 시 호흡이 끊어지거나 어색한 부분은 문장 부호를 직접 수정하여 말맛을 살려야 합니다.",
                 details: ["일본 시니어 맞춤형 말맛 및 경어 교정", "AITTS 낭독 최적화용 문장 부호 작업", "이미지 생성용 영문 프롬프트 최종 패키징"],
                 sources: [
                     { name: "Claude AI", url: "https://claude.ai/" }, 
@@ -245,7 +245,7 @@
                 input: "최종 일어 대본 및 영문 프롬프트 <br><span class='text-[11px] font-bold text-slate-400'>(메모장 5 활용)</span>", 
                 prep: "Whisk, Vrew, Grok", 
                 output: "편집 완료 영상 파일 <br><span class='text-[11px] font-bold text-slate-400'>(MP4 형식)</span>", 
-                extraDesc: "Vrew 설정값(폰트 180 / 위치 110) 규정은 타협 없는 원칙입니다. AI가 생성한 이미지들의 화풍(Art Style)이 영상 전체에서 일관성을 유지하는지 사람이 확인하고, 어색한 컷은 보조 프롬프트로 재생성하여 보강하세요.",
+                extraDesc: "사람 체크: 자막 규격(폰트 180 / 위치 110)을 수동으로 재확인하세요. AI 이미지들의 화풍이 통일되었는지 보고, 너무 어색한 컷은 보조 프롬프트로 재생성하여 영상미를 맞추세요.",
                 details: ["시네마틱 영상/이미지 소스 생성", "Vrew AI 음성 합성 및 자막 배치 작업", "자막 규격 폰트 180 / 위치 110 수동 고정"],
                 sources: [
                     { name: "Whisk", url: "https://labs.google/fx/ko" }, 
@@ -260,7 +260,7 @@
                 input: "편집 완료 영상 파일 <br><span class='text-[11px] font-bold text-slate-400'>(MP4 파일 확인)</span>", 
                 prep: "ImageFX, Canva", 
                 output: "최종 썸네일 및 제목 세트 <br><span class='text-[11px] font-bold text-slate-400'>(업로드 패키지)</span>", 
-                extraDesc: "썸네일 인물의 감정 표현이 충분히 과장되었는지 사람이 직접 확인하세요. 썸네일 문구는 노랑/흰색의 2줄 법칙을 적용하되, 배경 이미지와 겹쳐 가독성이 떨어지지 않는지 최종 레이아웃을 인간의 눈으로 조정해야 합니다.",
+                extraDesc: "사람 체크: 인물의 표정이 200% 과장되었는지, 눈동자가 강조되었는지 보세요. 문구는 노랑/흰색 조합의 2줄 법칙을 적용하고 배경과 겹쳐 읽기 힘든 부분은 직접 레이아웃을 조정하세요.",
                 details: ["보조 프롬프트 활용 강렬한 표정 생성", "대괄호 「」 포함 제목 SEO 최적화", "고클릭 후킹 문구 및 레이아웃 작업"],
                 sources: [
                     { name: "ImageFX", url: "https://labs.google/fx/ko" }, 
@@ -271,11 +271,11 @@
                 color: "#059669"
             },
             {
-                id: 8, title: "업로드 및 분석", goal: "노출 최적화 및 유의미한 데이터 피드백 확보", 
+                id: 8, title: "업로드 및 분석", goal: "노출 최적화 및 데이터 피드백 확보", 
                 input: "최종 업로드 패키지 <br><span class='text-[11px] font-bold text-slate-400'>(영상+썸네일+제목)</span>", 
                 prep: "Nox, SocialBlade", 
                 output: "성과 분석 리포트 <br><span class='text-[11px] font-bold text-slate-400'>(스프레드시트)</span>", 
-                extraDesc: "업로드 후 초기 24시간 데이터를 정답지로 삼으세요. 유지율 그래프에서 시청자가 급격히 나가는 구간을 사람이 직접 분석하여, 다음 영상 기획 시 해당 요소를 제거하거나 보강하는 환류 과정을 통해 콘텐츠를 보완해야 합니다.",
+                extraDesc: "사람 체크: 초기 24시간 VPH 데이터를 분석하세요. 유지율이 급감하는 구간의 대본 문맥이나 이미지를 파악하여, 다음 영상 기획에서 해당 요소를 반드시 제거하거나 수정하는 환류가 핵심입니다.",
                 details: ["태그 최적화 및 타겟 국가 설정 업로드", "Nox 이용 수익성 및 유지율 실시간 모니터링", "성과 지표 분석 기반 개선 전략 수립"],
                 sources: [{ name: "수익 확인기", url: "https://isthischannelmonetized.com/" }],
                 checklist: ["일본 국가 타겟 설정이 제대로 되었는가?", "초기 24시간 데이터를 기록했는가?"],
@@ -296,14 +296,14 @@
                             <div class="w-16 h-16 rounded-2xl flex items-center justify-center font-black text-3xl shadow-inner border border-slate-50" style="background: ${step.color}15; color: ${step.color}">
                                 ${String(step.id).padStart(2, '0')}
                             </div>
-                            <span class="text-[11px] font-black text-slate-300 uppercase tracking-widest pt-3">Step ${step.id}</span>
+                            <span class="text-[11px] font-black text-slate-300 uppercase tracking-widest pt-3">Phase ${step.id}</span>
                         </div>
 
                         <h3 class="text-3xl font-black mb-8 leading-tight text-slate-900 tracking-tight">${step.title}</h3>
                         
                         <div class="space-y-10 flex-grow">
                             <div class="bg-blue-50/50 p-5 rounded-3xl border border-blue-100/50 shadow-sm">
-                                <span class="text-[11px] font-black text-blue-600 uppercase tracking-widest block mb-2">🎯 단계별 핵심 성과</span>
+                                <span class="text-[11px] font-black text-blue-600 uppercase tracking-widest block mb-2">🎯 이 단계의 핵심 성과</span>
                                 <p class="text-[17px] font-extrabold text-slate-800 leading-snug">${step.goal}</p>
                             </div>
                             

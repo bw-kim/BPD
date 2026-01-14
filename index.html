@@ -3,161 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PD사관학교 신입1기 제작 마스터 가이드</title>
+    <title>PD사관학교 신입1기 마스터 가이드</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;800&display=swap');
-        
         body {
             font-family: 'Pretendard', sans-serif;
-            background: #f8fafc;
+            background-color: #f1f5f9;
             color: #0f172a;
             word-break: keep-all;
             -webkit-tap-highlight-color: transparent;
+            font-size: 18px; /* 기본 폰트 크기 업그레이드 */
         }
 
-        /* 프리미엄 카드 디자인 */
-        .step-card {
+        /* 벤토 그리드 레이아웃 */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .bento-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (min-width: 1280px) {
+            .bento-grid {
+                grid-template-columns: repeat(4, 1fr);
+                grid-auto-rows: minmax(320px, auto);
+            }
+            .size-large { grid-column: span 2; grid-row: span 2; }
+            .size-wide { grid-column: span 2; grid-row: span 1; }
+            .size-tall { grid-column: span 1; grid-row: span 2; }
+        }
+
+        .bento-item {
             background: #ffffff;
-            border: 1px solid #eef2f6;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid #e2e8f0;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            border-radius: 2rem;
             position: relative;
         }
 
-        .step-card:hover {
-            border-color: #3b82f6;
+        .bento-item:hover {
             transform: translateY(-8px);
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
+            border-color: #3b82f6;
         }
 
-        .legend-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 8px;
-        }
+        /* 모달 스크롤바 */
+        .custom-scroll::-webkit-scrollbar { width: 8px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
-        /* 모달 스크롤바 정제 */
-        #modal-content::-webkit-scrollbar { width: 6px; }
-        #modal-content::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        /* 애니메이션 */
+        #modal-overlay { transition: opacity 0.3s ease; }
+        #modal-content { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease; }
+
+        .source-link {
+            transition: all 0.2s ease;
+        }
+        .source-link:hover {
+            border-color: #1e40af;
+            background-color: #eff6ff;
+            transform: scale(1.02);
+        }
     </style>
 </head>
-<body class="pb-40 selection:bg-blue-100">
+<body class="pb-32 selection:bg-blue-200">
 
-    <!-- 프리미엄 헤더 -->
-    <header class="pt-24 pb-16 px-6 text-center max-w-5xl mx-auto">
-        <div class="inline-flex items-center gap-2 px-4 py-1.5 mb-8 bg-slate-900 text-white text-[11px] font-black rounded-full uppercase tracking-widest shadow-xl">
-            <span class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></span>
-            PD ACADEMY MASTER WORKFLOW
-        </div>
-        <h1 class="text-6xl md:text-8xl font-black tracking-tightest mb-10 text-slate-900 leading-tight">
-            PD사관학교 <span class="bg-clip-text text-transparent bg-gradient-to-br from-blue-600 to-indigo-700 font-extrabold text-[1.1em]">신입1기</span>
-        </h1>
-        
-        <!-- 단계 성격 범례 -->
-        <div class="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-14 text-sm font-extrabold text-slate-400">
-            <div class="flex items-center bg-white px-4 py-2 rounded-full shadow-sm border border-slate-100"><span class="legend-dot bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></span>분석/기획</div>
-            <div class="flex items-center bg-white px-4 py-2 rounded-full shadow-sm border border-slate-100"><span class="legend-dot bg-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.5)]"></span>집필/번역</div>
-            <div class="flex items-center bg-white px-4 py-2 rounded-full shadow-sm border border-slate-100"><span class="legend-dot bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></span>제작/편집</div>
-            <div class="flex items-center bg-white px-4 py-2 rounded-full shadow-sm border border-slate-100"><span class="legend-dot bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)]"></span>배포/분석</div>
-        </div>
-
-        <div class="inline-flex items-center gap-5 bg-white px-10 py-6 rounded-[3rem] border border-slate-200 shadow-xl">
-            <div class="w-14 h-14 bg-blue-50 rounded-[1.5rem] flex items-center justify-center text-blue-600 shadow-inner">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+    <!-- 상단 헤더 -->
+    <header class="max-w-[1400px] mx-auto pt-20 pb-12 px-6">
+        <div class="flex flex-col lg:flex-row justify-between items-center lg:items-end gap-10 border-b-4 border-slate-200 pb-12">
+            <div class="text-center lg:text-left">
+                <h1 class="text-6xl md:text-8xl font-black tracking-tight text-slate-900 leading-tight">
+                    PD사관학교 <span class="text-blue-600">신입1기</span>
+                </h1>
+                <p class="mt-6 text-slate-500 font-bold text-2xl md:text-3xl">AI와 인간의 감각이 만나는 완벽 제작 공정</p>
             </div>
-            <div class="text-left text-[14px]">
-                <p class="font-black text-slate-800 uppercase tracking-tighter">인간의 보강이 퀄리티를 만듭니다</p>
-                <p class="text-slate-400 font-bold leading-relaxed">단계별 <span class="text-indigo-600 underline underline-offset-4">핵심 체크 포인트</span>를 상시 확인하여 결과물을 보강하세요.</p>
+            
+            <!-- 큰 범례 -->
+            <div class="flex flex-wrap justify-center gap-3">
+                <div class="flex items-center gap-3 bg-[#1e40af] text-white px-5 py-3 rounded-2xl font-black text-lg shadow-md"><i class="fa-solid fa-brain"></i> 기획</div>
+                <div class="flex items-center gap-3 bg-[#d97706] text-white px-5 py-3 rounded-2xl font-black text-lg shadow-md"><i class="fa-solid fa-pen-nib"></i> 집필</div>
+                <div class="flex items-center gap-3 bg-[#059669] text-white px-5 py-3 rounded-2xl font-black text-lg shadow-md"><i class="fa-solid fa-video"></i> 제작</div>
+                <div class="flex items-center gap-3 bg-[#e11d48] text-white px-5 py-3 rounded-2xl font-black text-lg shadow-md"><i class="fa-solid fa-chart-line"></i> 분석</div>
             </div>
         </div>
     </header>
 
-    <!-- 메인 워크플로우 그리드 (연결선 제거) -->
-    <main class="max-w-[1550px] mx-auto px-8">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-16" id="workflow-grid">
+    <!-- 벤토 대시보드 -->
+    <main class="max-w-[1400px] mx-auto px-6">
+        <div class="bento-grid" id="workflow-grid">
             <!-- JS 데이터 주입 -->
         </div>
     </main>
 
-    <!-- 상세보기 모달 -->
-    <div id="modal-overlay" class="fixed inset-0 bg-slate-900/70 backdrop-blur-2xl z-50 hidden flex items-center justify-center p-4 transition-opacity duration-300">
-        <div id="modal-content" class="bg-white w-full max-w-2xl max-h-[85vh] rounded-[3.5rem] shadow-2xl overflow-y-auto border border-white/20 relative">
+    <!-- 상세보기 슬림 모달 (시니어 최적화 큰 폰트) -->
+    <div id="modal-overlay" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div id="modal-content" class="bg-white w-full max-w-5xl max-h-[92vh] rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col scale-95 opacity-0">
             
-            <!-- 모달 상단 헤더 -->
-            <div class="sticky top-0 bg-white/95 backdrop-blur-md px-10 py-8 flex justify-between items-center z-20 border-b border-slate-50">
-                <div class="flex items-center gap-5">
-                    <div id="modal-icon-bg" class="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg text-white">
-                        <span id="modal-step-id" class="text-xl font-black">01</span>
+            <!-- 팝업 헤더 -->
+            <div class="px-10 py-8 flex justify-between items-center border-b-2 border-slate-100 shrink-0 bg-white">
+                <div class="flex items-center gap-6">
+                    <div id="modal-icon-bg" class="w-16 h-16 rounded-2xl flex items-center justify-center text-white text-3xl shadow-lg">
+                        <i id="modal-icon" class="fa-solid"></i>
                     </div>
-                    <h2 id="modal-title" class="text-3xl font-black text-slate-900 tracking-tight">단계 제목</h2>
+                    <div>
+                        <span id="modal-step-tag" class="text-sm font-black uppercase text-blue-600 tracking-widest block mb-1">Phase 01</span>
+                        <h2 id="modal-title" class="text-4xl font-black text-slate-900 leading-none tracking-tight">단계 제목</h2>
+                    </div>
                 </div>
-                <button onclick="closeModal()" class="p-3 bg-slate-50 hover:bg-slate-100 rounded-full transition-all text-slate-400">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                <button onclick="closeModal()" class="w-14 h-14 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center transition-all text-slate-500">
+                    <i class="fa-solid fa-xmark text-2xl"></i>
                 </button>
             </div>
             
-            <div class="px-10 py-12 space-y-12">
-                <!-- 1. 핵심 목표 -->
-                <section>
-                    <div class="text-[12px] font-black text-blue-600 uppercase tracking-widest mb-5 flex items-center gap-2">
-                        <span class="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></span> 반드시 달성해야 할 성과 (Core Goal)
+            <!-- 팝업 본문 -->
+            <div class="px-10 py-10 space-y-8 overflow-y-auto custom-scroll flex-grow bg-slate-50/50">
+                
+                <!-- 1. 핵심 목표 & 데이터 흐름 -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="md:col-span-2 bg-white p-8 rounded-3xl border-2 border-slate-100 shadow-sm relative overflow-hidden">
+                        <div id="modal-accent-bar" class="absolute left-0 top-0 w-2 h-full"></div>
+                        <span class="text-sm font-black text-blue-500 uppercase mb-4 block tracking-widest">🎯 이 단계의 핵심 목표</span>
+                        <p id="modal-goal" class="text-3xl font-black text-slate-800 leading-tight"></p>
                     </div>
-                    <div class="bg-blue-50/50 border border-blue-100 p-10 rounded-[2.5rem]">
-                        <p id="modal-goal" class="text-2xl font-black text-slate-800 leading-tight">내용</p>
-                    </div>
-                </section>
-
-                <!-- 2. 데이터 흐름 -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="p-8 bg-slate-50 rounded-[2.5rem] border border-slate-100 shadow-sm">
-                        <div class="text-[11px] font-black text-slate-400 uppercase mb-4 flex items-center gap-1.5">📥 단계 투입 데이터</div>
-                        <p id="modal-input" class="text-lg font-black text-slate-700 leading-snug">내용</p>
-                    </div>
-                    <div class="p-8 bg-emerald-50/50 rounded-[2.5rem] border border-emerald-100 shadow-sm">
-                        <div class="text-[11px] font-black text-emerald-600 uppercase mb-4 flex items-center gap-1.5">📤 최종 산출 결과</div>
-                        <p id="modal-output" class="text-lg font-black text-emerald-900 leading-snug font-black font-black">내용</p>
-                    </div>
-                </div>
-
-                <!-- 3. 도구 및 강의 -->
-                <div class="grid grid-cols-1 gap-12">
-                    <section>
-                        <div class="text-[11px] font-black text-indigo-600 uppercase tracking-widest mb-6">🛠️ 필수 도구 및 준비물</div>
-                        <p id="modal-prep" class="px-8 py-5 bg-indigo-50 text-indigo-800 rounded-[2rem] font-black text-base border border-indigo-100 inline-block shadow-sm">내용</p>
-                    </section>
-
-                    <section>
-                        <div class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-8">🔗 관련 리소스 및 강의</div>
-                        <div id="modal-sources" class="grid grid-cols-1 sm:grid-cols-2 gap-5"></div>
-                    </section>
-                </div>
-
-                <!-- 4. 품질 체크리스트 -->
-                <section class="bg-amber-50 rounded-[3.5rem] p-12 border border-amber-100 shadow-sm">
-                    <h3 class="text-lg font-black text-amber-700 mb-10 flex items-center gap-4">
-                        <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-md">
-                            <svg class="w-7 h-7 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg>
+                    <div class="bg-white p-8 rounded-3xl border-2 border-slate-100 shadow-sm flex flex-col justify-center space-y-6">
+                        <div>
+                            <span class="text-sm font-black text-slate-400 block mb-2 uppercase tracking-tighter italic">📥 인풋 (Input)</span>
+                            <p id="modal-input" class="text-xl font-bold text-slate-600 leading-snug"></p>
                         </div>
-                        최종 품질 체크리스트
-                    </h3>
-                    <div id="modal-checklist" class="space-y-6"></div>
-                </section>
-
-                <!-- 5. 업무 지침 -->
-                <section class="pb-16">
-                    <div class="text-[11px] font-black text-slate-900 uppercase tracking-widest mb-8 flex items-center gap-3">
-                        <div class="w-2 h-5 bg-slate-900 rounded-full"></div> 상세 업무 지침 (Action Guide)
+                        <div class="pt-6 border-t-2 border-slate-50">
+                            <span class="text-sm font-black text-emerald-500 block mb-2 uppercase tracking-tighter italic">📤 아웃풋 (Output)</span>
+                            <p id="modal-output" class="text-xl font-black text-emerald-700 leading-snug"></p>
+                        </div>
                     </div>
-                    <ul id="modal-details" class="space-y-6 list-none"></ul>
-                </section>
-
-                <div class="flex justify-end pt-10 border-t border-slate-100">
-                    <button onclick="closeModal()" class="px-14 py-5 bg-slate-900 text-white rounded-[2.5rem] font-black text-base hover:bg-blue-600 transition-all shadow-2xl active:scale-95">
-                        내용 확인 완료
-                    </button>
                 </div>
+
+                <!-- 2. 준비물 & 관련 링크 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <section class="bg-white p-8 rounded-3xl border-2 border-slate-100 shadow-sm">
+                        <h3 class="text-lg font-black text-slate-900 mb-6 flex items-center gap-3 uppercase border-b-2 pb-4">
+                            <i class="fa-solid fa-toolbox text-blue-600"></i> 필수 준비 도구
+                        </h3>
+                        <div id="modal-prep" class="flex flex-wrap gap-3"></div>
+                    </section>
+                    <section class="bg-white p-8 rounded-3xl border-2 border-slate-100 shadow-sm">
+                        <h3 class="text-lg font-black text-slate-900 mb-6 flex items-center gap-3 uppercase border-b-2 pb-4">
+                            <i class="fa-solid fa-link text-blue-600"></i> 마스터 가이드 교육 자료
+                        </h3>
+                        <div id="modal-sources" class="space-y-3"></div>
+                    </section>
+                </div>
+
+                <!-- 3. 체크리스트 & 지침 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <section class="bg-white p-8 rounded-3xl border-2 border-slate-100 shadow-sm">
+                        <h3 class="text-lg font-black text-slate-900 mb-6 flex items-center gap-3 uppercase border-b-2 pb-4">
+                            <i class="fa-solid fa-circle-check text-emerald-600"></i> 최종 품질 체크리스트
+                        </h3>
+                        <div id="modal-checklist" class="space-y-4"></div>
+                    </section>
+                    <section class="bg-white p-8 rounded-3xl border-2 border-slate-100 shadow-sm">
+                        <h3 class="text-lg font-black text-slate-900 mb-6 flex items-center gap-3 uppercase border-b-2 pb-4">
+                            <i class="fa-solid fa-list-check text-blue-600"></i> 상세 실행 지침
+                        </h3>
+                        <ul id="modal-details" class="space-y-4 list-none"></ul>
+                    </section>
+                </div>
+            </div>
+
+            <!-- 하단 고정 버튼 -->
+            <div class="px-10 py-6 border-t-2 border-slate-100 flex justify-end bg-white shrink-0">
+                <button onclick="closeModal()" class="px-16 py-5 bg-slate-900 text-white rounded-2xl font-black text-xl active:scale-95 transition-all shadow-lg hover:bg-blue-700">
+                    내용 확인 완료
+                </button>
             </div>
         </div>
     </div>
@@ -165,232 +188,247 @@
     <script>
         const steps = [
             {
-                id: 1, title: "레퍼런스 분석", goal: "바이럴 테마 및 성공 패턴 확보", 
-                input: "레퍼런스 영상의 썸네일 + 제목 + 본문", 
-                prep: "Vidiq, YT Summary", 
-                output: "벤치마킹 분석 데이터 <br><span class='text-[11px] font-bold text-slate-400'>(메모장 1에 저장)</span>", 
-                extraDesc: "투입 전 체크: ①VPH가 현재 우상향 중인가? ②썸네일의 색 대비가 강렬한가? ③제목 첫 5글자의 호기심 후킹력이 있는가? 이 3가지를 메모장 1에 반드시 수집하세요.",
-                details: ["조회수 우상향(VPH) 영상 리스트업", "YouTube Summary로 대본 전체 스크래핑", "성공적인 자극적 키워드 및 패턴 분류"],
+                id: 1, title: "레퍼런스 분석", size: "size-large", icon: "fa-magnifying-glass-chart",
+                goal: "조회수가 검증된 성공 소스 확보 및 패턴 분석", 
+                input: "레퍼런스 영상 썸네일 + 제목 + 본문", 
+                output: "벤치마킹 분석 데이터 (메모장 1)",
+                tip: "데이터 수집 가이드: ①VPH(시간당 조회수)가 우상향하며 살아있는가? ②썸네일 색 대비가 강렬한가? ③제목 첫 5글자에 후킹력이 있는가? 이 3가지를 메모장 1에 반드시 채우세요.",
+                prep: ["Vidiq", "YouTube Summary", "엑셀/노션"],
                 sources: [
-                    { name: "Vidiq", url: "https://chromewebstore.google.com/detail/vidiq-vision-for-youtube/pachckjkecffpdphbpmfolblodfkgbhl" }, 
-                    { name: "YT Summary", url: "https://chromewebstore.google.com/detail/youtube-summary-with-chat/nmmicjeknamkfloonkhhcjmomieiodli" },
-                    { name: "레퍼런스 사이트 모음(카페)", url: "https://m.cafe.naver.com/ca-fe/web/cafes/31630047/articles/4?fromList=true&tc=cafe_home_all_articles" }
+                    { name: "Vidiq 확장도구", url: "https://chromewebstore.google.com/detail/vidiq-vision-for-youtube/pachckjkecffpdphbpmfolblodfkgbhl" },
+                    { name: "레퍼런스 모음(카페)", url: "https://m.cafe.naver.com/ca-fe/web/cafes/31630047/articles/4" }
                 ],
-                checklist: ["VPH 수치가 현재 살아있는 영상인가?", "경쟁 영상의 클릭 유도 포인트를 명확히 찾았는가?"],
-                color: "#3b82f6"
+                details: ["조회수 우상향(VPH) 영상 리스트업", "유튜브 서머리로 대본 전체 스크래핑", "성공적인 자극적 키워드 분류"],
+                checklist: ["VPH 수치가 실시간으로 살아있는 영상인가?", "경쟁 영상의 클릭 유도 포인트를 분류했는가?"],
+                color: "#1e40af"
             },
             {
-                id: 2, title: "제미나이 기획", goal: "차별화된 컨셉 및 고후킹 제목/시놉시스 확정", 
-                input: "벤치마킹 분석 데이터 <br><span class='text-[11px] font-bold text-slate-400'>(메모장 1 활용)</span>", 
-                prep: "방PD Gemini Gems", 
-                output: "스토리 시놉시스 및 기획안 <br><span class='text-[11px] font-bold text-slate-400'>(메모장 2에 저장)</span>", 
-                extraDesc: "사람 체크: AI가 뽑은 제목의 [ ] 대괄호 키워드가 시각적으로 튀는지 확인하세요. 일본 시니어의 6대 욕구(억울함, 복수 등)가 테마에 선명하게 녹아있는지 보강해야 합니다.",
-                details: ["일본 시니어 6대 욕구 기반 스토리 각색", "제미나이 대화형 제목 튜닝 프로세스 진행", "메인 키워드 및 썸네일 문구 1차 확정"],
+                id: 2, title: "제미나이 기획", size: "size-wide", icon: "fa-brain",
+                goal: "일본 시니어 욕구를 관통하는 시놉시스 확정", 
+                input: "벤치마킹 분석 데이터 (메모장 1)", 
+                output: "스토리 기획안 (메모장 2)",
+                tip: "보강 체크: AI 제목의 [ ] 대괄호 키워드가 시각적으로 튀는지 확인하세요. 일본 시니어의 6대 욕구(복수, 억울함 등)가 테마에 선명히 박혔는지 보강해야 합니다.",
+                prep: ["Gemini Gems", "방PD 프롬프트"],
                 sources: [
-                    { name: "방PD 제미나이", url: "https://gemini.google.com/gem/1_B9d7iMSJhaKfDCQHTcqfroUUx39V0Di" },
-                    { name: "제목 디테일 전략(카페)", url: "https://cafe.naver.com/banginapd/55" }
+                    { name: "방PD 전용 제미나이", url: "https://gemini.google.com/gem/1_B9d7iMSJhaKfDCQHTcqfroUUx39V0Di" },
+                    { name: "제목 디테일 전략 강의", url: "https://cafe.naver.com/banginapd/55" }
                 ],
-                checklist: ["제목이 시청자의 호기심을 강하게 유발하는가?", "인물 설정이 타겟 국가 정서에 부합하는가?"],
-                color: "#2563eb"
+                details: ["일본 시니어 6대 욕구 스토리 각색", "제미나이 대화형 제목 튜닝 진행", "메인 키워드 및 썸네일 문구 확정"],
+                checklist: ["제목이 시청자의 호기심을 유발하는가?", "인물 설정이 타겟 국가 정서에 부합하는가?"],
+                color: "#1e40af"
             },
             {
-                id: 3, title: "작가 1 (인트로)", goal: "초반 45초 이탈 방지를 위한 감정 후킹 극대화", 
-                input: "스토리 시놉시스 및 기획안 <br><span class='text-[11px] font-bold text-slate-400'>(메모장 2 활용)</span>", 
-                prep: "Claude Project (작가 1)", 
-                output: "인트로 및 챕터 1 대본 <br><span class='text-[11px] font-bold text-slate-400'>(메모장 3에 저장)</span>", 
-                extraDesc: "사람 체크: 첫 3초 내에 사건의 결말이나 충격 장면을 보여주는 '도파민 후크'를 직접 만드세요. AI 특유의 설명조 문장은 과감히 삭제하고 짧고 강한 호흡으로 깎아내야 합니다.",
-                details: ["45초 충격 후킹 인트로 전문 집필", "첫 3초 내 핵심 사건 배치 및 의문 제시", "인트로 검토 프롬프트로 퀄리티 보강"],
+                id: 3, title: "작가 1 (인트로)", size: "size-tall", icon: "fa-bolt",
+                goal: "초반 45초 감정 장악 및 시청 이탈 차단", 
+                input: "스토리 기획안 (메모장 2)", 
+                output: "인트로 대본 (메모장 3)",
+                tip: "보강 체크: 첫 3초 내에 '사건의 결말'이나 '최악의 갈등'을 보여주세요. AI의 설명조 문장은 과감히 삭제하고 짧고 타격감 있는 호흡으로 깎아내야 합니다.",
+                prep: ["Claude AI", "보조작가 지침"],
                 sources: [
-                    { name: "Claude AI", url: "https://claude.ai/" }, 
-                    { name: "작가 1 지침(카페)", url: "https://cafe.naver.com/banginapd/41" },
-                    { name: "보조작가 가이드(카페)", url: "https://cafe.naver.com/banginapd/48" },
                     { name: "인트로 촬영기법(카페)", url: "https://cafe.naver.com/banginapd/43" },
-                    { name: "인트로 검토 프롬프트(카페)", url: "https://m.cafe.naver.com/ca-fe/web/cafes/31630047/articles/49?fromList=true&tc=cafe_home_all_articles" }
+                    { name: "인트로 검토 프롬프트", url: "https://m.cafe.naver.com/ca-fe/web/cafes/31630047/articles/49" }
                 ],
-                checklist: ["첫 문장에서 바로 갈등이 시작되는가?", "검토 프롬프트를 3회 이상 사용하여 다듬었는가?"],
-                color: "#8b5cf6"
+                details: ["45초 충격 후킹 인트로 전문 집필", "첫 3초 내 핵심 사건 배치", "인트로 검토 프롬프트로 퀄리티 보강"],
+                checklist: ["첫 문장에서 바로 갈등이 시작되는가?", "검토 프롬프트를 3회 이상 사용했는가?"],
+                color: "#d97706"
             },
             {
-                id: 4, title: "작가 2 (본문)", goal: "권선징악 기반의 고밀도 고분량 시나리오 완성", 
-                input: "인트로 및 챕터 1 대본 <br><span class='text-[11px] font-bold text-slate-400'>(메모장 3 활용)</span>", 
-                prep: "Claude Project (작가 2)", 
-                output: "전체 한글 시나리오 <br><span class='text-[11px] font-bold text-slate-400'>(메모장 4에 저장)</span>", 
-                extraDesc: "사람 체크: 장면별 이미지 번호 태그(<번호>) 누락을 전수 검사하세요. 서사 중간에 시원한 복수(사이다) 요소를 넣어 시청자가 지루할 틈이 없도록 서사 밀도를 보강해야 합니다.",
-                details: ["챕터별 1,200자 상세 서사 집필", "장면별 이미지 프롬프트 태그 정밀 삽입", "확실한 보상과 응징이 담긴 서사 강화"],
+                id: 4, title: "작가 2 (한글 대본)", size: "size-wide", icon: "fa-pen-nib",
+                goal: "권선징악 기반의 고밀도 고분량 시나리오 완성", 
+                input: "인트로 대본 (메모장 3)", 
+                output: "전체 한글 시나리오 (메모장 4)",
+                tip: "보강 체크: 장면별 이미지 태그(<번호>) 누락을 전수 검사하세요. 중간에 '사이다' 요소를 넣어 서사가 늘어지지 않게 인간이 직접 감정선을 보강해야 합니다.",
+                prep: ["Claude AI", "서사 보강 가이드"],
                 sources: [
-                    { name: "Claude AI", url: "https://claude.ai/" }, 
                     { name: "작가 2 지침(카페)", url: "https://cafe.naver.com/banginapd/41" },
-                    { name: "보조작가 가이드(카페)", url: "https://cafe.naver.com/banginapd/48" }
+                    { name: "보조작가 가이드", url: "https://cafe.naver.com/banginapd/48" }
                 ],
-                checklist: ["챕터별 분량이 균형 있게 확보되었는가?", "모든 중요 장면에 번호 태그가 정확히 붙었는가?"],
-                color: "#6366f1"
+                details: ["챕터별 1,200자 상세 서사 집필", "장면별 이미지 프롬프트 태그 삽입", "확실한 보상과 응징 서사 강화"],
+                checklist: ["분량이 충분히 확보되었는가?", "모든 중요 장면에 번호 태그가 정확히 붙었는가?"],
+                color: "#d97706"
             },
             {
-                id: 5, title: "작가 3 (현지화)", goal: "일본 현지인 감성 구현 및 완벽한 제작 패키징", 
-                input: "전체 한글 시나리오 <br><span class='text-[11px] font-bold text-slate-400'>(메모장 4 활용)</span>", 
-                prep: "Claude Project (작가 3)", 
-                output: "최종 일어 대본 및 영문 프롬프트 <br><span class='text-[11px] font-bold text-slate-400'>(메모장 5에 저장)</span>", 
-                extraDesc: "사람 체크: 정중한 경어체(~데스/마스)와 さん(산) 호칭이 일관된지 체크하세요. TTS 낭독 시 호흡이 끊어지거나 어색한 부분은 문장 부호를 직접 수정하여 말맛을 살려야 합니다.",
-                details: ["일본 시니어 맞춤형 말맛 및 경어 교정", "AITTS 낭독 최적화용 문장 부호 작업", "이미지 생성용 영문 프롬프트 최종 패키징"],
+                id: 5, title: "작가 3 (일본어 대본 + 이미지 프롬프트)", size: "size-tall", icon: "fa-language",
+                goal: "현지인 감성 구현 및 제작 패키징 완성", 
+                input: "전체 한글 시나리오 (메모장 4)", 
+                output: "최종 일어 대본 패키지 (메모장 5)",
+                tip: "보강 체크: 정중한 경어체와 さん(산) 호칭이 일관된지 보세요. TTS 낭독 시 호흡이 꼬이지 않도록 문장 부호(쉼표, 마침표)를 직접 배치해 말맛을 살려야 합니다.",
+                prep: ["Claude AI", "번역 프롬프트"],
                 sources: [
-                    { name: "Claude AI", url: "https://claude.ai/" }, 
                     { name: "현지화 지침(카페)", url: "https://cafe.naver.com/banginapd/41" },
-                    { name: "보조작가 가이드(카페)", url: "https://cafe.naver.com/banginapd/48" }
+                    { name: "일어 TTS 최적화 팁", url: "https://cafe.naver.com/banginapd/48" }
                 ],
-                checklist: ["일본어 말투가 정중하고 자연스러운가?", "이미지 프롬프트가 대본 사이에 모두 포함되었는가?"],
-                color: "#d946ef"
+                details: ["일본 시니어 맞춤 경어 교정", "AITTS 낭독 최적화 문장 부호 작업", "이미지 생성용 영문 프롬프트 패키징"],
+                checklist: ["말투가 정중하고 자연스러운가?", "이미지 프롬프트가 대본 사이에 잘 포함되었는가?"],
+                color: "#d97706"
             },
             {
-                id: 6, title: "영상 제작 및 편집", goal: "몰입감을 극대화하는 시네마틱 영상 완성", 
-                input: "최종 일어 대본 및 영문 프롬프트 <br><span class='text-[11px] font-bold text-slate-400'>(메모장 5 활용)</span>", 
-                prep: "Whisk, Vrew, Grok", 
-                output: "편집 완료 영상 파일 <br><span class='text-[11px] font-bold text-slate-400'>(MP4 형식)</span>", 
-                extraDesc: "사람 체크: 자막 규격(폰트 180 / 위치 110)을 수동으로 재확인하세요. AI 이미지들의 화풍이 통일되었는지 보고, 너무 어색한 컷은 보조 프롬프트로 재생성하여 영상미를 맞추세요.",
-                details: ["시네마틱 영상/이미지 소스 생성", "Vrew AI 음성 합성 및 자막 배치 작업", "자막 규격 폰트 180 / 위치 110 수동 고정"],
+                id: 6, title: "영상 제작 및 편집", size: "size-wide", icon: "fa-video",
+                goal: "Vrew 규격 준수 및 시네마틱 몰입감 확보", 
+                input: "최종 일어 대본 패키지 (메모장 5)", 
+                output: "최종 MP4 영상 파일",
+                tip: "보강 체크: Vrew 폰트 180 / 위치 110은 절대 원칙입니다. AI 이미지의 화풍(Style)이 튀지 않는지 확인하고 어색한 컷은 재생성하여 영상미를 통일하세요.",
+                prep: ["Vrew", "Whisk", "Grok"],
                 sources: [
-                    { name: "Whisk", url: "https://labs.google/fx/ko" }, 
                     { name: "Vrew 다운로드", url: "https://vrew.ai/ko/" },
-                    { name: "영상 보조 프롬프트(카페)", url: "https://m.cafe.naver.com/ca-fe/web/cafes/31630047/articles/49?fromList=true&tc=cafe_home_all_articles" }
+                    { name: "영상 보조 프롬프트", url: "https://m.cafe.naver.com/ca-fe/web/cafes/31630047/articles/49" }
                 ],
-                checklist: ["자막 규격이 가이드와 정확히 일치하는가?", "영상 소스의 화질과 화풍이 몰입감을 주는가?"],
-                color: "#10b981"
+                details: ["시네마틱 영상/이미지 소스 생성", "Vrew AI 음성 합성 및 자막 배치", "자막 규격(180/110) 수동 고정"],
+                checklist: ["자막 규격이 가이드와 일치하는가?", "영상 소스의 화풍이 통일되었는가?"],
+                color: "#059669"
             },
             {
-                id: 7, title: "썸네일·제목 생성", goal: "클릭률(CTR) 극대화 디자인 확정", 
-                input: "편집 완료 영상 파일 <br><span class='text-[11px] font-bold text-slate-400'>(MP4 파일 확인)</span>", 
-                prep: "ImageFX, Canva", 
-                output: "최종 썸네일 및 제목 세트 <br><span class='text-[11px] font-bold text-slate-400'>(업로드 패키지)</span>", 
-                extraDesc: "사람 체크: 인물의 표정이 200% 과장되었는지, 눈동자가 강조되었는지 보세요. 문구는 노랑/흰색 조합의 2줄 법칙을 적용하고 배경과 겹쳐 읽기 힘든 부분은 직접 레이아웃을 조정하세요.",
-                details: ["보조 프롬프트 활용 강렬한 표정 생성", "대괄호 「」 포함 제목 SEO 최적화", "고클릭 후킹 문구 및 레이아웃 작업"],
+                id: 7, title: "썸네일/제목 생성", size: "size-tall", icon: "fa-image",
+                goal: "클릭률(CTR) 극대화 디자인 및 검색 최적화", 
+                input: "편집 완료 영상 및 기획 데이터", 
+                output: "최종 업로드 패키지",
+                tip: "보강 체크: 인물의 표정이 충분히 과장(200%)되었는지 보세요. 문구는 노랑/흰색 2줄 법칙을 적용하되 배경과 겹치지 않게 사람이 직접 레이아웃을 조정해야 합니다.",
+                prep: ["ImageFX", "Canva"],
                 sources: [
-                    { name: "ImageFX", url: "https://labs.google/fx/ko" }, 
                     { name: "썸네일 전략 강의(카페)", url: "https://cafe.naver.com/banginapd/56" },
-                    { name: "테마별 썸네일 문구(카페)", url: "https://m.cafe.naver.com/ca-fe/web/cafes/31630047/articles/69?fromList=true&tc=cafe_home_all_articles" }
+                    { name: "테마별 썸네일 문구", url: "https://m.cafe.naver.com/ca-fe/web/cafes/31630047/articles/69" }
                 ],
+                details: ["보조 프롬프트 활용 표정 생성", "대괄호 「」 포함 제목 SEO 확정", "고클릭 후킹 문구 레이아웃 작업"],
                 checklist: ["문구가 한눈에 꽂히는가?", "인물 표정이 궁금증을 유발하는가?"],
                 color: "#059669"
             },
             {
-                id: 8, title: "업로드 및 분석", goal: "노출 최적화 및 데이터 피드백 확보", 
-                input: "최종 업로드 패키지 <br><span class='text-[11px] font-bold text-slate-400'>(영상+썸네일+제목)</span>", 
-                prep: "Nox, SocialBlade", 
-                output: "성과 분석 리포트 <br><span class='text-[11px] font-bold text-slate-400'>(스프레드시트)</span>", 
-                extraDesc: "사람 체크: 초기 24시간 VPH 데이터를 분석하세요. 유지율이 급감하는 구간의 대본 문맥이나 이미지를 파악하여, 다음 영상 기획에서 해당 요소를 반드시 제거하거나 수정하는 환류가 핵심입니다.",
-                details: ["태그 최적화 및 타겟 국가 설정 업로드", "Nox 이용 수익성 및 유지율 실시간 모니터링", "성과 지표 분석 기반 개선 전략 수립"],
-                sources: [{ name: "수익 확인기", url: "https://isthischannelmonetized.com/" }],
+                id: 8, title: "업로드 및 분석", size: "size-wide", icon: "fa-chart-line",
+                goal: "노출 최적화 및 유의미한 데이터 피드백 환류", 
+                input: "최종 업로드 패키지 (영상+썸네일+제목)", 
+                output: "성과 분석 리포트 (데이터 시트)",
+                tip: "보강 체크: 초기 24시간 VPH 데이터를 분석하세요. 시청 유지율이 급감하는 구간의 요소를 찾아 다음 영상 기획 시 해당 요소를 제거하는 환류 과정이 핵심입니다.",
+                prep: ["Nox", "SocialBlade"],
+                sources: [
+                    { name: "수익 확인기", url: "https://isthischannelmonetized.com/" }
+                ],
+                details: ["태그 최적화 및 타겟 국가 설정", "수익성 및 유지율 실시간 모니터링", "성과 지표 분석 기반 개선 전략"],
                 checklist: ["일본 국가 타겟 설정이 제대로 되었는가?", "초기 24시간 데이터를 기록했는가?"],
-                color: "#f59e0b"
+                color: "#e11d48"
             }
         ];
 
         const grid = document.getElementById('workflow-grid');
 
         function render() {
-            grid.innerHTML = steps.map((step, index) => `
-                <div class="relative flex flex-col items-center">
-                    <!-- 단계 카드 -->
-                    <div class="step-card w-full rounded-[3.5rem] p-10 md:p-11 relative overflow-hidden flex flex-col h-full min-h-[580px] shadow-sm">
-                        <div class="absolute left-0 top-0 bottom-0 w-4" style="background: ${step.color}"></div>
-                        
-                        <div class="flex justify-between items-start mb-10">
-                            <div class="w-16 h-16 rounded-2xl flex items-center justify-center font-black text-3xl shadow-inner border border-slate-50" style="background: ${step.color}15; color: ${step.color}">
-                                ${String(step.id).padStart(2, '0')}
-                            </div>
-                            <span class="text-[11px] font-black text-slate-300 uppercase tracking-widest pt-3">Phase ${step.id}</span>
+            grid.innerHTML = steps.map((s, i) => `
+                <div class="bento-item ${s.size} p-8 md:p-10">
+                    <div class="flex justify-between items-start mb-8">
+                        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl shadow-inner border border-slate-50" style="background:${s.color}15; color:${s.color}">
+                            <i class="fa-solid ${s.icon}"></i>
                         </div>
-
-                        <h3 class="text-3xl font-black mb-8 leading-tight text-slate-900 tracking-tight">${step.title}</h3>
-                        
-                        <div class="space-y-10 flex-grow">
-                            <div class="bg-blue-50/50 p-5 rounded-3xl border border-blue-100/50 shadow-sm">
-                                <span class="text-[11px] font-black text-blue-600 uppercase tracking-widest block mb-2">🎯 이 단계의 핵심 성과</span>
-                                <p class="text-[17px] font-extrabold text-slate-800 leading-snug">${step.goal}</p>
-                            </div>
-                            
-                            <div class="pt-2 border-t border-slate-100 space-y-7">
-                                <div class="flex justify-between items-start">
-                                    <span class="text-[11px] font-black text-slate-400 uppercase tracking-tighter shrink-0 pt-1">📥 투입 데이터</span>
-                                    <div class="text-[14px] font-bold text-slate-500 text-right leading-tight pl-4 italic">${step.input}</div>
-                                </div>
-                                <div class="flex justify-between items-start">
-                                    <span class="text-[11px] font-black text-emerald-500 uppercase tracking-tighter shrink-0 pt-1">📤 산출 결과물</span>
-                                    <div class="text-[14px] font-extrabold text-emerald-600 text-right leading-tight pl-4 italic">${step.output}</div>
-                                </div>
-                            </div>
-
-                            <!-- 실전 전문가 노하우 (상시 노출) -->
-                            <div class="pt-6">
-                                <div class="p-6 rounded-[2.5rem] bg-indigo-50 border border-indigo-100 shadow-sm italic relative">
-                                    <div class="flex items-center gap-2 mb-3 text-indigo-600">
-                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"></path></svg>
-                                        <span class="text-[10px] font-black uppercase tracking-tighter">실전 보강 노하우</span>
-                                    </div>
-                                    <p class="text-[14px] font-bold text-indigo-900 leading-relaxed">"${step.extraDesc}"</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <button 
-                            onclick="openModal(${index})"
-                            class="mt-10 w-full py-5 bg-slate-900 text-white rounded-[1.75rem] font-black text-sm hover:bg-blue-600 transition-all active:scale-95 shadow-xl shadow-slate-100 group flex items-center justify-center gap-2"
-                        >
-                            상세 체크리스트 및 지침
-                            <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"></path></svg>
-                        </button>
+                        <span class="text-sm font-black text-slate-300 uppercase tracking-widest pt-2">Step 0${s.id}</span>
                     </div>
-                </div>`).join('');
+
+                    <h3 class="text-4xl font-black mb-6 text-slate-900 tracking-tight leading-tight">${s.title}</h3>
+                    
+                    <div class="space-y-6 flex-grow">
+                        <!-- 목표 (큰 글씨) -->
+                        <div class="bg-slate-50 p-6 rounded-2xl border-2 border-slate-100">
+                            <span class="text-xs font-black text-blue-600 uppercase mb-2 block tracking-widest">🎯 핵심 목표</span>
+                            <p class="text-xl font-bold text-slate-700 leading-snug">${s.goal}</p>
+                        </div>
+                        
+                        <!-- 입출력 수직 (큰 글씨) -->
+                        <div class="space-y-4 pt-4 border-t-2 border-slate-50">
+                            <div>
+                                <span class="text-xs font-black text-slate-400 block mb-1 uppercase tracking-tighter italic">📥 인풋 (Input)</span>
+                                <p class="text-lg font-bold text-slate-500">${s.input}</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-black text-emerald-500 block mb-1 uppercase tracking-tighter italic">📤 아웃풋 (Output)</span>
+                                <p class="text-lg font-black text-emerald-600">${s.output}</p>
+                            </div>
+                        </div>
+
+                        <!-- 전문가 팁 (명확한 강조) -->
+                        <div class="pt-6">
+                            <div class="p-6 rounded-2xl italic border-2 shadow-sm" style="background:${s.color}05; border-color:${s.color}20">
+                                <div class="flex items-center gap-2 mb-3" style="color:${s.color}">
+                                    <i class="fa-solid fa-wand-magic-sparkles text-sm"></i>
+                                    <span class="text-xs font-black uppercase tracking-widest">Expert 보강 가이드</span>
+                                </div>
+                                <p class="text-lg font-bold text-slate-600 leading-relaxed">"${s.tip}"</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button 
+                        onclick="openModal(${i})"
+                        class="mt-10 w-full py-6 bg-slate-900 text-white rounded-2xl font-black text-xl hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-3 shadow-lg"
+                        style="background:${s.color}"
+                    >
+                        상세 정보 보기
+                        <i class="fa-solid fa-chevron-right text-sm"></i>
+                    </button>
+                </div>
+            `).join('');
         }
 
-        function openModal(index) {
-            const step = steps[index];
-            const modalOverlay = document.getElementById('modal-overlay');
-            const modalContent = document.getElementById('modal-content');
+        function openModal(idx) {
+            const s = steps[idx];
+            const overlay = document.getElementById('modal-overlay');
+            const content = document.getElementById('modal-content');
             
-            document.getElementById('modal-title').innerText = step.title;
-            document.getElementById('modal-goal').innerText = step.goal;
-            document.getElementById('modal-input').innerHTML = step.input; 
-            document.getElementById('modal-prep').innerText = step.prep;
-            document.getElementById('modal-output').innerHTML = step.output;
-            document.getElementById('modal-step-id').innerText = String(step.id).padStart(2, '0');
-            
+            document.getElementById('modal-title').innerText = s.title;
+            document.getElementById('modal-goal').innerText = s.goal;
+            document.getElementById('modal-input').innerText = s.input;
+            document.getElementById('modal-output').innerText = s.output;
+            document.getElementById('modal-step-tag').innerText = `Phase 0${s.id}`;
+            document.getElementById('modal-icon').className = `fa-solid ${s.icon}`;
+            document.getElementById('modal-accent-bar').style.backgroundColor = s.color;
             const iconBg = document.getElementById('modal-icon-bg');
-            iconBg.style.backgroundColor = step.color;
+            iconBg.style.backgroundColor = s.color;
 
-            const sourceContainer = document.getElementById('modal-sources');
-            sourceContainer.innerHTML = step.sources.map(src => `
-                <a href="${src.url}" target="_blank" class="flex items-center justify-between px-6 py-6 bg-slate-50 border border-slate-200 rounded-3xl hover:border-blue-400 hover:bg-white transition-all group shadow-sm">
-                    <span class="text-[13px] font-black text-slate-700 group-hover:text-blue-600">${src.name}</span>
-                    <svg class="w-5 h-5 text-slate-300 group-hover:text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+            // 준비물 복구
+            document.getElementById('modal-prep').innerHTML = s.prep.map(p => `
+                <span class="px-5 py-3 bg-slate-100 rounded-xl border-2 border-slate-200 text-slate-700 text-lg font-black italic"># ${p}</span>
+            `).join('');
+
+            // 링크 복구
+            document.getElementById('modal-sources').innerHTML = s.sources.map(src => `
+                <a href="${src.url}" target="_blank" class="source-link flex items-center justify-between px-6 py-5 bg-white border-2 border-slate-100 rounded-2xl shadow-sm group">
+                    <span class="text-slate-800 font-black text-xl">${src.name}</span>
+                    <i class="fa-solid fa-up-right-from-square text-lg opacity-30 group-hover:opacity-100"></i>
                 </a>
             `).join('');
 
-            const checklistContainer = document.getElementById('modal-checklist');
-            checklistContainer.innerHTML = step.checklist.map(item => `
-                <div class="flex items-start gap-4 p-7 bg-white rounded-[2rem] border border-slate-100 shadow-sm">
-                    <div class="mt-0.5 w-6 h-6 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <svg class="w-4 h-4 text-amber-600" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg>
-                    </div>
-                    <p class="text-[16px] font-bold text-slate-800 leading-snug">${item}</p>
+            // 체크리스트 복구
+            document.getElementById('modal-checklist').innerHTML = s.checklist.map(item => `
+                <div class="flex items-start gap-4 p-5 bg-slate-50 rounded-2xl border-2 border-slate-100">
+                    <i class="fa-solid fa-circle-check mt-1 text-2xl" style="color:${s.color}"></i>
+                    <p class="text-xl font-bold text-slate-800 leading-snug">${item}</p>
                 </div>
             `).join('');
 
-            const detailsContainer = document.getElementById('modal-details');
-            detailsContainer.innerHTML = step.details.map(detail => `
+            // 상세 지침 복구
+            document.getElementById('modal-details').innerHTML = s.details.map(detail => `
                 <li class="flex items-start gap-5 py-2">
-                    <div class="mt-2.5 w-2.5 h-2.5 rounded-full bg-slate-300 flex-shrink-0 border-4 border-white shadow-sm"></div>
-                    <span class="text-[17px] font-bold text-slate-500 leading-relaxed">${detail}</span>
+                    <div class="mt-3 w-2 h-2 rounded-full shrink-0 shadow-sm" style="background:${s.color}"></div>
+                    <span class="text-xl font-bold text-slate-600 leading-relaxed">${detail}</span>
                 </li>
             `).join('');
 
-            modalOverlay.classList.remove('hidden');
-            // 스크롤 강제 최상단 리셋
-            modalContent.scrollTo({ top: 0, behavior: 'instant' });
+            overlay.classList.remove('hidden');
+            setTimeout(() => {
+                content.classList.remove('scale-95', 'opacity-0');
+                content.classList.add('scale-100', 'opacity-100');
+            }, 10);
+            
             document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
-            document.getElementById('modal-overlay').classList.add('hidden');
-            document.body.style.overflow = 'auto';
+            const overlay = document.getElementById('modal-overlay');
+            const content = document.getElementById('modal-content');
+            
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+            
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }, 200);
         }
 
         document.getElementById('modal-overlay').addEventListener('click', (e) => {

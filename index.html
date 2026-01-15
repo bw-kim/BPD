@@ -3,25 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PD사관학교 신입1기 마스터 가이드</title>
+    <title>PD사관학교 신입1기 제작 마스터 가이드</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
             font-family: 'Pretendard', sans-serif;
-            background-color: #f1f5f9;
+            background-color: #f8fafc;
             color: #0f172a;
             word-break: keep-all;
             -webkit-tap-highlight-color: transparent;
-            font-size: 18px; /* 기본 폰트 크기 업그레이드 */
+            font-size: 22px; 
+            line-height: 1.6;
         }
 
-        /* 벤토 그리드 레이아웃 */
+        /* 벤토 그리드 엔진 */
         .bento-grid {
             display: grid;
             grid-template-columns: repeat(1, 1fr);
             gap: 1.5rem;
+            grid-auto-flow: dense;
         }
 
         @media (min-width: 768px) {
@@ -31,7 +33,7 @@
         @media (min-width: 1280px) {
             .bento-grid {
                 grid-template-columns: repeat(4, 1fr);
-                grid-auto-rows: minmax(320px, auto);
+                grid-auto-rows: minmax(380px, auto); 
             }
             .size-large { grid-column: span 2; grid-row: span 2; }
             .size-wide { grid-column: span 2; grid-row: span 1; }
@@ -40,31 +42,33 @@
 
         .bento-item {
             background: #ffffff;
-            border: 2px solid #e2e8f0;
-            transition: all 0.4s ease;
+            border: 2px solid #eef2f6;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex;
             flex-direction: column;
-            border-radius: 2rem;
-            position: relative;
+            border-radius: 1.5rem;
+            height: 100%;
         }
 
         .bento-item:hover {
             transform: translateY(-8px);
-            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.1);
             border-color: #3b82f6;
         }
 
-        /* 모달 스크롤바 */
+        .white-space-pre {
+            white-space: pre-line;
+        }
+
         .custom-scroll::-webkit-scrollbar { width: 8px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
-        /* 애니메이션 */
         #modal-overlay { transition: opacity 0.3s ease; }
-        #modal-content { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease; }
+        #modal-content { transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease; }
 
-        .source-link {
-            transition: all 0.2s ease;
-        }
+        .font-black { font-weight: 900; }
+        .font-extrabold { font-weight: 800; }
+        
         .source-link:hover {
             border-color: #1e40af;
             background-color: #eff6ff;
@@ -74,111 +78,101 @@
 </head>
 <body class="pb-32 selection:bg-blue-200">
 
-    <!-- 상단 헤더 -->
-    <header class="max-w-[1400px] mx-auto pt-20 pb-12 px-6">
+    <header class="max-w-[1500px] mx-auto pt-20 pb-16 px-6 text-center lg:text-left">
         <div class="flex flex-col lg:flex-row justify-between items-center lg:items-end gap-10 border-b-4 border-slate-200 pb-12">
-            <div class="text-center lg:text-left">
-                <h1 class="text-6xl md:text-8xl font-black tracking-tight text-slate-900 leading-tight">
-                    PD사관학교 <span class="text-blue-600">신입1기</span>
+            <div>
+                <h1 class="text-6xl md:text-7xl lg:text-8xl font-black tracking-tight text-slate-900 leading-tight">
+                    PD사관학교 <span class="text-blue-600 font-black">신입1기</span>
                 </h1>
-                <p class="mt-6 text-slate-500 font-bold text-2xl md:text-3xl">AI와 인간의 감각이 만나는 완벽 제작 공정</p>
+                <p class="mt-6 text-slate-500 font-extrabold text-2xl md:text-3xl tracking-tight">일본 롱폼 영상 제작 마스터 워크플로우</p>
             </div>
             
-            <!-- 큰 범례 -->
             <div class="flex flex-wrap justify-center gap-3">
-                <div class="flex items-center gap-3 bg-[#1e40af] text-white px-5 py-3 rounded-2xl font-black text-lg shadow-md"><i class="fa-solid fa-brain"></i> 기획</div>
-                <div class="flex items-center gap-3 bg-[#d97706] text-white px-5 py-3 rounded-2xl font-black text-lg shadow-md"><i class="fa-solid fa-pen-nib"></i> 집필</div>
-                <div class="flex items-center gap-3 bg-[#059669] text-white px-5 py-3 rounded-2xl font-black text-lg shadow-md"><i class="fa-solid fa-video"></i> 제작</div>
-                <div class="flex items-center gap-3 bg-[#e11d48] text-white px-5 py-3 rounded-2xl font-black text-lg shadow-md"><i class="fa-solid fa-chart-line"></i> 분석</div>
+                <div class="flex items-center gap-3 bg-[#1e40af] text-white px-6 py-3 rounded-2xl font-black text-xl shadow-lg"><i class="fa-solid fa-magnifying-glass"></i> 분석/기획</div>
+                <div class="flex items-center gap-3 bg-[#d97706] text-white px-6 py-3 rounded-2xl font-black text-xl shadow-lg"><i class="fa-solid fa-pen-fancy"></i> 집필/번역</div>
+                <div class="flex items-center gap-3 bg-[#059669] text-white px-6 py-3 rounded-2xl font-black text-xl shadow-lg"><i class="fa-solid fa-clapperboard"></i> 제작/편집</div>
+                <div class="flex items-center gap-3 bg-[#e11d48] text-white px-6 py-3 rounded-2xl font-black text-xl shadow-lg"><i class="fa-solid fa-chart-pie"></i> 배포/분석</div>
             </div>
         </div>
     </header>
 
-    <!-- 벤토 대시보드 -->
-    <main class="max-w-[1400px] mx-auto px-6">
+    <main class="max-w-[1500px] mx-auto px-6">
         <div class="bento-grid" id="workflow-grid">
-            <!-- JS 데이터 주입 -->
+            <!-- JS 데이터 바인딩 -->
         </div>
     </main>
 
-    <!-- 상세보기 슬림 모달 (시니어 최적화 큰 폰트) -->
+    <!-- 상세보기 모달 -->
     <div id="modal-overlay" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div id="modal-content" class="bg-white w-full max-w-5xl max-h-[92vh] rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col scale-95 opacity-0">
             
-            <!-- 팝업 헤더 -->
-            <div class="px-10 py-8 flex justify-between items-center border-b-2 border-slate-100 shrink-0 bg-white">
-                <div class="flex items-center gap-6">
-                    <div id="modal-icon-bg" class="w-16 h-16 rounded-2xl flex items-center justify-center text-white text-3xl shadow-lg">
+            <div class="px-10 py-8 flex justify-between items-center border-b-4 border-slate-50 shrink-0 bg-white">
+                <div class="flex items-center gap-8">
+                    <div id="modal-icon-bg" class="w-20 h-20 rounded-3xl flex items-center justify-center text-white text-4xl shadow-xl">
                         <i id="modal-icon" class="fa-solid"></i>
                     </div>
                     <div>
-                        <span id="modal-step-tag" class="text-sm font-black uppercase text-blue-600 tracking-widest block mb-1">Phase 01</span>
-                        <h2 id="modal-title" class="text-4xl font-black text-slate-900 leading-none tracking-tight">단계 제목</h2>
+                        <span id="modal-step-tag" class="text-xl font-black uppercase text-blue-600 tracking-widest block mb-1">PHASE 01</span>
+                        <h2 id="modal-title" class="text-3xl md:text-4xl font-black text-slate-900 leading-tight white-space-pre">단계 제목</h2>
                     </div>
                 </div>
-                <button onclick="closeModal()" class="w-14 h-14 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center transition-all text-slate-500">
-                    <i class="fa-solid fa-xmark text-2xl"></i>
+                <button onclick="closeModal()" class="w-16 h-16 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center transition-all text-slate-500">
+                    <i class="fa-solid fa-xmark text-3xl"></i>
                 </button>
             </div>
             
-            <!-- 팝업 본문 -->
-            <div class="px-10 py-10 space-y-8 overflow-y-auto custom-scroll flex-grow bg-slate-50/50">
-                
-                <!-- 1. 핵심 목표 & 데이터 흐름 -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="md:col-span-2 bg-white p-8 rounded-3xl border-2 border-slate-100 shadow-sm relative overflow-hidden">
-                        <div id="modal-accent-bar" class="absolute left-0 top-0 w-2 h-full"></div>
-                        <span class="text-sm font-black text-blue-500 uppercase mb-4 block tracking-widest">🎯 이 단계의 핵심 목표</span>
-                        <p id="modal-goal" class="text-3xl font-black text-slate-800 leading-tight"></p>
+            <div class="px-10 py-10 space-y-10 overflow-y-auto custom-scroll flex-grow bg-slate-50/50">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="md:col-span-2 bg-white p-10 rounded-[2.5rem] border-2 border-slate-200 shadow-sm relative overflow-hidden text-[22px]">
+                        <div id="modal-accent-bar" class="absolute left-0 top-0 w-3 h-full"></div>
+                        <span class="text-lg font-black text-blue-500 uppercase mb-4 block tracking-widest">🎯 단계 핵심 성과</span>
+                        <p id="modal-goal" class="text-3xl font-black text-slate-800 leading-snug"></p>
                     </div>
-                    <div class="bg-white p-8 rounded-3xl border-2 border-slate-100 shadow-sm flex flex-col justify-center space-y-6">
+                    <div class="bg-white p-10 rounded-[2.5rem] border-2 border-slate-200 shadow-sm flex flex-col justify-center space-y-8">
                         <div>
-                            <span class="text-sm font-black text-slate-400 block mb-2 uppercase tracking-tighter italic">📥 인풋 (Input)</span>
-                            <p id="modal-input" class="text-xl font-bold text-slate-600 leading-snug"></p>
+                            <span class="text-base font-black text-slate-400 block mb-3 uppercase italic tracking-tighter">📥 입력 정보 (Input)</span>
+                            <p id="modal-input" class="text-2xl font-bold text-slate-600"></p>
                         </div>
-                        <div class="pt-6 border-t-2 border-slate-50">
-                            <span class="text-sm font-black text-emerald-500 block mb-2 uppercase tracking-tighter italic">📤 아웃풋 (Output)</span>
-                            <p id="modal-output" class="text-xl font-black text-emerald-700 leading-snug"></p>
+                        <div class="pt-8 border-t-2 border-slate-100">
+                            <span class="text-base font-black text-emerald-500 block mb-3 uppercase italic tracking-tighter">📤 산출 결과 (Output)</span>
+                            <p id="modal-output" class="text-2xl font-black text-emerald-700"></p>
                         </div>
                     </div>
                 </div>
 
-                <!-- 2. 준비물 & 관련 링크 -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <section class="bg-white p-8 rounded-3xl border-2 border-slate-100 shadow-sm">
-                        <h3 class="text-lg font-black text-slate-900 mb-6 flex items-center gap-3 uppercase border-b-2 pb-4">
-                            <i class="fa-solid fa-toolbox text-blue-600"></i> 필수 준비 도구
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <section class="bg-white p-10 rounded-[2.5rem] border-2 border-slate-200 shadow-sm">
+                        <h3 class="text-xl font-black text-slate-900 mb-8 flex items-center gap-4 border-b-2 pb-5 uppercase tracking-widest">
+                            <i class="fa-solid fa-toolbox text-blue-600"></i> 필수 도구 및 사이트
                         </h3>
-                        <div id="modal-prep" class="flex flex-wrap gap-3"></div>
+                        <div id="modal-prep" class="flex flex-wrap gap-4"></div>
                     </section>
-                    <section class="bg-white p-8 rounded-3xl border-2 border-slate-100 shadow-sm">
-                        <h3 class="text-lg font-black text-slate-900 mb-6 flex items-center gap-3 uppercase border-b-2 pb-4">
-                            <i class="fa-solid fa-link text-blue-600"></i> 마스터 가이드 교육 자료
+                    <section class="bg-white p-10 rounded-[2.5rem] border-2 border-slate-200 shadow-sm">
+                        <h3 class="text-xl font-black text-slate-900 mb-8 flex items-center gap-4 border-b-2 pb-5 uppercase tracking-widest">
+                            <i class="fa-solid fa-link text-blue-600"></i> 관련 마스터 리소스
                         </h3>
-                        <div id="modal-sources" class="space-y-3"></div>
+                        <div id="modal-sources" class="space-y-4"></div>
                     </section>
                 </div>
 
-                <!-- 3. 체크리스트 & 지침 -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <section class="bg-white p-8 rounded-3xl border-2 border-slate-100 shadow-sm">
-                        <h3 class="text-lg font-black text-slate-900 mb-6 flex items-center gap-3 uppercase border-b-2 pb-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-[22px]">
+                    <section class="bg-white p-10 rounded-[2.5rem] border-2 border-slate-200 shadow-sm">
+                        <h3 class="text-xl font-black text-slate-900 mb-8 flex items-center gap-4 border-b-2 pb-5 uppercase tracking-widest">
                             <i class="fa-solid fa-circle-check text-emerald-600"></i> 최종 품질 체크리스트
                         </h3>
-                        <div id="modal-checklist" class="space-y-4"></div>
+                        <div id="modal-checklist" class="space-y-6"></div>
                     </section>
-                    <section class="bg-white p-8 rounded-3xl border-2 border-slate-100 shadow-sm">
-                        <h3 class="text-lg font-black text-slate-900 mb-6 flex items-center gap-3 uppercase border-b-2 pb-4">
+                    <section class="bg-white p-10 rounded-[2.5rem] border-2 border-slate-200 shadow-sm">
+                        <h3 class="text-xl font-black text-slate-900 mb-8 flex items-center gap-4 border-b-2 pb-5 uppercase tracking-widest">
                             <i class="fa-solid fa-list-check text-blue-600"></i> 상세 실행 지침
                         </h3>
-                        <ul id="modal-details" class="space-y-4 list-none"></ul>
+                        <ul id="modal-details" class="space-y-6 list-none text-slate-600 font-bold"></ul>
                     </section>
                 </div>
             </div>
 
-            <!-- 하단 고정 버튼 -->
-            <div class="px-10 py-6 border-t-2 border-slate-100 flex justify-end bg-white shrink-0">
-                <button onclick="closeModal()" class="px-16 py-5 bg-slate-900 text-white rounded-2xl font-black text-xl active:scale-95 transition-all shadow-lg hover:bg-blue-700">
+            <div class="px-10 py-6 border-t-4 border-slate-100 flex justify-end bg-white shrink-0">
+                <button onclick="closeModal()" class="px-20 py-6 bg-slate-900 text-white rounded-2xl font-black text-2xl active:scale-95 transition-all shadow-2xl hover:bg-blue-700">
                     내용 확인 완료
                 </button>
             </div>
@@ -189,121 +183,127 @@
         const steps = [
             {
                 id: 1, title: "레퍼런스 분석", size: "size-large", icon: "fa-magnifying-glass-chart",
-                goal: "조회수가 검증된 성공 소스 확보 및 패턴 분석", 
+                goal: "조회수 검증된 성공 소스 확보 및 분석 데이터 구축", 
                 input: "레퍼런스 영상 썸네일 + 제목 + 본문", 
                 output: "벤치마킹 분석 데이터 (메모장 1)",
-                tip: "데이터 수집 가이드: ①VPH(시간당 조회수)가 우상향하며 살아있는가? ②썸네일 색 대비가 강렬한가? ③제목 첫 5글자에 후킹력이 있는가? 이 3가지를 메모장 1에 반드시 채우세요.",
-                prep: ["Vidiq", "YouTube Summary", "엑셀/노션"],
+                tip: "① VPH(시간당 조회수) 급상승 여부 확인\n② 경쟁 채널의 비디오 태그(Video Tags) 및 썸네일 구성 분석\n③ 제목 앞부분에 배치할 고점수 키워드(감동, 역전 등) 수집",
+                prep: ["vidIQ", "YouTube Summary", "Sort Instagram Reels"],
                 sources: [
-                    { name: "Vidiq 확장도구", url: "https://chromewebstore.google.com/detail/vidiq-vision-for-youtube/pachckjkecffpdphbpmfolblodfkgbhl" },
-                    { name: "레퍼런스 모음(카페)", url: "https://m.cafe.naver.com/ca-fe/web/cafes/31630047/articles/4" }
+                    { name: "vidIQ (데이터 분석)", url: "https://chromewebstore.google.com/detail/vidiq-vision-for-youtube/pachckjkecffpdphbpmfolblodfkgbhl" },
+                    { name: "YouTube Summary (대본 추출)", url: "https://chromewebstore.google.com/detail/youtube-summary-with-chat/nmmicjeknamkfloonkhhcjmomieiodli" },
+                    { name: "Sort Instagram (인스타 분석)", url: "https://chromewebstore.google.com/detail/sort-instagram-reels-tikt/bmljpagafjlkebnopbdncpnifkknlobk" },
+                    { name: "레퍼런스 모음 (카페)", url: "https://m.cafe.naver.com/ca-fe/web/cafes/31630047/articles/4" }
                 ],
-                details: ["조회수 우상향(VPH) 영상 리스트업", "유튜브 서머리로 대본 전체 스크래핑", "성공적인 자극적 키워드 분류"],
-                checklist: ["VPH 수치가 실시간으로 살아있는 영상인가?", "경쟁 영상의 클릭 유도 포인트를 분류했는가?"],
+                details: ["조회수 급상승(Trend Alert) 영상 리스트업", "유튜브 서머리로 대본 전체 복사", "비드아이큐 키워드 기회 발굴 및 태그 분석"],
+                checklist: ["VPH 수치가 현재 살아있는가?", "성공 영상의 비디오 태그를 확인했는가?"],
                 color: "#1e40af"
             },
             {
                 id: 2, title: "제미나이 기획", size: "size-wide", icon: "fa-brain",
-                goal: "일본 시니어 욕구를 관통하는 시놉시스 확정", 
+                goal: "일본 시니어 감성 기반 고후킹 시놉시스 확정", 
                 input: "벤치마킹 분석 데이터 (메모장 1)", 
                 output: "스토리 기획안 (메모장 2)",
-                tip: "보강 체크: AI 제목의 [ ] 대괄호 키워드가 시각적으로 튀는지 확인하세요. 일본 시니어의 6대 욕구(복수, 억울함 등)가 테마에 선명히 박혔는지 보강해야 합니다.",
-                prep: ["Gemini Gems", "방PD 프롬프트"],
+                tip: "휴먼터치 가이드:\n① AI 결과물을 토대로 제목의 [ ] 대괄호 키워드를 튜닝하세요.\n② 일본 시니어 6대 욕구(고독감, 인정욕구, 향수, 가족애, 의미찾기, 정의구현) 중 최소 3개 이상 반영되었는지 체크하세요.",
+                prep: ["Gemini Gems", "방PD 전용 프롬프트"],
                 sources: [
-                    { name: "방PD 전용 제미나이", url: "https://gemini.google.com/gem/1_B9d7iMSJhaKfDCQHTcqfroUUx39V0Di" },
+                    { name: "방PD 전용 제미나이 젬스", url: "https://gemini.google.com/gem/1_B9d7iMSJhaKfDCQHTcqfroUUx39V0Di" },
                     { name: "제목 디테일 전략 강의", url: "https://cafe.naver.com/banginapd/55" }
                 ],
-                details: ["일본 시니어 6대 욕구 스토리 각색", "제미나이 대화형 제목 튜닝 진행", "메인 키워드 및 썸네일 문구 확정"],
-                checklist: ["제목이 시청자의 호기심을 유발하는가?", "인물 설정이 타겟 국가 정서에 부합하는가?"],
+                details: ["일본 시니어 6대 욕구 스토리 각색", "제미나이 대화형 제목 튜닝 진행", "인물설정, 시놉시스, 제목, 문구 확정"],
+                checklist: ["6대 감정 욕구가 반영되었는가?", "제목과 썸네일 문구의 후킹력이 충분한가?"],
                 color: "#1e40af"
             },
             {
-                id: 3, title: "작가 1 (인트로)", size: "size-tall", icon: "fa-bolt",
-                goal: "초반 45초 감정 장악 및 시청 이탈 차단", 
+                id: 3, title: "작가 1\n(인트로 대본)", size: "size-tall", icon: "fa-bolt",
+                goal: "45초 충격 후킹 인트로 및 챕터 1 작성", 
                 input: "스토리 기획안 (메모장 2)", 
-                output: "인트로 대본 (메모장 3)",
-                tip: "보강 체크: 첫 3초 내에 '사건의 결말'이나 '최악의 갈등'을 보여주세요. AI의 설명조 문장은 과감히 삭제하고 짧고 타격감 있는 호흡으로 깎아내야 합니다.",
-                prep: ["Claude AI", "보조작가 지침"],
+                output: "인트로 및 챕터 1 대본 (메모장 3)",
+                tip: "휴먼터치 가이드:\n① 첫 3초 내에 썸네일 키워드를 반복했는지 체크하세요.\n② 설명조 문장은 삭제하고 캐릭터 대사 중심(80%)으로 구성되었는지 확인하세요.",
+                prep: ["Claude AI", "인트로 전용 프로젝트"],
                 sources: [
-                    { name: "인트로 촬영기법(카페)", url: "https://cafe.naver.com/banginapd/43" },
+                    { name: "인트로 촬영기법 (카페)", url: "https://cafe.naver.com/banginapd/43" },
                     { name: "인트로 검토 프롬프트", url: "https://m.cafe.naver.com/ca-fe/web/cafes/31630047/articles/49" }
                 ],
-                details: ["45초 충격 후킹 인트로 전문 집필", "첫 3초 내 핵심 사건 배치", "인트로 검토 프롬프트로 퀄리티 보강"],
-                checklist: ["첫 문장에서 바로 갈등이 시작되는가?", "검토 프롬프트를 3회 이상 사용했는가?"],
+                details: ["45초 충격 후킹 인트로 집필", "첫 3초 내 핵심 사건 배치 및 썸네일 재현", "인트로 검토 프롬프트로 퀄리티 보강"],
+                checklist: ["첫 문장에서 갈등이 시작되는가?", "캐릭터 대사 비중이 80% 이상인가?"],
                 color: "#d97706"
             },
             {
-                id: 4, title: "작가 2 (한글 대본)", size: "size-wide", icon: "fa-pen-nib",
-                goal: "권선징악 기반의 고밀도 고분량 시나리오 완성", 
-                input: "인트로 대본 (메모장 3)", 
+                id: 4, title: "작가 2\n(한글 대본)", size: "size-wide", icon: "fa-pen-nib",
+                goal: "권선징악 기반 고분량 시나리오 완성 (챕터 2~8)", 
+                input: "인트로 및 챕터 1 대본 (메모장 3)", 
                 output: "전체 한글 시나리오 (메모장 4)",
-                tip: "보강 체크: 장면별 이미지 태그(<번호>) 누락을 전수 검사하세요. 중간에 '사이다' 요소를 넣어 서사가 늘어지지 않게 인간이 직접 감정선을 보강해야 합니다.",
-                prep: ["Claude AI", "서사 보강 가이드"],
+                tip: "휴먼터치 가이드:\n① 장면별 이미지 프롬프트 태그(<번호>) 누락을 전수 검사하세요.\n② 스토리 공식(위기→선의→정체→반전→감동)이 적용되었는지 확인하세요.",
+                prep: ["Claude AI", "본문 프로젝트"],
                 sources: [
-                    { name: "작가 2 지침(카페)", url: "https://cafe.naver.com/banginapd/41" },
-                    { name: "보조작가 가이드", url: "https://cafe.naver.com/banginapd/48" }
+                    { name: "작가 2 지침 (카페)", url: "https://cafe.naver.com/banginapd/41" },
+                    { name: "보조작가 가이드 (카페)", url: "https://cafe.naver.com/banginapd/48" }
                 ],
-                details: ["챕터별 1,200자 상세 서사 집필", "장면별 이미지 프롬프트 태그 삽입", "확실한 보상과 응징 서사 강화"],
-                checklist: ["분량이 충분히 확보되었는가?", "모든 중요 장면에 번호 태그가 정확히 붙었는가?"],
+                details: ["챕터별 1,200자 상세 집필", "장면별 이미지 태그 삽입", "위기→선의→대반전 공식 적용"],
+                checklist: ["챕터별 분량이 1,200자 이상인가?", "모든 장면에 이미지 번호 태그가 있는가?"],
                 color: "#d97706"
             },
             {
-                id: 5, title: "작가 3 (일본어 대본 + 이미지 프롬프트)", size: "size-tall", icon: "fa-language",
-                goal: "현지인 감성 구현 및 제작 패키징 완성", 
+                id: 5, title: "작가 3\n(일본어 대본 + 프롬프트)", size: "size-tall", icon: "fa-language",
+                goal: "일본 현지화 말맛 교정 및 최종 패키징", 
                 input: "전체 한글 시나리오 (메모장 4)", 
-                output: "최종 일어 대본 패키지 (메모장 5)",
-                tip: "보강 체크: 정중한 경어체와 さん(산) 호칭이 일관된지 보세요. TTS 낭독 시 호흡이 꼬이지 않도록 문장 부호(쉼표, 마침표)를 직접 배치해 말맛을 살려야 합니다.",
-                prep: ["Claude AI", "번역 프롬프트"],
+                output: "최종 일어 대본 및 영문 프롬프트 (메모장 5)",
+                tip: "휴먼터치 가이드:\n① 정중한 경어체와 さん(산) 호칭 사용을 확인하세요.\n② TTS 성우가 자연스럽게 읽을 수 있도록 문장 부호를 최적화하세요.",
+                prep: ["Claude AI", "번역 프로젝트"],
                 sources: [
-                    { name: "현지화 지침(카페)", url: "https://cafe.naver.com/banginapd/41" },
+                    { name: "현지화 지침 (카페)", url: "https://cafe.naver.com/banginapd/41" },
                     { name: "일어 TTS 최적화 팁", url: "https://cafe.naver.com/banginapd/48" }
                 ],
-                details: ["일본 시니어 맞춤 경어 교정", "AITTS 낭독 최적화 문장 부호 작업", "이미지 생성용 영문 프롬프트 패키징"],
-                checklist: ["말투가 정중하고 자연스러운가?", "이미지 프롬프트가 대본 사이에 잘 포함되었는가?"],
+                details: ["일본 시니어 맞춤 경어 교정", "AITTS 낭독 최적화 문장 부호 작업", "이미지 생성용 영문 프롬프트 최종 패키징"],
+                checklist: ["일본어 말투가 정중하고 자연스러운가?", "이미지 프롬프트가 모두 포함되었는가?"],
                 color: "#d97706"
             },
             {
-                id: 6, title: "영상 제작 및 편집", size: "size-wide", icon: "fa-video",
-                goal: "Vrew 규격 준수 및 시네마틱 몰입감 확보", 
+                id: 6, title: "영상 제작/편집", size: "size-wide", icon: "fa-video",
+                goal: "브루(Vrew) 규격 준수 및 시네마틱 영상 제작", 
                 input: "최종 일어 대본 패키지 (메모장 5)", 
-                output: "최종 MP4 영상 파일",
-                tip: "보강 체크: Vrew 폰트 180 / 위치 110은 절대 원칙입니다. AI 이미지의 화풍(Style)이 튀지 않는지 확인하고 어색한 컷은 재생성하여 영상미를 통일하세요.",
-                prep: ["Vrew", "Whisk", "Grok"],
+                output: "MP4 최종 영상 파일",
+                tip: "규정 체크 가이드:\n① Vrew 폰트 크기 180 / 자막 위치 110 설정을 절대 준수하세요.\n② AI 이미지 생성 시 워터마크가 있다면 제거 툴을 활용하세요.",
+                prep: ["Vrew", "Whisk", "Magic Eraser", "Supawork"],
                 sources: [
-                    { name: "Vrew 다운로드", url: "https://vrew.ai/ko/" },
-                    { name: "영상 보조 프롬프트", url: "https://m.cafe.naver.com/ca-fe/web/cafes/31630047/articles/49" }
+                    { name: "Vrew 프로그램 다운로드", url: "https://vrew.ai/ko/" },
+                    { name: "동영상 워터마크 제거", url: "https://magiceraser.org/remove-watermark-from-video/#top" },
+                    { name: "이미지 워터마크 제거", url: "https://supawork.ai/ko/ai-image-watermark-remover" }
                 ],
-                details: ["시네마틱 영상/이미지 소스 생성", "Vrew AI 음성 합성 및 자막 배치", "자막 규격(180/110) 수동 고정"],
-                checklist: ["자막 규격이 가이드와 일치하는가?", "영상 소스의 화풍이 통일되었는가?"],
+                details: ["시네마틱 영상/이미지 생성", "Vrew AI 음성 합성 및 자막 배치", "자막 규격(180/110) 수동 고정"],
+                checklist: ["Vrew 자막 설정(180/110)이 맞는가?", "영상 화질과 화풍이 일관된가?"],
                 color: "#059669"
             },
             {
                 id: 7, title: "썸네일/제목 생성", size: "size-tall", icon: "fa-image",
-                goal: "클릭률(CTR) 극대화 디자인 및 검색 최적화", 
+                goal: "CTR 극대화 썸네일 디자인 및 SEO 확정", 
                 input: "편집 완료 영상 및 기획 데이터", 
-                output: "최종 업로드 패키지",
-                tip: "보강 체크: 인물의 표정이 충분히 과장(200%)되었는지 보세요. 문구는 노랑/흰색 2줄 법칙을 적용하되 배경과 겹치지 않게 사람이 직접 레이아웃을 조정해야 합니다.",
-                prep: ["ImageFX", "Canva"],
+                output: "최종 업로드 패키지 (썸네일 + 제목)",
+                tip: "휴먼터치 가이드:\n① 썸네일 문구 2줄 법칙(노랑/흰색 조합)을 적용하세요.\n② 제목 앞부분에 [感動] [逆転] 등 대괄호 후킹 문구를 배치하세요.",
+                prep: ["미리캔버스", "ImageFX", "Thumbnail Save"],
                 sources: [
-                    { name: "썸네일 전략 강의(카페)", url: "https://cafe.naver.com/banginapd/56" },
-                    { name: "테마별 썸네일 문구", url: "https://m.cafe.naver.com/ca-fe/web/cafes/31630047/articles/69" }
+                    { name: "미리캔버스 바로가기", url: "https://www.miricanvas.com/" },
+                    { name: "고화질 썸네일 추출기", url: "https://www.youtube-thumbnails.com/" },
+                    { name: "썸네일 전략 강의 (카페)", url: "https://cafe.naver.com/banginapd/56" }
                 ],
-                details: ["보조 프롬프트 활용 표정 생성", "대괄호 「」 포함 제목 SEO 확정", "고클릭 후킹 문구 레이아웃 작업"],
-                checklist: ["문구가 한눈에 꽂히는가?", "인물 표정이 궁금증을 유발하는가?"],
+                details: ["굵고 강렬한 폰트 디자인 적용", "대괄호 포함 일본식 제목 확정", "2줄 문구 레이아웃 작업"],
+                checklist: ["미리캔버스 2줄 문구 가독성이 좋은가?", "[ ] 대괄호 제목 형식을 지켰는가?"],
                 color: "#059669"
             },
             {
                 id: 8, title: "업로드 및 분석", size: "size-wide", icon: "fa-chart-line",
-                goal: "노출 최적화 및 유의미한 데이터 피드백 환류", 
+                goal: "노출 최적화 및 유의미한 데이터 분석 환류", 
                 input: "최종 업로드 패키지 (영상+썸네일+제목)", 
                 output: "성과 분석 리포트 (데이터 시트)",
-                tip: "보강 체크: 초기 24시간 VPH 데이터를 분석하세요. 시청 유지율이 급감하는 구간의 요소를 찾아 다음 영상 기획 시 해당 요소를 제거하는 환류 과정이 핵심입니다.",
-                prep: ["Nox", "SocialBlade"],
+                tip: "분석 가이드:\n① 업로드 후 초기 24시간 VPH 데이터를 분석하세요.\n② 시청 유지율 그래프를 통해 이탈 구간의 원인을 파악하고 다음 기획에 반영하세요.",
+                prep: ["Nox", "SocialBlade", "Lenostube"],
                 sources: [
-                    { name: "수익 확인기", url: "https://isthischannelmonetized.com/" }
+                    { name: "수익 창출 여부 확인 (OX)", url: "https://isthischannelmonetized.com/" },
+                    { name: "Lenostube 수익 분석기", url: "https://lenostube.com/en/youtube-monetization-checker/" },
+                    { name: "소셜블레이드 (전세계 표준)", url: "https://socialblade.com/" }
                 ],
-                details: ["태그 최적화 및 타겟 국가 설정", "수익성 및 유지율 실시간 모니터링", "성과 지표 분석 기반 개선 전략"],
-                checklist: ["일본 국가 타겟 설정이 제대로 되었는가?", "초기 24시간 데이터를 기록했는가?"],
+                details: ["국가 타겟 설정 및 예약 업로드", "수익성 및 유지율 실시간 모니터링", "성과 지표 분석 기반 개선 전략 수립"],
+                checklist: ["일본 국가 타겟 설정이 정확한가?", "초기 24시간 데이터를 기록했는가?"],
                 color: "#e11d48"
             }
         ];
@@ -312,54 +312,51 @@
 
         function render() {
             grid.innerHTML = steps.map((s, i) => `
-                <div class="bento-item ${s.size} p-8 md:p-10">
-                    <div class="flex justify-between items-start mb-8">
-                        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl shadow-inner border border-slate-50" style="background:${s.color}15; color:${s.color}">
+                <div class="bento-item ${s.size} p-10 md:p-12 shadow-sm border-slate-200">
+                    <div class="flex justify-between items-start mb-12 shrink-0">
+                        <div class="w-20 h-20 rounded-3xl flex items-center justify-center text-5xl shadow-xl border-2 border-slate-50" style="background:${s.color}15; color:${s.color}">
                             <i class="fa-solid ${s.icon}"></i>
                         </div>
-                        <span class="text-sm font-black text-slate-300 uppercase tracking-widest pt-2">Step 0${s.id}</span>
+                        <span class="text-3xl font-black uppercase tracking-tighter pt-3" style="color:${s.color}">Step 0${s.id}</span>
                     </div>
 
-                    <h3 class="text-4xl font-black mb-6 text-slate-900 tracking-tight leading-tight">${s.title}</h3>
+                    <h3 class="text-4xl md:text-5xl font-black mb-10 text-slate-900 tracking-tight leading-tight white-space-pre">${s.title}</h3>
                     
-                    <div class="space-y-6 flex-grow">
-                        <!-- 목표 (큰 글씨) -->
-                        <div class="bg-slate-50 p-6 rounded-2xl border-2 border-slate-100">
-                            <span class="text-xs font-black text-blue-600 uppercase mb-2 block tracking-widest">🎯 핵심 목표</span>
-                            <p class="text-xl font-bold text-slate-700 leading-snug">${s.goal}</p>
+                    <div class="space-y-10 flex-grow">
+                        <div class="bg-slate-50/80 p-8 rounded-[2rem] border-2 border-slate-100 shadow-inner text-[22px]">
+                            <span class="text-base font-black text-blue-700 uppercase mb-3 block tracking-widest">🎯 단계 핵심 성과</span>
+                            <p class="font-extrabold text-slate-800 leading-snug">${s.goal}</p>
                         </div>
                         
-                        <!-- 입출력 수직 (큰 글씨) -->
-                        <div class="space-y-4 pt-4 border-t-2 border-slate-50">
+                        <div class="space-y-8 pt-6 border-t-4 border-slate-50 text-[22px]">
                             <div>
-                                <span class="text-xs font-black text-slate-400 block mb-1 uppercase tracking-tighter italic">📥 인풋 (Input)</span>
-                                <p class="text-lg font-bold text-slate-500">${s.input}</p>
+                                <span class="text-base font-black text-slate-400 block mb-2 uppercase tracking-tighter italic">📥 입력 (Input)</span>
+                                <p class="font-bold text-slate-500 line-clamp-1">${s.input}</p>
                             </div>
                             <div>
-                                <span class="text-xs font-black text-emerald-500 block mb-1 uppercase tracking-tighter italic">📤 아웃풋 (Output)</span>
-                                <p class="text-lg font-black text-emerald-600">${s.output}</p>
+                                <span class="text-base font-black text-emerald-600 block mb-2 uppercase tracking-tighter italic">📤 산출 (Output)</span>
+                                <p class="font-black text-emerald-700 line-clamp-1">${s.output}</p>
                             </div>
                         </div>
 
-                        <!-- 전문가 팁 (명확한 강조) -->
-                        <div class="pt-6">
-                            <div class="p-6 rounded-2xl italic border-2 shadow-sm" style="background:${s.color}05; border-color:${s.color}20">
-                                <div class="flex items-center gap-2 mb-3" style="color:${s.color}">
-                                    <i class="fa-solid fa-wand-magic-sparkles text-sm"></i>
-                                    <span class="text-xs font-black uppercase tracking-widest">Expert 보강 가이드</span>
+                        <div class="pt-8">
+                            <div class="p-8 rounded-[2.5rem] italic border-2 shadow-md white-space-pre" style="background:${s.color}05; border-color:${s.color}40">
+                                <div class="flex items-center gap-4 mb-4" style="color:${s.color}">
+                                    <i class="fa-solid fa-wand-magic-sparkles text-2xl"></i>
+                                    <span class="text-base font-black uppercase tracking-widest">Expert 휴먼터치 가이드</span>
                                 </div>
-                                <p class="text-lg font-bold text-slate-600 leading-relaxed">"${s.tip}"</p>
+                                <p class="text-[24px] font-bold text-slate-700 leading-snug">${s.tip}</p>
                             </div>
                         </div>
                     </div>
 
                     <button 
                         onclick="openModal(${i})"
-                        class="mt-10 w-full py-6 bg-slate-900 text-white rounded-2xl font-black text-xl hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-3 shadow-lg"
+                        class="mt-12 w-full py-8 bg-slate-900 text-white rounded-[2rem] font-black text-3xl hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-6 shadow-2xl"
                         style="background:${s.color}"
                     >
-                        상세 정보 보기
-                        <i class="fa-solid fa-chevron-right text-sm"></i>
+                        상세 정보 및 리소스
+                        <i class="fa-solid fa-chevron-right text-xl"></i>
                     </button>
                 </div>
             `).join('');
@@ -370,7 +367,7 @@
             const overlay = document.getElementById('modal-overlay');
             const content = document.getElementById('modal-content');
             
-            document.getElementById('modal-title').innerText = s.title;
+            document.getElementById('modal-title').innerText = s.title.replace('\n', ' ');
             document.getElementById('modal-goal').innerText = s.goal;
             document.getElementById('modal-input').innerText = s.input;
             document.getElementById('modal-output').innerText = s.output;
@@ -380,32 +377,32 @@
             const iconBg = document.getElementById('modal-icon-bg');
             iconBg.style.backgroundColor = s.color;
 
-            // 준비물 복구
+            // 준비물
             document.getElementById('modal-prep').innerHTML = s.prep.map(p => `
-                <span class="px-5 py-3 bg-slate-100 rounded-xl border-2 border-slate-200 text-slate-700 text-lg font-black italic"># ${p}</span>
+                <span class="px-6 py-4 bg-slate-100 rounded-2xl border-2 border-slate-200 text-slate-800 text-2xl font-black italic shadow-sm"># ${p}</span>
             `).join('');
 
-            // 링크 복구
+            // 링크
             document.getElementById('modal-sources').innerHTML = s.sources.map(src => `
-                <a href="${src.url}" target="_blank" class="source-link flex items-center justify-between px-6 py-5 bg-white border-2 border-slate-100 rounded-2xl shadow-sm group">
-                    <span class="text-slate-800 font-black text-xl">${src.name}</span>
-                    <i class="fa-solid fa-up-right-from-square text-lg opacity-30 group-hover:opacity-100"></i>
+                <a href="${src.url}" target="_blank" class="source-link flex items-center justify-between px-8 py-6 bg-white border-2 border-slate-100 rounded-3xl shadow-sm hover:border-blue-600 transition-all group">
+                    <span class="text-slate-900 font-black text-2xl">${src.name}</span>
+                    <i class="fa-solid fa-up-right-from-square text-2xl opacity-30 group-hover:opacity-100"></i>
                 </a>
             `).join('');
 
-            // 체크리스트 복구
+            // 체크리스트
             document.getElementById('modal-checklist').innerHTML = s.checklist.map(item => `
-                <div class="flex items-start gap-4 p-5 bg-slate-50 rounded-2xl border-2 border-slate-100">
-                    <i class="fa-solid fa-circle-check mt-1 text-2xl" style="color:${s.color}"></i>
-                    <p class="text-xl font-bold text-slate-800 leading-snug">${item}</p>
+                <div class="flex items-start gap-6 p-7 bg-slate-50 rounded-3xl border-2 border-slate-100 shadow-sm">
+                    <i class="fa-solid fa-circle-check mt-1 text-4xl" style="color:${s.color}"></i>
+                    <p class="text-2xl font-bold text-slate-800 leading-snug">${item}</p>
                 </div>
             `).join('');
 
-            // 상세 지침 복구
+            // 상세 지침
             document.getElementById('modal-details').innerHTML = s.details.map(detail => `
-                <li class="flex items-start gap-5 py-2">
-                    <div class="mt-3 w-2 h-2 rounded-full shrink-0 shadow-sm" style="background:${s.color}"></div>
-                    <span class="text-xl font-bold text-slate-600 leading-relaxed">${detail}</span>
+                <li class="flex items-start gap-6 py-2">
+                    <div class="mt-4 w-3 h-3 rounded-full shrink-0 shadow-lg" style="background:${s.color}"></div>
+                    <span class="text-2xl font-bold text-slate-600 leading-relaxed">${detail}</span>
                 </li>
             `).join('');
 
@@ -439,4 +436,3 @@
     </script>
 </body>
 </html>
-

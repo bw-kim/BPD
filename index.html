@@ -3,10 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- 공유 시 미리보기 설정 (Open Graph) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="PD사관학교 신입1기 제작 공정 가이드">
+    <meta property="og:description" content="일본 롱폼 영상 제작을 위한 마스터 워크플로우를 확인하세요. 노션, 카페, 강의 바로가기 포함.">
+    <meta property="og:image" content="https://bpd.pages.dev/preview.png"> 
+    <meta property="og:url" content="https://bpd.pages.dev/">
+    
+    <!-- 트위터용 설정 -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PD사관학교 신입1기 제작 공정 가이드">
+    <meta name="twitter:description" content="일본 롱폼 영상 제작을 위한 마스터 워크플로우 가이드입니다.">
+    <meta name="twitter:image" content="https://bpd.pages.dev/preview.png">
+    
     <title>PD사관학교 제작 공정 가이드</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         /* 가변 변수 시스템 */
         :root { 
@@ -48,13 +63,13 @@
             transition: all 0.2s ease;
         }
 
-        /* 조절 바 위치 수정: 오른쪽 정렬 */
+        /* 폰트 조절 바 (오른쪽 정렬) */
         .view-controls-wrapper {
             width: 100%;
             max-width: 1100px;
             margin: 0 auto;
             display: flex;
-            justify-content: flex-end; /* 오른쪽으로 배치 */
+            justify-content: flex-end;
             padding: 25px 20px 10px 20px;
             background: #f8fafc;
         }
@@ -131,6 +146,7 @@
 
         .white-space-pre { white-space: pre-line; }
 
+        /* 외부 링크 버튼 */
         .header-link-btn {
             display: inline-flex;
             align-items: center;
@@ -147,6 +163,7 @@
         .btn-cafe { background: #03c75a; }
         .btn-lecture { background: #2563eb; }
 
+        /* 모달 스타일 */
         #modal-overlay { 
             transition: opacity 0.2s ease; 
             display: none; 
@@ -198,7 +215,6 @@
 </head>
 <body class="view-normal pb-40 selection:bg-blue-200">
 
-    <!-- 최상단 위치 (오른쪽 정렬) -->
     <div class="view-controls-wrapper">
         <nav class="view-controls">
             <button onclick="setView('small')" id="btn-small" class="view-btn">작게</button>
@@ -346,7 +362,7 @@
                     { name: "인트로 촬영기법 강의", url: "https://cafe.naver.com/banginapd/43" },
                     { name: "인트로 검토 프롬프트", url: "https://m.cafe.naver.com/ca-fe/web/cafes/31630047/articles/49" }
                 ],
-                details: ["45초 충격 후킹 인트로 집필", "첫 3초 내 핵심 사건 배치", "인트로 검토 프롬프트로 보강"],
+                details: ["45초 충격 후킹 인트로 집필", "첫 3초 내 핵심 사건 배치", "인트로 검토 프롬프트 보강"],
                 checklist: ["첫 문장에서 갈등이 시작되는가?", "캐릭터 대사 비중이 높은가?"],
                 color: "#d97706"
             },
@@ -464,12 +480,12 @@
                                 </div>
                             </div>
 
-                            <div class="bg-slate-50 p-6 rounded-[1.5rem] border-2 border-slate-200 white-space-pre shadow-sm">
-                                <div class="flex items-center gap-3 mb-3" style="color:${s.color}">
-                                    <i class="fa-solid fa-lightbulb text-xl"></i>
-                                    <span class="text-slate-900 font-black text-xs uppercase tracking-widest">Tip</span>
+                            <div class="bg-slate-50 px-4 py-2 rounded-[1.5rem] border-2 border-slate-200 white-space-pre shadow-sm">
+                                <div class="flex items-center gap-2 mb-0" style="color:${s.color}">
+                                    <i class="fa-solid fa-lightbulb text-lg"></i>
+                                    <span class="text-slate-900 font-black text-[11px] uppercase tracking-widest">Tip</span>
                                 </div>
-                                <p class="font-bold text-slate-700 leading-relaxed italic" style="font-size: calc(var(--base-font) * 0.95);">${s.tip}</p>
+                                <p class="font-bold text-slate-700 leading-snug italic" style="font-size: calc(var(--base-font) * 0.95);">${s.tip}</p>
                             </div>
                         </div>
                     </div>

@@ -8,222 +8,295 @@
     <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* 가변 변수 시스템 */
+        :root { 
+            --base-font: 26px; 
+            --step-size: 80px; 
+            --card-padding: 28px; 
+            --line-left: 60px;
+            --title-font: 44px;
+            --modal-padding: 30px;
+        }
+        
+        body.view-small { 
+            --base-font: 18px; --step-size: 55px; --card-padding: 18px; 
+            --line-left: 48px; --title-font: 28px; --modal-padding: 20px;
+        }
+        body.view-normal { 
+            --base-font: 22px; --step-size: 70px; --card-padding: 24px; 
+            --line-left: 55px; --title-font: 36px; --modal-padding: 25px;
+        }
+        body.view-large { 
+            --base-font: 26px; --step-size: 85px; --card-padding: 28px; 
+            --line-left: 62px; --title-font: 44px; --modal-padding: 35px;
+        }
+
+        @media (max-width: 768px) {
+            body.view-small { --base-font: 16px; --step-size: 45px; --line-left: 38px; }
+            body.view-normal { --base-font: 19px; --step-size: 55px; --line-left: 43px; }
+            body.view-large { --base-font: 22px; --step-size: 65px; --line-left: 48px; }
+        }
+
         body {
             font-family: 'Pretendard', sans-serif;
             background-color: #f8fafc;
             color: #0f172a;
             word-break: keep-all;
             -webkit-tap-highlight-color: transparent;
-            font-size: 24px; /* 시니어 가독성: 기본 폰트 대폭 상향 */
-            line-height: 1.6;
+            font-size: var(--base-font);
+            line-height: 1.5;
+            transition: all 0.2s ease;
         }
 
-        /* 타임라인 수직 구조 최적화 */
+        /* 조절 바 위치 수정: 오른쪽 정렬 */
+        .view-controls-wrapper {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: flex-end; /* 오른쪽으로 배치 */
+            padding: 25px 20px 10px 20px;
+            background: #f8fafc;
+        }
+        .view-controls {
+            background: white;
+            padding: 5px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 2px solid #3b82f6;
+            display: flex;
+            gap: 4px;
+        }
+        .view-btn {
+            padding: 8px 18px;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 15px;
+            transition: all 0.2s;
+            color: #475569;
+        }
+        .view-btn.active { background: #3b82f6; color: white; }
+
         .timeline-container {
             position: relative;
             max-width: 1100px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 10px 15px;
         }
-
         .timeline-line {
             position: absolute;
-            left: 55px;
+            left: var(--line-left);
             top: 0;
             bottom: 0;
-            width: 8px;
-            background: #e2e8f0;
+            width: 4px;
+            background: #cbd5e1;
             z-index: 0;
-        }
-
-        @media (max-width: 768px) {
-            .timeline-line { left: 45px; }
+            transition: left 0.3s ease;
         }
 
         .step-card {
             position: relative;
             z-index: 10;
-            margin-bottom: 100px;
+            margin-bottom: 35px;
             display: flex;
-            gap: 35px;
+            gap: 20px;
             align-items: flex-start;
         }
-
         .step-number-circle {
             flex-shrink: 0;
-            width: 80px;
-            height: 80px;
-            border-radius: 28px;
+            width: var(--step-size);
+            height: var(--step-size);
+            border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 900;
-            font-size: 32px;
+            font-size: calc(var(--base-font) * 1.1);
             color: white;
-            box-shadow: 0 15px 30px -5px rgba(0,0,0,0.25);
+            box-shadow: 0 8px 20px -5px rgba(0,0,0,0.15);
         }
-
-        @media (max-width: 768px) {
-            .step-number-circle { width: 65px; height: 65px; font-size: 26px; }
-            .step-card { gap: 20px; }
-        }
-
         .content-box {
             flex-grow: 1;
             background: white;
-            border-radius: 3rem;
-            border: 3px solid #f1f5f9;
-            padding: 50px;
-            box-shadow: 0 10px 40px -15px rgba(0,0,0,0.08);
-            transition: all 0.4s ease;
+            border-radius: 2rem;
+            border: 2px solid #e2e8f0;
+            padding: var(--card-padding);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            transition: all 0.3s ease;
         }
-
         .content-box:hover {
             border-color: #3b82f6;
-            transform: scale(1.01) translateX(12px);
-            box-shadow: 0 40px 80px -25px rgba(0,0,0,0.12);
+            transform: translateX(5px);
         }
 
         .white-space-pre { white-space: pre-line; }
 
-        /* 모달 시스템 (로컬 작동 보장) */
-        #modal-overlay {
-            transition: opacity 0.3s ease;
-            display: none;
-            opacity: 0;
+        .header-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            border-radius: 16px;
+            font-weight: 900;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            color: white;
         }
-        #modal-overlay.active {
-            display: flex;
-            opacity: 1;
+        .header-link-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+        .btn-notion { background: #37352f; }
+        .btn-cafe { background: #03c75a; }
+        .btn-lecture { background: #2563eb; }
+
+        #modal-overlay { 
+            transition: opacity 0.2s ease; 
+            display: none; 
+            opacity: 0; 
+            z-index: 2000; 
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(6px);
+            position: fixed;
+            inset: 0;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
         }
+        #modal-overlay.active { display: flex; opacity: 1; }
+        
         #modal-content {
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
-            transform: scale(0.9);
-            opacity: 0;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+            transform: scale(0.95); opacity: 0;
+            width: 100%;
+            max-width: 950px;
+            background: white;
+            border-radius: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            max-height: 92vh;
+            border: 2px solid #94a3b8;
+            box-shadow: 0 30px 60px -12px rgba(0,0,0,0.3);
         }
-        #modal-overlay.active #modal-content {
-            transform: scale(1);
-            opacity: 1;
+        #modal-overlay.active #modal-content { transform: scale(1); opacity: 1; }
+
+        .modal-box {
+            background: white;
+            border: 2px solid #cbd5e1;
+            border-radius: 1.5rem;
+            padding: 1.25rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
         }
 
-        .source-link:hover {
-            background-color: #eff6ff;
-            border-color: #3b82f6;
-            color: #1e40af;
-            transform: translateY(-2px);
+        .source-link {
+            border: 2px solid #cbd5e1;
+            transition: all 0.2s ease;
         }
-
+        .source-link:hover { background-color: #eff6ff; border-color: #3b82f6; color: #1e40af; }
+        
         .font-black { font-weight: 900; }
-        .font-extrabold { font-weight: 800; }
+        .custom-scroll::-webkit-scrollbar { width: 8px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
-<body class="pb-80 selection:bg-blue-200">
+<body class="view-normal pb-40 selection:bg-blue-200">
 
-    <header class="max-w-[1100px] mx-auto pt-32 pb-24 px-6 text-center">
-        <h1 class="text-7xl md:text-9xl font-black tracking-tighter text-slate-900 mb-10 leading-none">
+    <!-- 최상단 위치 (오른쪽 정렬) -->
+    <div class="view-controls-wrapper">
+        <nav class="view-controls">
+            <button onclick="setView('small')" id="btn-small" class="view-btn">작게</button>
+            <button onclick="setView('normal')" id="btn-normal" class="view-btn active">보통</button>
+            <button onclick="setView('large')" id="btn-large" class="view-btn">크게</button>
+        </nav>
+    </div>
+
+    <header class="max-w-[1000px] mx-auto pt-8 pb-14 px-6 text-center">
+        <h1 class="font-black tracking-tighter text-slate-900 mb-8 leading-none" style="font-size: calc(var(--title-font) * 1.5);">
             PD사관학교 <span class="text-blue-600">신입1기</span>
         </h1>
-        <p class="text-slate-500 font-black text-3xl md:text-5xl tracking-tight">일본 롱폼 제작 마스터 가이드</p>
         
-        <!-- 고대비 범례 (색약 대응) -->
-        <div class="mt-20 flex flex-wrap justify-center gap-5">
-            <div class="px-8 py-4 rounded-3xl bg-[#1e40af] text-white font-black text-2xl shadow-xl hover:scale-105 transition-transform"><i class="fa-solid fa-brain mr-2"></i>분석/기획</div>
-            <div class="px-8 py-4 rounded-3xl bg-[#d97706] text-white font-black text-2xl shadow-xl hover:scale-105 transition-transform"><i class="fa-solid fa-pen-nib mr-2"></i>집필/번역</div>
-            <div class="px-8 py-4 rounded-3xl bg-[#059669] text-white font-black text-2xl shadow-xl hover:scale-105 transition-transform"><i class="fa-solid fa-video mr-2"></i>제작/편집</div>
-            <div class="px-8 py-4 rounded-3xl bg-[#e11d48] text-white font-black text-2xl shadow-xl hover:scale-105 transition-transform"><i class="fa-solid fa-chart-line mr-2"></i>배포/분석</div>
+        <div class="flex flex-wrap justify-center gap-4">
+            <a href="https://woolen-tamarind-c69.notion.site/PD-PD-1-2d10901d27a680efa15ace1313b127cf?source=copy_link" target="_blank" class="header-link-btn btn-notion" style="font-size: calc(var(--base-font) * 0.7);">
+                <i class="fa-solid fa-note-sticky"></i> 노션 바로가기
+            </a>
+            <a href="https://m.cafe.naver.com/app/CafeInviteBridge.nhn?ticket=8733800f219ba72bfac21006fe6bff59" target="_blank" class="header-link-btn btn-cafe" style="font-size: calc(var(--base-font) * 0.7);">
+                <i class="fa-solid fa-mug-hot"></i> 카페 바로가기
+            </a>
+            <a href="https://www.nlab.kr/" target="_blank" class="header-link-btn btn-lecture" style="font-size: calc(var(--base-font) * 0.7);">
+                <i class="fa-solid fa-play"></i> 강의시청 바로가기
+            </a>
         </div>
     </header>
 
     <main class="timeline-container">
         <div class="timeline-line"></div>
-        <div id="timeline-list">
-            <!-- 자바스크립트로 카드가 자동 생성됩니다 -->
-        </div>
+        <div id="timeline-list"></div>
     </main>
 
     <!-- 상세보기 모달창 -->
-    <div id="modal-overlay" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-50 items-center justify-center p-4">
-        <div id="modal-content" class="bg-white w-full max-w-6xl max-h-[94vh] rounded-[3.5rem] shadow-2xl overflow-hidden flex flex-col">
-            
-            <!-- 모달 헤더 -->
-            <div class="px-12 py-10 flex justify-between items-center border-b-4 border-slate-50 shrink-0 bg-white">
-                <div class="flex items-center gap-10">
-                    <div id="modal-icon-bg" class="w-24 h-24 rounded-[2rem] flex items-center justify-center text-white text-5xl shadow-2xl">
+    <div id="modal-overlay">
+        <div id="modal-content">
+            <!-- 헤더 -->
+            <div class="flex justify-between items-center border-b-4 border-slate-100 shrink-0 bg-white" style="padding: calc(var(--modal-padding) * 0.8);">
+                <div class="flex items-center gap-5">
+                    <div id="modal-icon-bg" class="rounded-2xl flex items-center justify-center text-white shadow-lg" style="width: calc(var(--step-size) * 0.7); height: calc(var(--step-size) * 0.7); font-size: calc(var(--base-font) * 1.2);">
                         <i id="modal-icon" class="fa-solid"></i>
                     </div>
                     <div>
-                        <span id="modal-step-tag" class="text-2xl font-black uppercase text-blue-600 tracking-widest block mb-1">PHASE 01</span>
-                        <h2 id="modal-title" class="text-4xl md:text-6xl font-black text-slate-900 leading-tight">단계 제목</h2>
+                        <span id="modal-step-tag" class="font-black uppercase text-blue-600 tracking-widest block" style="font-size: calc(var(--base-font) * 0.6); margin-bottom: 2px;">Step 01</span>
+                        <h2 id="modal-title" class="font-black text-slate-900 leading-tight" style="font-size: calc(var(--base-font) * 1.4);">단계 제목</h2>
                     </div>
                 </div>
-                <button onclick="closeModal()" class="w-20 h-20 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center transition-all text-slate-500 shadow-inner">
-                    <i class="fa-solid fa-xmark text-5xl"></i>
+                <button onclick="closeModal()" class="bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center transition-all text-slate-500 shadow-sm" style="width: 50px; height: 50px;">
+                    <i class="fa-solid fa-xmark text-3xl"></i>
                 </button>
             </div>
             
-            <!-- 모달 본문 -->
-            <div class="px-12 py-12 space-y-12 overflow-y-auto custom-scroll flex-grow bg-slate-50/50">
+            <!-- 본문 -->
+            <div id="modal-scroll-body" class="space-y-6 overflow-y-auto custom-scroll flex-grow bg-slate-50/20" style="padding: var(--modal-padding);">
                 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                    <!-- 핵심 목표 -->
-                    <div class="md:col-span-2 bg-white p-12 rounded-[3rem] border-4 border-slate-100 shadow-sm relative overflow-hidden">
-                        <div id="modal-accent-bar" class="absolute left-0 top-0 w-4 h-full"></div>
-                        <span class="text-xl font-black text-blue-500 uppercase mb-5 block tracking-widest">🎯 이 단계의 핵심 목표</span>
-                        <p id="modal-goal" class="text-3xl md:text-5xl font-black text-slate-800 leading-snug"></p>
+                <div id="modal-goal-box" class="modal-box relative pl-8 border-l-8 border-l-blue-500 bg-white">
+                    <span class="font-black text-blue-600 uppercase block mb-2" style="font-size: calc(var(--base-font) * 0.85);">🎯 핵심 목표 (Goal)</span>
+                    <p id="modal-goal" class="font-black text-slate-900 leading-snug" style="font-size: calc(var(--base-font) * 1.15);"></p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="modal-box bg-slate-50">
+                        <span class="font-black text-slate-900 block mb-3 uppercase flex items-center gap-2 border-b border-slate-200 pb-2" style="font-size: calc(var(--base-font) * 0.8);">
+                            <span>📥</span> 입력 (Input)
+                        </span>
+                        <p id="modal-input" class="font-bold text-slate-700 leading-snug" style="font-size: var(--base-font);"></p>
                     </div>
-                    <!-- 입력/출력 요약 -->
-                    <div class="bg-white p-12 rounded-[3rem] border-4 border-slate-100 shadow-sm flex flex-col justify-center space-y-10">
-                        <div>
-                            <span class="text-xl font-black text-slate-400 block mb-3 uppercase italic">📥 입력</span>
-                            <p id="modal-input" class="text-2xl font-bold text-slate-600 leading-snug"></p>
-                        </div>
-                        <div class="pt-10 border-t-4 border-slate-50">
-                            <span class="text-xl font-black text-emerald-500 block mb-3 uppercase italic">📤 출력</span>
-                            <p id="modal-output" class="text-2xl font-black text-emerald-700 leading-snug"></p>
-                        </div>
+                    <div class="modal-box bg-emerald-50 border-emerald-300">
+                        <span class="font-black text-emerald-800 block mb-3 uppercase flex items-center gap-2 border-b border-emerald-100 pb-2" style="font-size: calc(var(--base-font) * 0.8);">
+                            <span>📤</span> 출력 (Outcome)
+                        </span>
+                        <p id="modal-output" class="font-black text-emerald-900 leading-snug" style="font-size: var(--base-font);"></p>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    <!-- 도구/준비물 -->
-                    <section class="bg-white p-12 rounded-[3rem] border-4 border-slate-100 shadow-sm">
-                        <h3 class="text-2xl font-black text-slate-900 mb-10 flex items-center gap-5 border-b-4 pb-6 uppercase tracking-widest">
-                            <i class="fa-solid fa-toolbox text-blue-600"></i> 필수 도구 및 사이트
-                        </h3>
-                        <div id="modal-prep" class="flex flex-wrap gap-5"></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <section class="modal-box bg-white">
+                        <h3 class="font-black text-slate-900 mb-4 border-b-2 border-slate-100 pb-2 uppercase" style="font-size: calc(var(--base-font) * 0.8);"><i class="fa-solid fa-toolbox text-blue-600 mr-2"></i> 필수 도구</h3>
+                        <div id="modal-prep" class="flex flex-wrap gap-4"></div>
                     </section>
-                    <!-- 리소스 링크 -->
-                    <section class="bg-white p-12 rounded-[3rem] border-4 border-slate-100 shadow-sm">
-                        <h3 class="text-2xl font-black text-slate-900 mb-10 flex items-center gap-5 border-b-4 pb-6 uppercase tracking-widest">
-                            <i class="fa-solid fa-link text-blue-600"></i> 관련 마스터 리소스
-                        </h3>
-                        <div id="modal-sources" class="space-y-5"></div>
+                    <section class="modal-box bg-white">
+                        <h3 class="font-black text-slate-900 mb-4 border-b-2 border-slate-100 pb-2 uppercase" style="font-size: calc(var(--base-font) * 0.8);"><i class="fa-solid fa-link text-blue-600 mr-2"></i> 교육 리소스</h3>
+                        <div id="modal-sources" class="space-y-2"></div>
                     </section>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    <!-- 체크리스트 -->
-                    <section class="bg-white p-12 rounded-[3rem] border-4 border-slate-100 shadow-sm">
-                        <h3 class="text-2xl font-black text-slate-900 mb-10 flex items-center gap-5 border-b-4 pb-6 uppercase tracking-widest">
-                            <i class="fa-solid fa-circle-check text-emerald-600"></i> 최종 품질 체크리스트
-                        </h3>
-                        <div id="modal-checklist" class="space-y-8"></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <section class="modal-box bg-white">
+                        <h3 class="font-black text-slate-900 mb-4" style="font-size: calc(var(--base-font) * 0.8);">✅ 품질 체크리스트</h3>
+                        <div id="modal-checklist" class="space-y-3"></div>
                     </section>
-                    <!-- 상세 업무 지침 -->
-                    <section class="bg-white p-12 rounded-[3rem] border-4 border-slate-100 shadow-sm">
-                        <h3 class="text-2xl font-black text-slate-900 mb-10 flex items-center gap-5 border-b-4 pb-6 uppercase tracking-widest">
-                            <i class="fa-solid fa-list-check text-blue-600"></i> 상세 실행 지침
-                        </h3>
-                        <ul id="modal-details" class="space-y-8 list-none text-slate-600 font-bold text-2xl"></ul>
+                    <section class="modal-box bg-white">
+                        <h3 class="font-black text-slate-900 mb-4" style="font-size: calc(var(--base-font) * 0.8);">⚙️ 상세 실행 지침</h3>
+                        <ul id="modal-details" class="space-y-3 list-none text-slate-600 font-bold" style="font-size: calc(var(--base-font) * 0.85);"></ul>
                     </section>
                 </div>
             </div>
 
-            <!-- 닫기 액션 -->
-            <div class="px-12 py-10 border-t-4 border-slate-100 flex justify-end bg-white shrink-0 shadow-2xl">
-                <button onclick="closeModal()" class="px-32 py-8 bg-slate-900 text-white rounded-3xl font-black text-4xl active:scale-95 transition-all shadow-xl hover:bg-blue-700">
-                    가이드 확인 완료
-                </button>
+            <div class="border-t-2 border-slate-200 bg-white shrink-0" style="padding: 20px;">
+                <button onclick="closeModal()" class="w-full py-5 bg-slate-900 text-white rounded-2xl font-black transition-all shadow-xl active:scale-95 hover:bg-blue-600" style="font-size: calc(var(--base-font) * 1);">가이드 확인 완료</button>
             </div>
         </div>
     </div>
@@ -232,19 +305,18 @@
         const steps = [
             {
                 id: 1, title: "레퍼런스 분석", icon: "fa-magnifying-glass-chart",
-                goal: "성공이 검증된 바이럴 소스 수집 및 데이터 구축", 
-                input: "레퍼런스 영상 썸네일 + 제목 + 본문", 
+                goal: "성공 확률이 검증된 바이럴 소스 수집 및 분석 데이터 구축", 
+                input: "참조 영상 썸네일 + 제목 + 본문", 
                 output: "벤치마킹 분석 데이터 (메모장 1)",
-                tip: "① VPH(시간당 조회수) 급상승 여부 확인\n② 경쟁 채널의 비디오 태그(Video Tags) 및 썸네일 구성 분석\n③ 제목 첫 5글자의 후킹 키워드 수집\n이 데이터를 메모장 1에 반드시 정리하세요.",
-                prep: ["vidIQ", "YouTube Summary", "Sort Instagram Reels", "엑셀/노션"],
+                tip: "① VPH(시간당 조회수) 급상승 여부 확인\n② 경쟁 채널의 비디오 태그(Video Tags) 추출\n③ 제목 앞부분 고점수 키워드 수집",
+                prep: ["vidIQ", "YouTube Summary", "Sort Instagram Reels"],
                 sources: [
-                    { name: "vidIQ (데이터 확인)", url: "https://chromewebstore.google.com/detail/vidiq-vision-for-youtube/pachckjkecffpdphbpmfolblodfkgbhl" },
+                    { name: "vidIQ (데이터 분석)", url: "https://chromewebstore.google.com/detail/vidiq-vision-for-youtube/pachckjkecffpdphbpmfolblodfkgbhl" },
                     { name: "YouTube Summary (대본 추출)", url: "https://chromewebstore.google.com/detail/youtube-summary-with-chat/nmmicjeknamkfloonkhhcjmomieiodli" },
-                    { name: "Sort Instagram (인스타 분석)", url: "https://chromewebstore.google.com/detail/sort-instagram-reels-tikt/bmljpagafjlkebnopbdncpnifkknlobk" },
                     { name: "성공 레퍼런스 모음 (카페)", url: "https://m.cafe.naver.com/ca-fe/web/cafes/31630047/articles/4" }
                 ],
-                details: ["조회수 급상승(Trend Alert) 영상 분석", "유튜브 서머리로 대본 전체 복사", "비드아이큐 키워드 점수 및 태그 분석"],
-                checklist: ["VPH 수치가 실시간으로 살아있는가?", "성공 영상의 비디오 태그를 확인했는가?"],
+                details: ["조회수 우상향 경쟁 영상 선정", "유튜브 서머리로 대본 전체 복사", "비드아이큐 태그 및 패턴 분석"],
+                checklist: ["VPH 수치가 현재 살아있는가?", "성공 영상의 비디오 태그를 확인했는가?"],
                 color: "#1e40af"
             },
             {
@@ -252,14 +324,15 @@
                 goal: "일본 시니어 감성 기반 고후킹 시놉시스 확정", 
                 input: "벤치마킹 분석 데이터 (메모장 1)", 
                 output: "스토리 기획안 (메모장 2)",
-                tip: "휴먼터치 가이드:\n① AI 결과물을 토대로 제목의 [ ] 대괄호 키워드를 튜닝하세요.\n② 일본 시니어 6대 욕구(고독감, 인정욕구, 향수 등) 중 최소 3개 이상 반영되었는지 체크하세요.",
+                tip: "휴먼터치 가이드:\n① AI 제목의 [ ] 대괄호 키워드를 튜닝하세요.\n② 일본 시니어 6대 욕구 중 최소 3개 이상 반영 확인\n③ 아래 제미나이 활용 팁 링크를 꼭 확인하세요.",
                 prep: ["Gemini Gems", "방PD 전용 프롬프트"],
                 sources: [
                     { name: "방PD 전용 제미나이 젬스", url: "https://gemini.google.com/gem/1_B9d7iMSJhaKfDCQHTcqfroUUx39V0Di" },
-                    { name: "제목 디테일 전략 강의", url: "https://cafe.naver.com/banginapd/55" }
+                    { name: "제목 디테일 전략 강의", url: "https://cafe.naver.com/banginapd/55" },
+                    { name: "제미나이 활용팁 링크", url: "https://m.cafe.naver.com/ca-fe/web/cafes/31630047/articles/78" }
                 ],
-                details: ["일본 시니어 6대 욕구 스토리 각색", "제미나이 대화형 제목 튜닝 진행", "인물설정, 시놉시스, 제목, 문구 확정"],
-                checklist: ["6대 감정 욕구가 반영되었는가?", "제목과 썸네일 문구의 후킹력이 충분한가?"],
+                details: ["일본 시니어 6대 욕구 스토리 각색", "제미나이 대화형 제목 튜닝 진행", "인물설정 및 썸네일 문구 확정"],
+                checklist: ["6대 감정 욕구가 반영되었는가?", "제목의 후킹력이 충분한가?"],
                 color: "#1e40af"
             },
             {
@@ -267,60 +340,59 @@
                 goal: "45초 충격 후킹 인트로 및 챕터 1 작성", 
                 input: "스토리 기획안 (메모장 2)", 
                 output: "인트로 및 챕터 1 대본 (메모장 3)",
-                tip: "휴먼터치 가이드:\n① 첫 3초 내에 썸네일 키워드를 반복했는지 체크하세요.\n② 설명조 문장은 삭제하고 캐릭터 대사 중심(80%)으로 구성되었는지 확인하세요.",
+                tip: "휴먼터치 가이드:\n① 첫 3초 내에 썸네일 키워드를 반복하세요.\n② 설명조 문장 삭제 및 캐릭터 대사(80%) 구성 확인",
                 prep: ["Claude AI", "인트로 프로젝트"],
                 sources: [
                     { name: "인트로 촬영기법 강의", url: "https://cafe.naver.com/banginapd/43" },
                     { name: "인트로 검토 프롬프트", url: "https://m.cafe.naver.com/ca-fe/web/cafes/31630047/articles/49" }
                 ],
-                details: ["45초 충격 후킹 인트로 집필", "첫 3초 내 핵심 사건 배치 및 썸네일 재현", "인트로 검토 프롬프트로 퀄리티 보강"],
-                checklist: ["첫 문장에서 갈등이 시작되는가?", "캐릭터 대사 비중이 80% 이상인가?"],
+                details: ["45초 충격 후킹 인트로 집필", "첫 3초 내 핵심 사건 배치", "인트로 검토 프롬프트로 보강"],
+                checklist: ["첫 문장에서 갈등이 시작되는가?", "캐릭터 대사 비중이 높은가?"],
                 color: "#d97706"
             },
             {
                 id: 4, title: "작가 2\n(한글 대본)", icon: "fa-pen-nib",
-                goal: "권선징악 기반 고분량 시나리오 완성 (챕터 2~8)", 
+                goal: "권선징악 기반 고분량 시나리오 완성", 
                 input: "인트로 및 챕터 1 대본 (메모장 3)", 
                 output: "전체 한글 시나리오 (메모장 4)",
-                tip: "휴먼터치 가이드:\n① 장면별 이미지 프롬프트 태그(<번호>) 누락을 전수 검사하세요.\n② 스토리 공식(위기→선의→정체→반전→감동)이 적용되었는지 확인하세요.",
+                tip: "휴먼터치 가이드:\n① 장면별 이미지 태그(<번호>) 누락을 검사하세요.\n② 위기→선의→정체→반전→감동 공식 적용 확인",
                 prep: ["Claude AI", "본문 프로젝트"],
                 sources: [
                     { name: "작가 2 지침 (카페)", url: "https://cafe.naver.com/banginapd/41" },
-                    { name: "보조작가 가이드 (카페)", url: "https://cafe.naver.com/banginapd/48" }
+                    { name: "보조작가 가이드", url: "https://cafe.naver.com/banginapd/48" }
                 ],
-                details: ["챕터별 1,200자 상세 집필", "장면별 이미지 태그 삽입", "위기→선의→대반전 공식 적용"],
-                checklist: ["챕터별 분량이 1,200자 이상인가?", "모든 장면에 이미지 번호 태그가 있는가?"],
+                details: ["챕터별 1,200자 상세 집필", "장면별 이미지 태그 삽입", "확실한 보상과 응징 서사 강화"],
+                checklist: ["챕터별 분량이 충분한가?", "이미지 번호 태그가 정확한가?"],
                 color: "#d97706"
             },
             {
-                id: 5, title: "작가 3\n(일본어 대본 + 이미지 프롬프트)", icon: "fa-language",
+                id: 5, title: "작가 3\n(일본어 대본)", icon: "fa-language",
                 goal: "일본 현지화 말맛 교정 및 최종 패키징", 
                 input: "전체 한글 시나리오 (메모장 4)", 
                 output: "최종 일어 대본 패키지 (메모장 5)",
-                tip: "휴먼터치 가이드:\n① 정중한 경어체와 さん(산) 호칭 사용을 확인하세요.\n② TTS 성우가 자연스럽게 읽을 수 있도록 문장 부호를 최적화하세요.",
+                tip: "휴먼터치 가이드:\n① 정중한 경어체와 さん(산) 호칭 일관성 확인\n② TTS 낭독 호흡용 문장 부호 직접 배치",
                 prep: ["Claude AI", "번역 프로젝트"],
                 sources: [
                     { name: "현지화 지침 (카페)", url: "https://cafe.naver.com/banginapd/41" },
                     { name: "일어 TTS 최적화 가이드", url: "https://cafe.naver.com/banginapd/48" }
                 ],
-                details: ["일본 시니어 맞춤 경어 교정", "AITTS 낭독 최적화 작업", "이미지 생성용 영문 프롬프트 추출"],
-                checklist: ["일본어 말투가 정중하고 자연스러운가?", "이미지 프롬프트가 모두 포함되었는가?"],
+                details: ["일본 시니어 맞춤 경어 교정", "AITTS 낭독 최적화 작업", "이미지용 영문 프롬프트 최종 점검"],
+                checklist: ["일본어 말투가 자연스러운가?", "이미지 프롬프트가 모두 포함되었는가?"],
                 color: "#d97706"
             },
             {
                 id: 6, title: "영상 제작/편집", icon: "fa-clapperboard",
-                goal: "브루(Vrew) 규격 준수 및 시네마틱 영상 제작", 
+                goal: "브루(Vrew) 규격 준수 및 시네마틱 제작", 
                 input: "최종 일어 대본 패키지 (메모장 5)", 
                 output: "MP4 최종 영상 파일",
-                tip: "규정 체크 가이드:\n① Vrew 폰트 크기 180 / 자막 위치 110 설정을 절대 준수하세요.\n② AI 이미지 생성 시 워터마크가 있다면 제거 툴을 활용하세요.",
-                prep: ["Vrew", "Whisk", "Magic Eraser", "Supawork"],
+                tip: "규정 체크 가이드:\n① Vrew 폰트 180 / 자막 위치 110 절대 준수\n② AI 워터마크 제거 툴 활용으로 깔끔한 영상 확보",
+                prep: ["Vrew", "Whisk", "Magic Eraser"],
                 sources: [
                     { name: "Vrew 프로그램 다운로드", url: "https://vrew.ai/ko/" },
-                    { name: "동영상 워터마크 제거", url: "https://magiceraser.org/remove-watermark-from-video/#top" },
-                    { name: "이미지 워터마크 제거", url: "https://supawork.ai/ko/ai-image-watermark-remover" }
+                    { name: "동영상 워터마크 제거", url: "https://magiceraser.org/remove-watermark-from-video/#top" }
                 ],
-                details: ["시네마틱 영상/이미지 생성", "Vrew AI 음성 합성 및 자막 배치", "자막 규격(180/110) 수동 고정"],
-                checklist: ["자막 설정(180/110)이 정확한가?", "영상 화질과 화풍이 일관된가?"],
+                details: ["시네마틱 영상/이미지 생성", "Vrew AI 음성 합성 및 자막 배치", "자막 규격 수동 고정"],
+                checklist: ["Vrew 자막 설정이 정확한가?", "영상 화질과 화풍이 일관된가?"],
                 color: "#059669"
             },
             {
@@ -328,34 +400,40 @@
                 goal: "CTR 극대화 썸네일 디자인 및 SEO 확정", 
                 input: "편집 완료 영상 및 기획 데이터", 
                 output: "최종 업로드 패키지 (썸네일 + 제목)",
-                tip: "휴먼터치 가이드:\n① 썸네일 문구 2줄 법칙(노랑/흰색 조합)을 적용하세요.\n② 제목 앞부분에 [感動] [逆転] 등 대괄호 후킹 문구를 배치하세요.",
+                tip: "휴먼터치 가이드:\n① 썸네일 문구 2줄 법칙(노랑/흰색 조합) 적용\n② 제목 앞부분 [感動] [逆転] 등 대괄호 배치\n③ 아래 썸네일 제작 꿀팁 링크를 꼭 참고하세요.",
                 prep: ["미리캔버스", "ImageFX", "Thumbnail Save"],
                 sources: [
                     { name: "미리캔버스 바로가기", url: "https://www.miricanvas.com/" },
-                    { name: "고화질 썸네일 추출기", url: "https://www.youtube-thumbnails.com/" },
+                    { name: "썸네일 제작 꿀팁", url: "https://m.cafe.naver.com/ca-fe/web/cafes/31630047/articles/70" },
                     { name: "썸네일 전략 강의", url: "https://cafe.naver.com/banginapd/56" }
                 ],
                 details: ["표정 강조 썸네일 이미지 생성", "대괄호 포함 일본식 제목 확정", "2줄 문구 레이아웃 작업"],
-                checklist: ["미리캔버스 2줄 가독성이 좋은가?", "[ ] 대괄호 제목 형식을 지켰는가?"],
+                checklist: ["미리캔버스 2줄 문구가 잘 보이는가?", "후킹 문구가 적절한가?"],
                 color: "#059669"
             },
             {
                 id: 8, title: "업로드 및 분석", icon: "fa-chart-pie",
-                goal: "노출 최적화 업로드 및 데이터 분석 환류", 
-                input: "최종 업로드 패키지 (영상+썸네일+제목)", 
-                output: "성과 분석 리포트 (데이터 시트)",
-                tip: "분석 가이드:\n① 업로드 후 초기 24시간 VPH 데이터를 분석하세요.\n② 시청 유지율 그래프를 통해 이탈 구간의 원인을 파악하고 다음 기획에 반영하세요.",
+                goal: "노출 최적화 및 유의미한 데이터 분석 환류", 
+                input: "최종 업로드 패키지", 
+                output: "성과 분석 리포트",
+                tip: "분석 가이드:\n① 업로드 후 초기 24시간 VPH 분석\n② 시청 유지율 그래프를 통해 이탈 구간 원인 파악",
                 prep: ["NoxInfluencer", "SocialBlade", "Lenostube"],
                 sources: [
                     { name: "수익 창출 여부 확인 (OX)", url: "https://isthischannelmonetized.com/" },
-                    { name: "Lenostube 수익 분석기", url: "https://lenostube.com/en/youtube-monetization-checker/" },
-                    { name: "소셜블레이드 분석기", url: "https://socialblade.com/" }
+                    { name: "Lenostube 수익 분석", url: "https://lenostube.com/en/youtube-monetization-checker/" }
                 ],
-                details: ["국가 타겟 설정 및 예약 업로드", "Nox 이용 수익성 및 유지율 실시간 모니터링", "성과 지표 기반 개선 전략 수립"],
-                checklist: ["일본 국가 타겟 설정이 정확한가?", "초기 24시간 데이터를 기록했는가?"],
+                details: ["국가 타겟 설정 및 예약 업로드", "수익성 및 유지율 실시간 모니터링", "성과 기반 차기 테마 선정"],
+                checklist: ["일본 국가 타겟 설정이 정확한가?", "초기 데이터를 기록했는가?"],
                 color: "#e11d48"
             }
         ];
+
+        function setView(size) {
+            document.body.className = 'view-' + size + ' pb-40 selection:bg-blue-200';
+            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('btn-' + size).classList.add('active');
+            render();
+        }
 
         function render() {
             const list = document.getElementById('timeline-list');
@@ -363,35 +441,35 @@
                 <div class="step-card">
                     <div class="step-number-circle" style="background: ${s.color}">${s.id}</div>
                     <div class="content-box">
-                        <div class="flex flex-col md:flex-row justify-between items-start mb-12 gap-8">
-                            <h3 class="text-5xl md:text-6xl font-black text-slate-900 leading-tight white-space-pre">${s.title}</h3>
-                            <button onclick="openModal(${i})" class="px-14 py-6 bg-slate-900 text-white rounded-3xl font-black text-3xl hover:bg-blue-600 transition-all shadow-2xl active:scale-95 shrink-0">상세정보보기</button>
+                        <div class="flex flex-col md:flex-row justify-between items-start mb-6 gap-3">
+                            <h3 class="font-black text-slate-900 leading-tight white-space-pre shrink-0" style="font-size: calc(var(--base-font) * 1.3);">${s.title}</h3>
+                            <button onclick="openModal(${i})" class="px-8 py-3 bg-slate-900 text-white rounded-xl font-black hover:bg-blue-600 transition-all shadow-md active:scale-95 shrink-0" style="font-size: calc(var(--base-font) * 0.8);">상세정보보기</button>
                         </div>
                         
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                            <div class="space-y-12">
-                                <div class="bg-blue-50/50 p-10 rounded-[3rem] border-4 border-blue-100 shadow-inner">
-                                    <span class="text-xl font-black text-blue-600 uppercase mb-4 block tracking-widest">🎯 핵심 목표</span>
-                                    <p class="text-3xl font-extrabold text-slate-800 leading-snug">${s.goal}</p>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="space-y-5">
+                                <div class="relative pl-5 border-l-8" style="border-color:${s.color}40">
+                                    <span class="text-slate-400 font-black text-xs uppercase block mb-1">🎯 핵심 목표</span>
+                                    <p class="font-extrabold text-slate-800 leading-snug" style="font-size: calc(var(--base-font) * 1);">${s.goal}</p>
                                 </div>
-                                <div class="grid grid-cols-1 gap-8">
-                                    <div class="p-8 bg-slate-50 rounded-3xl border-2 border-slate-100">
-                                        <span class="text-lg font-black text-slate-400 block mb-3 uppercase italic">📥 입력</span>
-                                        <p class="text-2xl font-bold text-slate-600">${s.input}</p>
+                                <div class="grid grid-cols-1 gap-3">
+                                    <div class="p-4 bg-slate-50 rounded-xl border-2 border-slate-200">
+                                        <span class="text-slate-400 font-black block mb-1 uppercase" style="font-size: 9px;">📥 입력</span>
+                                        <p class="font-bold text-slate-600 leading-snug" style="font-size: calc(var(--base-font) * 0.9);">${s.input}</p>
                                     </div>
-                                    <div class="p-8 bg-emerald-50 rounded-3xl border-2 border-emerald-100">
-                                        <span class="text-lg font-black text-emerald-600 block mb-3 uppercase italic">📤 출력</span>
-                                        <p class="text-2xl font-black text-emerald-700">${s.output}</p>
+                                    <div class="p-4 bg-emerald-50 rounded-xl border-2 border-emerald-200">
+                                        <span class="text-emerald-500 font-black block mb-1 uppercase" style="font-size: 9px;">📤 출력</span>
+                                        <p class="font-black text-emerald-700 leading-snug" style="font-size: calc(var(--base-font) * 0.9);">${s.output}</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="bg-slate-50 p-12 rounded-[3.5rem] border-4 border-slate-100 shadow-lg white-space-pre">
-                                <div class="flex items-center gap-5 mb-8" style="color:${s.color}">
-                                    <i class="fa-solid fa-lightbulb text-4xl"></i>
-                                    <span class="text-2xl font-black uppercase tracking-widest text-slate-900">Tip</span>
+                            <div class="bg-slate-50 p-6 rounded-[1.5rem] border-2 border-slate-200 white-space-pre shadow-sm">
+                                <div class="flex items-center gap-3 mb-3" style="color:${s.color}">
+                                    <i class="fa-solid fa-lightbulb text-xl"></i>
+                                    <span class="text-slate-900 font-black text-xs uppercase tracking-widest">Tip</span>
                                 </div>
-                                <p class="text-3xl font-bold text-slate-700 leading-relaxed italic">${s.tip}</p>
+                                <p class="font-bold text-slate-700 leading-relaxed italic" style="font-size: calc(var(--base-font) * 0.95);">${s.tip}</p>
                             </div>
                         </div>
                     </div>
@@ -402,43 +480,27 @@
         function openModal(idx) {
             const s = steps[idx];
             const overlay = document.getElementById('modal-overlay');
+            const scrollBody = document.getElementById('modal-scroll-body');
+            const content = document.getElementById('modal-content');
             
+            if (scrollBody) scrollBody.scrollTop = 0;
+
             document.getElementById('modal-title').innerText = s.title.replace('\n', ' ');
             document.getElementById('modal-goal').innerText = s.goal;
             document.getElementById('modal-input').innerText = s.input;
             document.getElementById('modal-output').innerText = s.output;
             document.getElementById('modal-step-tag').innerText = `Step 0${s.id}`;
             document.getElementById('modal-icon').className = `fa-solid ${s.icon}`;
-            document.getElementById('modal-accent-bar').style.backgroundColor = s.color;
             document.getElementById('modal-icon-bg').style.backgroundColor = s.color;
+            document.getElementById('modal-goal-box').style.borderLeftColor = s.color;
 
-            document.getElementById('modal-prep').innerHTML = s.prep.map(p => `
-                <span class="px-8 py-5 bg-slate-100 rounded-3xl border-4 border-slate-200 text-slate-800 text-2xl font-black italic shadow-md"># ${p}</span>
-            `).join('');
-
-            document.getElementById('modal-sources').innerHTML = s.sources.map(src => `
-                <a href="${src.url}" target="_blank" class="source-link flex items-center justify-between px-10 py-8 bg-white border-4 border-slate-100 rounded-[2rem] shadow-sm hover:border-blue-600 transition-all group">
-                    <span class="text-slate-900 font-black text-3xl">${src.name}</span>
-                    <i class="fa-solid fa-up-right-from-square text-3xl opacity-30 group-hover:opacity-100"></i>
-                </a>
-            `).join('');
-
-            document.getElementById('modal-checklist').innerHTML = s.checklist.map(item => `
-                <div class="flex items-start gap-8 p-10 bg-white rounded-[2.5rem] border-4 border-slate-100 shadow-sm">
-                    <i class="fa-solid fa-circle-check mt-1 text-5xl" style="color:${s.color}"></i>
-                    <p class="text-3xl font-bold text-slate-800 leading-snug">${item}</p>
-                </div>
-            `).join('');
-
-            document.getElementById('modal-details').innerHTML = s.details.map(detail => `
-                <li class="flex items-start gap-8 py-4">
-                    <div class="mt-4 w-4 h-4 rounded-full shrink-0 shadow-lg" style="background:${s.color}"></div>
-                    <span class="text-3xl font-bold text-slate-600 leading-relaxed">${detail}</span>
-                </li>
-            `).join('');
+            document.getElementById('modal-prep').innerHTML = s.prep.map(p => `<span class="px-4 py-2 bg-white border-2 border-slate-300 rounded-lg text-slate-800 font-black text-xs shadow-sm"># ${p}</span>`).join('');
+            document.getElementById('modal-sources').innerHTML = s.sources.map(src => `<a href="${src.url}" target="_blank" class="source-link flex items-center justify-between px-5 py-3 bg-white border-2 border-slate-200 rounded-xl shadow-sm group"><span class="text-slate-900 font-black text-sm">${src.name}</span><i class="fa-solid fa-up-right-from-square text-xs opacity-30 group-hover:opacity-100 group-hover:text-blue-500"></i></a>`).join('');
+            document.getElementById('modal-checklist').innerHTML = s.checklist.map(item => `<div class="flex items-start gap-4 p-3 border-b-2 border-slate-100 last:border-0 bg-white/50 rounded-lg mb-1"><i class="fa-solid fa-circle-check text-blue-500 mt-1 text-sm"></i><p class="font-bold text-slate-700" style="font-size: 14px;">${item}</p></div>`).join('');
+            document.getElementById('modal-details').innerHTML = s.details.map(detail => `<li class="flex items-start gap-3 py-1.5 px-2"><div class="mt-2.5 w-2 h-2 rounded-full shrink-0 shadow-sm" style="background:${s.color}"></div><span class="font-bold text-slate-600" style="font-size: 14px;">${detail}</span></li>`).join('');
 
             overlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden'; 
         }
 
         function closeModal() {
